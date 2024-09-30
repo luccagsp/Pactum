@@ -1,10 +1,11 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import DeclarativeBase
 from flask_login import UserMixin
 from sqlalchemy.sql import func
 from sqlalchemy import JSON
 from envconfig import Envs
+from models.user import validate_data as validate_user
 envs = Envs()
 print(envs.SECRET)
 class Base(DeclarativeBase):
@@ -57,23 +58,47 @@ class Disponibilidad(db.Model, UserMixin):
 class Cliente(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     nombre = db.Column(db.String(40), nullable=False)
+    apellido = db.Column(db.String(40), nullable=False)
     email = db.Column(db.String(255), unique=True, nullable=False)
     phone = db.Column(db.String(20), unique=True, nullable=False)
-    profile_pic = db.Column(db.TEXT, nullable=False)
+    profile_pic = db.Column(db.TEXT)
 
     # Relación con Reserva
     reservas = db.relationship('Reserva', backref='cliente', lazy='dynamic')
 
-# with app.app_context():
-#     db.create_all()
 @app.route('/')
 def home():
-    usuario = Cliente(nombre="cliente", email="asdasasssdd", phone="asdsdssdasd", profile_pic="sdasdassa")
+    print(request.get_json())
+    # usuario = Cliente(nombre="cliente", email="asdasasssdd", phone="asdsdssdasd", profile_pic="sdasdassa")
+    # db.session.add(usuario)
+    # db.session.commit()
+    print("hecho!")
+    return render_template("index.html")
+@app.route('/auth/register/user', methods=["GET", "POST"])
+def register_user():
+    #Tomando JSON
+    data = request.get_json()
+    nombre = data['nombre']
+    apellido = data['apellido']
+    email = data['email']
+    phone = data['telefono']
+
+    validate_user_dto = validate_user(nombre, apellido, email, phone)
+    
+    #Si retorna error el DTO
+    if validate_user_dto[0] != None:
+        return validate_user_dto
+
+
+    usuario = Cliente(nombre=nombre, email=email, phone=phone, apellido=apellido)
     db.session.add(usuario)
     db.session.commit()
-    print("hecho!")
     return render_template("index.html")
 
 
 if __name__ == "__main__":
     app.run(debug=True)
+
+    ##Crear BBDD
+    # with app.app_context():
+    #     db.create_all()
