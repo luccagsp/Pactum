@@ -5,13 +5,14 @@ from phonenumbers.phonenumberutil import number_type
 from db import db, UserMixin
 email_pattern =  re.compile(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$')
 
-class Cliente(db.Model, UserMixin):
+class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
-    nombre = db.Column(db.String(40), nullable=False)
-    apellido = db.Column(db.String(40), nullable=False)
+    name = db.Column(db.String(40), nullable=False)
+    surname = db.Column(db.String(40), nullable=False)
     email = db.Column(db.String(255), unique=True, nullable=False)
     phone = db.Column(db.String(20), unique=True, nullable=False)
     profile_pic = db.Column(db.TEXT)
+    password = db.Column(db.Varchar(255), nullable = False)
 
     # Relación con Reserva
     reservas = db.relationship('Reserva', backref='cliente', lazy='dynamic')

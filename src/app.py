@@ -14,11 +14,10 @@ app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///project.db"
 app.config["SECRET_KEY"] = envs.SECRET
 # initialize the app with the extension before the config
 db = create_db(app)
-
-from models.cliente import Cliente, validate_data
-from models.disponibilidad import Disponibilidad
-from models.reserva import Reserva
-from models.salon import Salon
+from models.user import Cliente, validate_data
+from models.availability import Disponibilidad
+from models.reservation import Reserva
+from models.eventhall import Salon
 
 
 @app.route('/')
