@@ -11,8 +11,6 @@ print(envs.SECRET)
 class Base(DeclarativeBase):
   pass
 
-print("hola lucca martina")
-
 # create the app
 db = SQLAlchemy(model_class=Base)
 app = Flask(__name__)
