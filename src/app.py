@@ -65,9 +65,13 @@ class Cliente(db.Model, UserMixin):
     # Relación con Reserva
     reservas = db.relationship('Reserva', backref='cliente', lazy='dynamic')
 
+
 @app.route('/')
 def home():
-    print(request.get_json())
+    salon = Salon(nombre="pene aventura", email_contacto='penerete@gmail.com', telefono_contacto='+54545454', precio_sena=777)
+    db.session.add(salon)
+    db.session.commit()
+    # print(request.get_json())
     # usuario = Cliente(nombre="cliente", email="asdasasssdd", phone="asdsdssdasd", profile_pic="sdasdassa")
     # db.session.add(usuario)
     # db.session.commit()
@@ -94,15 +98,19 @@ def register_user():
     db.session.commit()
     return render_template("index.html")
 
+
 @app.route('/salon')
-def query_string():
+def query_salon():
     nombre_salon = request.args.get('nombre_salon')
-    data = Salon.query.filter_by(nombre= nombre_salon).first()
-    print(data)
-    return str(data)
+    print(nombre_salon)
+    data:Salon = Salon.query.filter_by(nombre= nombre_salon).first() 
+    dict_data = {}
+    if data:
+        dict_data = {'id' : data.id, 'nombre' : data.nombre, 'descripcion' : data.descripcion, 'calle_domicilio' : data.calle_domicilio, 'numero_domicilio' : data.numero_domicilio, 'email_contacto' : data.email_contacto, 'telefono_contacto' : data.telefono_contacto, 'precio_sena' : data.precio_sena, 'imagenes' : data.imagenes, 'reserva_instantanea' : data.reserva_instantanea, 'creado_en' : data.creado_en, 'actualizado_en' : data.actualizado_en}
+    return dict_data
 
 if __name__ == "__main__":
-    app.add_url_rule('/query_string',view_func=query_string)
+    # app.add_url_rule('/query_string',view_func=query_string)
     app.run(debug=True, port=5000)
 
     #Crear BBDD
