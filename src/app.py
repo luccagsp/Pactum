@@ -7,7 +7,6 @@ from sqlalchemy import JSON
 from envconfig import Envs
 from models.user import validate_data as validate_user
 envs = Envs()
-print(envs.SECRET)
 class Base(DeclarativeBase):
   pass
 
@@ -95,10 +94,17 @@ def register_user():
     db.session.commit()
     return render_template("index.html")
 
+@app.route('/salon')
+def query_string():
+    nombre_salon = request.args.get('nombre_salon')
+    data = Salon.query.filter_by(nombre= nombre_salon).first()
+    print(data)
+    return str(data)
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.add_url_rule('/query_string',view_func=query_string)
+    app.run(debug=True, port=5000)
 
-    ##Crear BBDD
+    #Crear BBDD
     # with app.app_context():
-    #     db.create_all()
+    #         db.create_all()
