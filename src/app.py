@@ -8,15 +8,13 @@ envs = Envs()
 # Configurando parametros de app
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///project.db"
 app.config["SECRET_KEY"] = envs.SECRET
-# Inicializando BBDD y despúes importando sus modelos
+# Inicializando BBDD y despúes importando sus modelos y servicios
 db = create_db(app)
 from models.user import User, validate_data
+from models.eventhall import EventHall
 from models.availability import Availability
 from models.reservation import Reservation
-from models.eventhall import EventHall
-
-import services.text as t
-t.prueba()
+import auth_service as auth_service
 
 @app.route('/')
 def home():
@@ -29,37 +27,46 @@ def home():
 def register_user():
     #Tomando JSON
     data = request.get_json()
-    nombre = data['nombre']
-    apellido = data['apellido']
-    email = data['email']
-    phone = data['telefono']
-
-    validate_user_dto = validate_data(nombre, apellido, email, phone)
-
+    try:
+        nombre = data['nombre']
+        apellido = data['apellido']
+        email = data['email']
+        phone = data['telefono']
+        password = data['password']
+    except KeyError as err:
+        print(f"Error: falta la clave '{err.args[0]}' en el JSON recibido.")
+        return {"error": f"Falta la clave '{err.args[0]}' en el JSON."}, 400
+    validate_user_dto = validate_data(nombre, apellido, email, phone, password)
     if validate_user_dto[0] != None:
         return validate_user_dto
-
-    usuario = User(nombre=nombre, email=email, phone=phone, apellido=apellido)
-    db.session.add(usuario)
-    db.session.commit()
-    return render_template("index.html")
+    user = validate_user_dto[1]
+    response = auth_service.create_user(user)
+    return response
+    # return render_template("index.html")
 @app.route('/auth/register/eventhall', methods=["GET", "POST"])
 def register_eventhall():
     #Tomando JSON
     data = request.get_json()
-    name = data['name']
-    email = data['email']
-    phone = data['phone']
-    deposit_price = data['deposit_price']
+    try:    
+        # name = data['owner']
+        name = data['name']
+        deposit_price = data['deposit_price']
+        instant_booking = data['instant_booking']
+    except KeyError.args[0] == 'deposit_price':
+        return ["el deposito crack"]
+    except KeyError as err:
+        print(f"Error: falta la clave '{err.args[0]}' en el JSON recibido.")
+        return {"error": f"Falta la clave '{err.args[0]}' en el JSON."}, 400
+    
+    # validate_user_dto = validate_data(name=name, email=email, phone=phone, deposit_price=deposit_price)
 
-    validate_user_dto = validate_data(name=name, email=email, phone=phone, deposit_price=deposit_price)
+    # if validate_user_dto[0] != None:
+    #     return validate_user_dto
 
-    if validate_user_dto[0] != None:
-        return validate_user_dto
-
-    usuario = EventHall(name=name, email=email, phone=phone, deposit_price=deposit_price)
-    db.session.add(usuario)
-    db.session.commit()
+    # auth_service.create_eventhall(db)
+    # usuario = EventHall(name=name, email=email, phone=phone, deposit_price=deposit_price)
+    # db.session.add(usuario)
+    # db.session.commit()
     return render_template("index.html")
 
 
@@ -78,7 +85,7 @@ def query_salon():
 
 if __name__ == "__main__":
     # app.add_url_rule('/query_string',view_func=query_string)
-    app.run(debug=True, port=5000)
+    app.run(debug=True ,port=5000)
 
     #Crear BBDD
     # with app.app_context():
