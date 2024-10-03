@@ -1,3 +1,4 @@
+from pathlib import Path
 from flask import Flask, render_template, request
 from config.dotenv_handler import Envs
 from db import create_db
@@ -36,9 +37,12 @@ def register_user():
     except KeyError as err:
         print(f"Error: falta la clave '{err.args[0]}' en el JSON recibido.")
         return {"error": f"Falta la clave '{err.args[0]}' en el JSON."}, 400
+    
+    
     validate_user_dto = validate_data(nombre, apellido, email, phone, password)
     if validate_user_dto[0] != None:
         return validate_user_dto
+    
     user = validate_user_dto[1]
     response = auth_service.create_user(user)
     return response
@@ -47,19 +51,20 @@ def register_user():
 def register_eventhall():
     #Tomando JSON
     data = request.get_json()
-    try:    
-        # name = data['owner']
-        name = data['name']
-        deposit_price = data['deposit_price']
-        instant_booking = data['instant_booking']
-    except KeyError.args[0] == 'deposit_price':
-        return ["el deposito crack"]
-    except KeyError as err:
-        print(f"Error: falta la clave '{err.args[0]}' en el JSON recibido.")
-        return {"error": f"Falta la clave '{err.args[0]}' en el JSON."}, 400
+    print(data)
+    # try:    
+    #     # name = data['owner']
+    #     name = data['name']
+    #     deposit_price = data['deposit_price']
+    #     instant_booking = data['instant_booking']
+    # except KeyError.args[0] == 'instant_booking':
+    #     return ["Error: deposit_price missing"]
+    # except KeyError as err:
+    #     print(f"Error: falta la clave '{err.args[0]}' en el JSON recibido.")
+    #     return {"error": f"Falta la clave '{err.args[0]}' en el JSON."}, 400
     
-    # validate_user_dto = validate_data(name=name, email=email, phone=phone, deposit_price=deposit_price)
-
+    validate_hall_dto = EventHall.validate_eventhall(**data)
+    print(validate_hall_dto)
     # if validate_user_dto[0] != None:
     #     return validate_user_dto
 
@@ -77,16 +82,16 @@ def query_salon():
     print(nombre_salon)
     data:EventHall = EventHall.query.filter_by(name=nombre_salon).first() 
     
-    if data:
+    if data:# Si 'data' no encuentra ningún user...
         dict_data = {'id' : data.id, 'nombre' : data.nombre, 'descripcion' : data.descripcion, 'calle_domicilio' : data.calle_domicilio, 'numero_domicilio' : data.numero_domicilio, 'email_contacto' : data.email_contacto, 'telefono_contacto' : data.telefono_contacto, 'precio_sena' : data.precio_sena, 'imagenes' : data.imagenes, 'reserva_instantanea' : data.reserva_instantanea, 'creado_en' : data.creado_en, 'actualizado_en' : data.actualizado_en}
-    else: dict_data = {} # Si la variable 'data' no encuentra ningun usuario...
+    else: dict_data = {} 
 
     return dict_data
 
 if __name__ == "__main__":
-    # app.add_url_rule('/query_string',view_func=query_string)
-    app.run(debug=True ,port=5000)
-
-    #Crear BBDD
-    # with app.app_context():
-    #         db.create_all()
+    if not Path('../instance/project.db'):
+        #Crear BBDD
+        with app.app_context():
+                db.create_all()
+    else:
+        app.run(debug=True ,port=5000)

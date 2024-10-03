@@ -19,19 +19,17 @@ class EventHall(db.Model, UserMixin):
   updated_at = db.Column(db.DateTime, default=func.now())  # Col
   db.relationship('availability', backref='person', lazy=True)
   UniqueConstraint("name")
+  def validate_eventhall(owner, name, deposit_price, instant_booking = False):
 
+    # Verifica que no haya espacios al principio ni al final
+    if name != name.strip():
+        return ["Error: invalid name"]
+    # Expresión regular para verificar solo caracteres alfanuméricos y espacios
+    if not regular_exps.name.match(name):
+        return ["Error: invalid name"]
+    if not int(deposit_price) or int(deposit_price) < 0:
+        return ["Error: invalid deposit_price"]
+    if instant_booking != bool:
+        return ["Error: instant_booking must be boolean"]
 
-def validate_eventhall(owner, name, deposit_price, instant_booking = False):
-
-  # Verifica que no haya espacios al principio ni al final
-  if name != name.strip():
-      return ["Error: invalid name"]
-  # Expresión regular para verificar solo caracteres alfanuméricos y espacios
-  if not regular_exps.name.match(name):
-      return ["Error: invalid name"]
-  if not int(deposit_price) or int(deposit_price) < 0:
-     return ["Error: invalid deposit_price"]
-  if instant_booking != bool:
-     return ["Error: instant_booking must be boolean"]
-
-  return [None, EventHall(owner, name, deposit_price, instant_booking)]
+    return [None, EventHall(owner, name, deposit_price, instant_booking)]
