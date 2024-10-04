@@ -3,6 +3,7 @@ from models.availability import Availability
 from models.reservation import Reservation
 from models.eventhall import EventHall
 from db import db
+import bcrypt
 
 def create_user(user):
   # Verifica si el parámetro user es una instancia de la clase User
@@ -11,6 +12,8 @@ def create_user(user):
   user_exists = User.query.filter_by(email=user.email, phone=user.phone).first()
   if user_exists:
     return ["Email or phone already registered"]
+  user.password = bcrypt.hashpw(user.password.encode('utf-8'), bcrypt.gensalt())
+  
   db.session.add(user)
   db.session.commit()
   return f"User '{user.name}' created successfully"
