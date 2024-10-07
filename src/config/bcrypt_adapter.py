@@ -1,21 +1,10 @@
 import bcrypt
-
-# Password to hash
-password = b"xdd"
-
-# Generate a salt
-salt = bcrypt.gensalt()
-print(salt)
-# Hash the password
-hashed = bcrypt.hashpw(password, salt)
-
-# Output the hashed password
-print(hashed)
-
-#Verify the password
-
-coso = b"xdd"
-if bcrypt.checkpw(coso, hashed):
-    print("It Matches!")
-else:
-    print("It Does not Match :(")
+class BcryptAdapter:
+    def hash(self, password: str):
+        salt = bcrypt.gensalt()
+        password_utf8 = password.encode('utf-8')
+        return bcrypt.hashpw(password_utf8, salt)
+    def compare(self, password:str, hashed):
+        password_utf8 = password.encode('utf-8')
+        # hash_utf8 = hashed.encode('utf-8')
+        return bcrypt.checkpw(password_utf8, hashed)
