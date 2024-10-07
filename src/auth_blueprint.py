@@ -1,10 +1,8 @@
 from flask_login import login_user, login_required, logout_user, current_user
 from flask import Blueprint, request, render_template, jsonify
-from models.user import User
-from models.eventhall import EventHall
+from models import User, EventHall
 from auth_service import AuthService
 from config.objToStr import objToStr
-import bcrypt
 auth_blueprint = Blueprint('auth_blueprint', __name__)
 
 @auth_blueprint.route('/auth/register/user', methods=["GET", "POST"])
