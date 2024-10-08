@@ -1,0 +1,211 @@
+{% extends "base.html" %} {% block title %}Home{% endblock %} {% block content%}
+<div class="container">
+  <h2>Select Time Availability for the Week</h2>
+  {% with messages = get_flashed_messages(with_categories=true) %} {% if
+  messages %} {% for category, message in messages %} {% if category ==
+    'error' %}
+    <div class="alert alert-danger alter-dismissable fade show" role="alert">
+      {{ message }}
+      <button type="button" class="close" data-dismiss="alert">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    {% else %}
+    <div class="alert alert-success alter-dismissable fade show" role="alert">
+      {{ message }}
+      <button type="button" class="close" data-dismiss="alert">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+  {% endif %} {% endfor %} {% endif %} {% endwith %}
+
+  <form id="availability-form">
+    <!-- Days of the week -->
+    <div class="day">
+      <h3>Monday</h3>
+      <div class="inputs">
+        <div class="time-inputs">
+          <input type="time" id="start-time-mon" name="start-time-mon" />
+        </div>
+        <div class="time-inputs">
+          <input type="time" id="end-time-mon" name="end-time-mon" />
+        </div>
+      </div>
+    </div>
+    <div class="day">
+      <h3>Tuesday</h3>
+      <div class="inputs">
+        <div class="time-inputs">
+          <input type="time" id="start-time-tue" name="start-time-tue" />
+        </div>
+        <div class="time-inputs">
+          <input type="time" id="end-time-tue" name="end-time-tue" />
+        </div>
+      </div>
+    </div>
+    <div class="day">
+      <h3>Wednesday</h3>
+      <div class="inputs">
+        <div class="time-inputs">
+          <input type="time" id="start-time-wed" name="start-time-wed" />
+        </div>
+        <div class="time-inputs">
+          <input type="time" id="end-time-wed" name="end-time-wed" />
+        </div>
+      </div>
+    </div>
+    <div class="day">
+      <h3>Thursday</h3>
+      <div class="inputs">
+        <div class="time-inputs">
+          <input type="time" id="start-time-thu" name="start-time-thu" />
+        </div>
+        <div class="time-inputs">
+          <input type="time" id="end-time-thu" name="end-time-thu" />
+        </div>
+      </div>
+    </div>
+    <div class="day">
+      <h3>Friday</h3>
+      <div class="inputs">
+        <div class="time-inputs">
+          <input type="time" id="start-time-fri" name="start-time-fri" />
+        </div>
+        <div class="time-inputs">
+          <input type="time" id="end-time-fri" name="end-time-fri" />
+        </div>
+      </div>
+    </div>
+    <div class="day">
+      <h3>Saturday</h3>
+      <div class="inputs">
+        <div class="time-inputs">
+          <input type="time" id="start-time-sat" name="start-time-sat" />
+        </div>
+        <div class="time-inputs">
+          <input type="time" id="end-time-sat" name="end-time-sat" />
+        </div>
+      </div>
+    </div>
+    <div class="day">
+      <h3>Sunday</h3>
+      <div class="inputs">
+        <div class="time-inputs">
+          <input type="time" id="start-time-sun" name="start-time-sun" />
+        </div>
+        <div class="time-inputs">
+          <input type="time" id="end-time-sun" name="end-time-sun" />
+        </div>
+      </div>
+    </div>
+
+    <!-- Submit Button -->
+    <button type="submit">Submit Availability</button>
+  </form>
+
+  <!-- Display the Result -->
+  <div id="result" style="margin-top: 20px"></div>
+</div>
+
+<script>
+  // Get the form and result div elements
+  const form = document.getElementById("availability-form");
+  const resultDiv = document.getElementById("result");
+
+  async function fetchPost(datajson) {
+    const newTweet = await fetch(
+      "http://localhost:5000/eventhall/1/addAvailability",
+      {
+        mode: "cors",
+        credentials: "include",
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: datajson,
+      }
+    ).then((resp) => resp.json());
+    console.log(newTweet);
+  }
+
+  // Add a submit event listener to the form
+  form.addEventListener("submit", function (event) {
+    event.preventDefault(); // Prevent form from submitting normally
+
+    // Initialize an object to hold the availability data
+    const availability = {};
+
+    // Iterate over each day to gather the start and end times
+    ["mon", "tue", "wed", "thu", "fri", "sat", "sun"].forEach((day) => {
+      const startTime =
+        document.getElementById(`start-time-${day}`).value ||
+        "Not specified";
+      const endTime =
+        document.getElementById(`end-time-${day}`).value || "Not specified";
+      availability[day] = { startTime, endTime };
+    });
+    console.log(availability);
+    // Display the selected availability
+    let output = "<h3>Selected Availability:</h3>";
+    for (const [day, times] of Object.entries(availability)) {
+      output += `<p><strong>${
+        day.charAt(0).toUpperCase() + day.slice(1)
+      }:</strong> Start Time: ${times.startTime}, End Time: ${
+        times.endTime
+      }</p>`;
+    }
+    resultDiv.innerHTML = output;
+    fetchPost(availability);
+  });
+</script>
+<style>
+  .inputs {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+  }
+
+  h2 {
+    text-align: center;
+  }
+  h3 {
+    margin: 5px;
+  }
+  .day {
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #f9f9f9;
+  }
+  .time-inputs {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+  }
+
+  button {
+    width: 100%; /* Reduce width to fit side by side */
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+  }
+  input[type="time"] {
+    font-size: 16px;
+    padding: 10px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+  }
+
+  button {
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    cursor: pointer;
+  }
+  button:hover {
+    background-color: #45a049;
+  }
+</style>
+{% endblock %}

@@ -1,9 +1,9 @@
-from db import db, UserMixin
+from db import db
 from sqlalchemy.sql import func
 
-class Reservation(db.Model, UserMixin):    
+class Reservation(db.Model):    
     id = db.Column(db.Integer, primary_key=True)
-    eventhall_id = db.Column(db.Integer, db.ForeignKey('eventhall.id'), nullable=False)
+    eventhall_id = db.Column(db.Integer, db.ForeignKey('eventhall.id'), nullable=False, unique=True)
     client_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     reservation_date = db.Column(db.DateTime, nullable=False)
     hora_reserva = db.Column(db.DateTime, nullable=False)
@@ -16,4 +16,4 @@ class Reservation(db.Model, UserMixin):
     updated_at = db.Column(db.DateTime, default=func.now())
     deleted_at = db.Column(db.DateTime)
 
-    # def validate_reserve(eventhall_id, client_id, reservation_date, hora_reserva):
+    # def validate_reserve( eventhall_id, client_id, reservation_date, hora_reserva):

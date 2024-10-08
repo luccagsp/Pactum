@@ -23,17 +23,19 @@ class AuthService:
     db.session.commit()
     return f"User '{user.name}' created successfully"
   def log_in_user(user):
-    
+      
       userFound = User.query.filter_by(email=user.email).first()
-      if not userFound: return ["User not found"]
+      if not userFound:
+        return [False, "User not found"]
       
       login_password = user.password
       hashed_password = userFound.password
     
       if not BcryptAdapter.compare(login_password, hashed_password):
-          return ["Incorret password"]
+          return [False, "Incorret password"]
       
       login_user(userFound, remember=True) 
+      return ["successfully logged in"]
   def create_eventhall(eventhall):
     # Verifica si el parámetro eventhall es una instancia de la clase EventHall
     if not isinstance(eventhall, EventHall):
