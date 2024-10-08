@@ -1,13 +1,12 @@
 from flask_login import login_user, login_required, logout_user, current_user
 from flask import Blueprint, request, render_template, jsonify
-from models import User, EventHall
+from models import User, EventHall, Reservation
 from auth_service import AuthService
 from config.objToStr import objToStr
 auth_blueprint = Blueprint('auth_blueprint', __name__)
 
 @auth_blueprint.route('/auth/register/user', methods=["GET", "POST"])
 def register_user():
-    #Tomando JSON
     data = request.get_json()
     validate_user_dto = User.from_user(**data)
 
@@ -26,7 +25,6 @@ def login_user():
     AuthService.log_in_user(login_user_dto)
     return "Successfully loged"
 
-
 @auth_blueprint.route('/auth/register/eventhall', methods=["GET", "POST"])
 @login_required
 def register_eventhall():
@@ -38,6 +36,20 @@ def register_eventhall():
     eventhall = validate_hall_dto[1]
     print(userId, eventhall)
     AuthService.create_eventhall(eventhall)
+
+    return render_template("index.html")
+
+@auth_blueprint.route('/register/reservation', methods=["GET", "POST"])
+@login_required
+def register_reservation():
+    data = request.get_json()
+    userId = current_user.id
+    validate_res_dto = Reservation.from_reserva(**data, client_id=userId)
+    if validate_res_dto[0] != None:
+        return validate_res_dto
+    reservation = validate_res_dto[1]
+    print(userId, reservation)
+    AuthService.create_Reservation(reservation)
 
     return render_template("index.html")
 

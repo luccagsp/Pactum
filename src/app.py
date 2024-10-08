@@ -1,5 +1,5 @@
 from pathlib import Path
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect, url_for
 from flask_login import LoginManager, login_required, current_user
 from config.objToStr import objToStr
 from config.dotenv_handler import Envs
@@ -12,7 +12,8 @@ app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///project.db"
 app.config["SECRET_KEY"] = envs.SECRET
 # Inicializando BBDD y despúes importando sus modelos y servicios
 db = create_db(app)
-from models import Availability, EventHall, Reservation, User
+from models import EventHall, Reservation, User
+from auth_service import AuthService
 #Sistema de login, se inicizliza despues de inicializar la BBDD
 login_manager = LoginManager()
 ## login_manager.login_view = 'auth.login' <-- qué función está encargada del login view
@@ -28,11 +29,19 @@ app.register_blueprint(auth_blueprint)
 
 @app.route('/')
 def home():
-    return render_template("index.html")
+    return redirect (url_for('reserva'))
+    # return render_template("index.html")
 # @app.route('/reserve')
 # @login_required
 # def reserve():
 #     data = request.get_json()
+
+@app.route('/reserva/<id>', methods=['GET'])
+def reserva(id):
+    reservation:Reservation = Reservation.query.filter_by(id=id).first()  
+    if not reservation:
+        return[f"Event hall with ID '{id}' not found"]
+
 @app.route('/eventhall/<id>', methods=["PUT"])
 @login_required
 def edit_eventhall(id):
@@ -70,14 +79,5 @@ def query_salon(id):
     return {'id' : data.id, 'nombre' : data.nombre, 'descripcion' : data.descripcion, 'calle_domicilio' : data.calle_domicilio, 'numero_domicilio' : data.numero_domicilio, 'email_contacto' : data.email_contacto, 'telefono_contacto' : data.telefono_contacto, 'precio_sena' : data.precio_sena, 'imagenes' : data.imagenes, 'reserva_instantanea' : data.reserva_instantanea, 'creado_en' : data.creado_en, 'actualizado_en' : data.actualizado_en} 
 
 if __name__ == "__main__":
-    import os
-    if not os.path.exists('../instance/project.db'):
-        #Crear BBDD
-        with app.app_context():
-            db.create_all()
 
-        from os import path
-        print(f"Database successfully created in '{path.abspath('../instance/project.db')}'")
-        print(f"Please reload app")
-    # else:
-        # app.run(debug=True ,port=5000)
+    app.run(debug=True ,port=5000)
