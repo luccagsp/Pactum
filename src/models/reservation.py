@@ -1,5 +1,6 @@
 from db import db
 from sqlalchemy.sql import func
+from datetime import datetime
 
 class Reservation(db.Model):    
     id = db.Column(db.Integer, primary_key=True)
@@ -16,4 +17,4 @@ class Reservation(db.Model):
     updated_at = db.Column(db.DateTime, default=func.now())
     deleted_at = db.Column(db.DateTime)
 
-    # def validate_reserve( eventhall_id, client_id, reservation_date, hora_reserva):
+    # def validate_reserve(eventhall_id, client_id, reservation_date, hora_reserva):

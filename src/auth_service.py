@@ -46,3 +46,14 @@ class AuthService:
     db.session.add(eventhall)
     db.session.commit()
     return f"Event hall'{eventhall.name}' created successfully"
+  
+  def create_Reservation(reservation):
+    # Verifica si el parámetro reservation es una instancia de la clase Reservation
+    if not isinstance(reservation, Reservation):
+      raise TypeError(f"Se esperaba una instancia de Reservation, pero se recibió {type(reservation).__name__}")
+    reservation_exists = Reservation.query.filter_by(id=reservation.id).first()
+    if reservation_exists:
+      return "This reservation already exists"
+    db.session.add(reservation)
+    db.session.commit()
+    return f"Reservation with id '{reservation.id}' created successfully"

@@ -14,7 +14,8 @@ app.config['MESSAGE_FLASHING_OPTIONS'] = {'duration': 5}
 
 # Inicializando BBDD y despúes importando sus modelos y servicios
 db = create_db(app)
-from models import Availability, EventHall, Reservation, User
+from models import EventHall, Reservation, User
+from auth_service import AuthService
 #Sistema de login, se inicizliza despues de inicializar la BBDD
 login_manager = LoginManager()
 ## login_manager.login_view = 'auth.login' <-- qué función está encargada del login view
