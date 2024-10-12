@@ -1,16 +1,23 @@
 from pathlib import Path
-from flask import Flask, render_template, request, flash
+from flask import Flask, render_template, request, flash, REQUESTEN
 from flask_login import LoginManager, login_required, current_user
 from config.objToStr import objToStr
 from config.dotenv_handler import Envs
 from db import create_db
+from werkzeug.exceptions import RequestEntityTooLarge
+
 #Inicializaciones
 app = Flask(__name__)
 envs = Envs()
 # Configurando parametros de app
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///project.db"
 app.config["SECRET_KEY"] = envs.SECRET
-app.config['MESSAGE_FLASHING_OPTIONS'] = {'duration': 5}
+app.config['MAX_CONTENT_LENGTH'] = 5 * 1024 * 1024  # 5 MB de limite
+@app.errorhandler(RequestEntityTooLarge)
+def request_entity_too_large(error):
+    return 'Archivo demasiado grande. Tamaño máximo: 5MB', 413
+
+
 
 # Inicializando BBDD y despúes importando sus modelos y servicios
 db = create_db(app)
@@ -25,12 +32,17 @@ def load_user(id):
     return user
 #Blueprints
 from auth import auth
+from upload import upload
 app.register_blueprint(auth)
+app.register_blueprint(upload)
 
 
 @app.route('/')
 def home():
     return render_template("base.html", user=current_user)
+@app.route('/availability')
+def availability():
+    return render_template("availability.html", user=current_user)
 @app.route('/eventhall/<id>', methods=["PUT"])
 @login_required
 def edit_eventhall(id):
