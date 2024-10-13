@@ -1,7 +1,7 @@
 from models.user import User
 from models.availability import Availability
 from models.reservation import Reservation
-from models.eventhall import EventHall
+from models.eventhall import Eventhall
 
 from db import db
 from config.bcrypt_adapter import BcryptAdapter
@@ -37,12 +37,12 @@ class AuthService:
       login_user(userFound, remember=True) 
       return ["successfully logged in"]
   def create_eventhall(eventhall):
-    # Verifica si el parámetro eventhall es una instancia de la clase EventHall
-    if not isinstance(eventhall, EventHall):
-      raise TypeError(f"Se esperaba una instancia de EventHall, pero se recibió {type(eventhall).__name__}")
-    eventhall_exists = EventHall.query.filter_by(name=eventhall.name).first()
+    # Verifica si el parámetro eventhall es una instancia de la clase Eventhall
+    if not isinstance(eventhall, Eventhall):
+      raise TypeError(f"Se esperaba una instancia de Eventhall, pero se recibió {type(eventhall).__name__}")
+    eventhall_exists = Eventhall.query.filter_by(name=eventhall.name).first()
     if eventhall_exists:
-      return "EventHall name already taken"
+      return "Eventhall name already taken"
     db.session.add(eventhall)
     db.session.commit()
     return f"Event hall'{eventhall.name}' created successfully"

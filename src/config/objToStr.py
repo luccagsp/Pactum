@@ -8,5 +8,4 @@ def objToStr(object):
             if isinstance(value, bytes): value = value.decode('utf-8')
 
             object_filtered[key] = value
-    print(object_filtered)
     return object_filtered

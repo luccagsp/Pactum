@@ -1,6 +1,6 @@
 from flask_login import login_user, login_required, logout_user, current_user
 from flask import Blueprint, request, render_template, jsonify, flash, redirect, url_for
-from models import User, EventHall
+from models import User, Eventhall
 from auth_service import AuthService
 from config.objToStr import objToStr
 auth = Blueprint('auth', __name__)
@@ -41,7 +41,7 @@ def login_user():
 def register_eventhall():
     data = request.get_json()
     userId = current_user.id
-    validate_hall_dto = EventHall.validate_eventhall(**data, owner=userId)
+    validate_hall_dto = Eventhall.validate_eventhall(**data, owner=userId)
     if validate_hall_dto[0] != None:
         return validate_hall_dto
     eventhall = validate_hall_dto[1]

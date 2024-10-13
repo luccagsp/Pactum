@@ -19,46 +19,71 @@
   </head>
   <body>
     <header>
-      <nav class="navbar navbar-expand-lg navbar-light bg-light" style="border-bottom: 2px solid rgb(172, 172, 172);">
+      <nav
+        class="navbar navbar-expand-lg navbar-light bg-light"
+        style="border-bottom: 2px solid rgb(172, 172, 172)"
+      >
         <div class="container">
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01"
-                aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse d-flex-md-none" style=" justify-content: space-between;" id="navbarTogglerDemo01">
-                <div class="" style="display: flex; flex-direction: row; align-items: center;">
-                    <a class="navbar-brand p-2" href="#"><img src="img/Pactum2.png" alt="" style="height: 8vh;"></a>
-                    <form class=" form-inline my-2 my-lg-0 ">
-                        <input class="form-control mr-sm-2" type="search" placeholder="Buscar" aria-label="Search">
-                    </form>
-                </div>
-                <ul class="navbar-nav mr-auto mt-2 mt-lg-0 ">
-                    <li class="nav-item active">
-                        <a class="nav-link" href="#">Contacto</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Servicio</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Reservas</a>
-                    </li>
-                    {% if user.is_authenticated %}
-                    <li class="nav-item">
-                      <a class="nav-link" href="/logout">Log out</a>
-                    </li>
-                    {% else %}
-                    <li class="nav-item">
-                      <a class="nav-link" href="/login">Log in</a>
-                    </li>
-                    {% endif %}
-                </ul>
-
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-toggle="collapse"
+            data-target="#navbarTogglerDemo01"
+            aria-controls="navbarTogglerDemo01"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div
+            class="collapse navbar-collapse d-flex-md-none"
+            style="justify-content: space-between"
+            id="navbarTogglerDemo01"
+          >
+            <div
+              class=""
+              style="display: flex; flex-direction: row; align-items: center"
+            >
+              <a class="navbar-brand p-2" href="#"
+                ><img src="img/Pactum2.png" alt="" style="height: 8vh"
+              /></a>
+              <form class="form-inline my-2 my-lg-0">
+                <input
+                  class="form-control mr-sm-2"
+                  type="search"
+                  placeholder="Buscar"
+                  aria-label="Search"
+                />
+              </form>
             </div>
+            <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+              <li class="nav-item active">
+                <a class="nav-link" href="#">Contacto</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">Servicio</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">Reservas</a>
+              </li>
+              {% if user.is_authenticated %}
+              <li class="nav-item">
+                <a class="nav-link" href="/upload">Upload</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/logout">Log out</a>
+              </li>
+              {% else %}
+              <li class="nav-item">
+                <a class="nav-link" href="/login">Log in</a>
+              </li>
+              {% endif %}
+            </ul>
+          </div>
         </div>
-    </nav>
+            
+      </nav>
     </header>
-
-    
 
     {% with messages = get_flashed_messages(with_categories=true) %} {% if
     messages %} {% for category, message in messages %} {% if category ==
@@ -78,6 +103,7 @@
     </div>
     {% endif %} {% endfor %} {% endif %} {% endwith %}
 
+
     <div class="container">{% block content %} {% endblock %}</div>
     <script
       src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
@@ -95,26 +121,25 @@
       crossorigin="anonymous"
     ></script>
     <script>
-      $(document).ready(function() {
-          // Hacemos que los mensajes flash desaparezcan después de 5 segundos (5000 ms)
-          setTimeout(function() {
-              $(".alert").alert('close');
-          }, 2000);
+      $(document).ready(function () {
+        // Hacemos que los mensajes flash desaparezcan después de 5 segundos (5000 ms)
+        setTimeout(function () {
+          $(".alert").alert("close");
+        }, 2000);
       });
-  </script>
-  
+    </script>
 
-{% block javascript %}
+    {% block javascript %}
     <script type="text/javascript">
       function deleteNote(noteId) {
-  fetch("/delete-note", {
-    method: "POST",
-    body: JSON.stringify({ noteId: noteId }),
-  }).then((_res) => {
-    window.location.href = "/";
-  });
-  }
-</script>
-{% endblock %}
+        fetch("/delete-note", {
+          method: "POST",
+          body: JSON.stringify({ noteId: noteId }),
+        }).then((_res) => {
+          window.location.href = "/";
+        });
+      }
+    </script>
+    {% endblock %}
   </body>
 </html>

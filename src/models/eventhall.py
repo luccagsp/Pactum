@@ -1,11 +1,9 @@
 import config.regular_exps as regular_exps
-from config.phonenumbers_handler import verify_phone
 from db import db
-from sqlalchemy import JSON, UniqueConstraint
+from sqlalchemy import JSON
 from sqlalchemy.sql import func
 
-class EventHall(db.Model):
-    __tablename__ = 'eventhall'
+class Eventhall(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     owner_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     name = db.Column(db.String(50), nullable=False, unique=True)
@@ -18,6 +16,10 @@ class EventHall(db.Model):
     created_at = db.Column(db.DateTime, default=func.now())  # Columna timestamp con valor por defecto de la hora actual
     updated_at = db.Column(db.DateTime, default=func.now())  # Col
     db.relationship('availability', backref='person', lazy=True)
+    images = db.relationship('Image', backref='eventhall')
+
+    # user = db.relationship('User', back_populates='images')
+
     def validate_eventhall(owner, name, deposit_price, instant_booking = False, description = None, street_address=None, place_number=None, images=None):
         # Verifica que no haya espacios al principio ni al final
         print(instant_booking)
@@ -33,7 +35,7 @@ class EventHall(db.Model):
             print(type(instant_booking))
             return ["Error: instant_booking must be boolean"]
 
-        return [None, EventHall(owner=owner,
+        return [None, Eventhall(owner=owner,
                                 name=name,
                                 deposit_price=deposit_price, 
                                 instant_booking=instant_booking, 

@@ -1,0 +1,31 @@
+{% extends "base.html" %} {% block title %}Login{% endblock %} {% block content
+  %}
+
+  <form method="post" action="/upload" enctype="multipart/form-data">
+    <dl>
+      <p>
+        <!------ Selector de salones ------>
+        {% if user.eventhalls|length == 1 %}
+        <select name="eventhallId" id="eventhalls-selector" required>
+          {%for eventhall in user.eventhalls%}
+            <option value="{{eventhall.id}}">{{eventhall.name}}</option>
+          {%endfor%}
+        </select>
+        {%endif%}
+        <!--------------------------------->
+      </p>
+      <p>
+        <input
+          type="file"
+          name="file"
+          class="form-control"
+          autocomplete="off"
+          required
+        />
+      </p>
+    </dl>
+    <p>
+      <input type="submit" value="Submit" class="btn btn-info" />
+    </p>
+  </form>
+  {% endblock %}
