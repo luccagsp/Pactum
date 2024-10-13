@@ -46,8 +46,10 @@ def load_user(id):
 #Blueprints
 from auth import auth
 from upload import upload
+from eventhall import eventhall
 app.register_blueprint(auth)
 app.register_blueprint(upload)
+app.register_blueprint(eventhall)
 
 
 @app.route('/')
@@ -56,42 +58,6 @@ def home():
 @app.route('/availability')
 def availability():
     return render_template("availability.html", user=current_user)
-@app.route('/eventhall/<id>', methods=["PUT"])
-@login_required
-def edit_eventhall(id):
-    data = request.get_json()
-    eventhall:Eventhall = Eventhall.query.filter_by(id=id).first()  
-    
-    if not eventhall:
-        return[f"Event hall with ID '{id}' not found"]
-    if "owner" in data and eventhall.owner != data.get("owner"):
-        return["No se puede cambiar de dueño, flaco, picá de acá"]
-    if current_user.id != eventhall.owner:
-        return ["Este no es tu salón, flaco, picá de acá"]
-    
-    for column in data:
-        setattr(eventhall, column, data[column]) # Actualiza eventhall
-    destructured_eventhall = objToStr(eventhall)
-    destructured_eventhall.pop('id', None)
-    destructured_eventhall.pop('updated_at', None)
-    destructured_eventhall.pop('created_at', None)
-
-    if Eventhall.validate_eventhall(**destructured_eventhall)[0] == None:
-        db.session.commit()
-
-    return objToStr(eventhall)
-
-@app.route('/')
-@app.route('/eventhall/<id>', methods=["GET"])
-def query_salon(id):
-
-    nombre_salon = request.args.get('nombre_salon')
-    print(nombre_salon)
-    data:Eventhall = Eventhall.query.filter_by(name=nombre_salon).first() 
-    
-    if not data:
-        return ["Error: Event hall not found"]
-    return {'id' : data.id, 'nombre' : data.nombre, 'descripcion' : data.descripcion, 'calle_domicilio' : data.calle_domicilio, 'numero_domicilio' : data.numero_domicilio, 'email_contacto' : data.email_contacto, 'telefono_contacto' : data.telefono_contacto, 'precio_sena' : data.precio_sena, 'imagenes' : data.imagenes, 'reserva_instantanea' : data.reserva_instantanea, 'creado_en' : data.creado_en, 'actualizado_en' : data.actualizado_en} 
 
 @app.route('/eventhall/<id>/addAvailability', methods=["POST"])
 @login_required

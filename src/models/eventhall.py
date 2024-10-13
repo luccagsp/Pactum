@@ -17,7 +17,7 @@ class Eventhall(db.Model):
     updated_at = db.Column(db.DateTime, default=func.now())  # Col
     db.relationship('availability', backref='person', lazy=True)
     images = db.relationship('Image', backref='eventhall')
-
+    
     # user = db.relationship('User', back_populates='images')
 
     def validate_eventhall(owner, name, deposit_price, instant_booking = False, description = None, street_address=None, place_number=None, images=None):
