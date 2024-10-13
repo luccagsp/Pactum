@@ -10,34 +10,34 @@ def validate_json_hours_structure(data):
     
     # Asegúrate de que data sea un diccionario
     if not isinstance(data, dict):
-        return False, "Invalid data: Expected a dictionary"
+        return [False, "Invalid data: Expected a dictionary"]
     
     # Verificar que todos los días de la semana estén presentes
     missing_days = expected_days - set(data.keys())
     if missing_days:
-        return False, f"Missing days in data: {', '.join(missing_days)}"
+        return [False, f"Missing days in data: {', '.join(missing_days)}"]
 
     for day in expected_days:
         times = data[day]
         print(times)
         if not isinstance(times, dict):
-            return False, f"Invalid structure for {day}: Expected a dictionary"
+            return [False, f"Invalid structure for {day}: Expected a dictionary"]
         
         # Validar que cada día tenga 'startTime' y 'endTime'
         if "startTime" not in times or "endTime" not in times:
-            return False, f"Missing 'startTime' or 'endTime' in {day}"
+            return [False, f"Missing 'startTime' or 'endTime' in {day}"]
         if 'Not specified' in times["startTime"] and 'Not specified' not in times["endTime"]:
-            return False, f"Missing hour in '{day}'"
+            return [False, f"Missing hour in '{day}'"]
         if 'Not specified' not in times["startTime"] and 'Not specified' in times["endTime"]:
-            return False, f"Missing hour in {day}"
+            return [False, f"Missing hour in {day}"]
         if not isinstance(times.get("startTime"), str) or not isinstance(times.get("endTime"), str):
-            return False, f"Invalid time format in {day}: 'startTime' and 'endTime' must be strings"
+            return [False, f"Invalid time format in {day}: 'startTime' and 'endTime' must be strings"]
         
         # Validar formato de tiempo
         if times["startTime"] != "Not specified" and not time_pattern.match(times["startTime"]):
-            return False, f"Invalid startTime format in {day}: Expected 'HH:MM' (24-hour)"
+            return [False, f"Invalid startTime format in {day}: Expected 'HH:MM' (24-hour)"]
         if times["endTime"] != "Not specified" and not time_pattern.match(times["endTime"]):
-            return False, f"Invalid endTime format in {day}: Expected 'HH:MM' (24-hour)"
+            return [False, f"Invalid endTime format in {day}: Expected 'HH:MM' (24-hour)"]
     
     return True, "Valid JSON structure"
 

@@ -3,6 +3,7 @@ from flask import Blueprint, request, render_template, jsonify, flash, redirect,
 from models import Availability, Eventhall
 from auth_service import AuthService
 from config.objToStr import objToStr
+from config.validateHours import validate_json_hours_structure
 from db import db
 eventhall = Blueprint('eventhall', __name__)
 
@@ -19,7 +20,7 @@ def query_salon(id):
 def edit_eventhall(id):
     data = request.get_json()
     eventhall = Eventhall.query.filter_by(id=id).first()  
-    
+
     if not eventhall:
         return[f"Event hall with ID '{id}' not found"]
     if "owner" in data and eventhall.owner != data.get("owner"):
@@ -42,18 +43,18 @@ def edit_eventhall(id):
 @login_required
 def add_availability(id):
     data = request.get_json()
-    
+    checkedData = validate_json_hours_structure(data)
+    if checkedData[0] == False: #Si el verificador retorna 'False'
+        flash(checkedData[1])
+        return(checkedData[1]) 
     availabilityExists = Availability.query.filter_by(eventhall_id=id).first()
     if availabilityExists:
         return [f"Error: Availability for Event hall with id '{id}' already exists"]
-    if data[0] == False: #Si el verificador retorna 'False'
-        return [f"Error: Invalid hours structure: {data[1]}"]
-    
     eventhall = Eventhall.query.filter_by(id=id).first()
     if current_user.id != eventhall.owner_id:
         return f"Error: Only event hall owners can change Availability"
     flash(f"Successfully added Availability to Event Hall: '{eventhall.name}'", category='success')
-    availability:Availability = Availability(eventhall_id=id, hours=data)
+    availability = Availability(eventhall_id=id, hours=data)
     db.session.add(availability)
     db.session.commit()
 

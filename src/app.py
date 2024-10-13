@@ -10,13 +10,10 @@ from werkzeug.exceptions import RequestEntityTooLarge
 
 # Obtener el directorio del archivo que se está ejecutando
 current_directory = os.path.dirname(os.path.abspath(__file__))
-
 # Ir una carpeta atrás
 parent_directory = os.path.dirname(current_directory)
-print(parent_directory)
 #Seleccionar carpeta images
 folder_path = os.path.join(parent_directory, 'images')
-print(folder_path)
 #Inicializaciones
 app = Flask(__name__)
 envs = Envs()
@@ -29,8 +26,6 @@ app.config['MAX_CONTENT_LENGTH'] = 5 * 1024 * 1024  # 5 MB de limite
 def request_entity_too_large(error):
     flash('Archivo demasiado grande. Tamaño máximo: 5MB', category='error')
     return 'Archivo demasiado grande. Tamaño máximo: 5MB', 413
-
-
 
 # Inicializando BBDD y despúes importando sus modelos y servicios
 db = create_db(app)
@@ -58,29 +53,6 @@ def home():
 @app.route('/availability')
 def availability():
     return render_template("availability.html", user=current_user)
-
-@app.route('/eventhall/<id>/addAvailability', methods=["POST"])
-@login_required
-def add_availability(id):
-    data = request.get_json()
-    
-    availabilityExists = Availability.query.filter_by(eventhall_id=id).first()
-    if availabilityExists:
-        return [f"Error: Availability for Event hall with id '{id}' already exists"]
-    if data[0] == False: #Si el verificador retorna 'False'
-        return [f"Error: Invalid hours structure: {data[1]}"]
-    
-    eventhall = Eventhall.query.filter_by(id=id).first()
-    if current_user.id != eventhall.owner_id:
-        return f"Error: Only event hall owners can change Availability"
-    flash(f"Successfully added Availability to Event Hall: '{eventhall.name}'", category='success')
-    availability:Availability = Availability(eventhall_id=id, hours=data)
-    db.session.add(availability)
-    db.session.commit()
-
-    print(objToStr(availability))
-    return objToStr(availability)
-
 
 if __name__ == "__main__":
     from pathlib import Path
