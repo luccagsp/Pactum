@@ -1,0 +1,27 @@
+{% extends "base.html" %} {% block title %}Registrar salón{% endblock %} {% block content%}
+  <form method="POST">
+    <h1 align="center" class="fs-6" style="font-size: 30px;">Crear salón</h1>
+    <div class="form-group">
+      <label for="name">Name</label>
+      <input
+        type="text"
+        class="form-control"
+        id="name"
+        name="name"
+        placeholder="Nombre del salón"
+      />
+    </div>
+    <div class="form-group">
+      <label for="price">Price</label>
+      <input
+        type="number"
+        class="form-control"
+        id="deposit_price"
+        name="deposit_price"
+        placeholder="Enter price"
+      />
+    </div>
+    <br />
+    <button type="submit" class="btn btn-primary">Login</button>
+  </form>
+{% endblock %}

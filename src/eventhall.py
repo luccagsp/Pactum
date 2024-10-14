@@ -7,13 +7,46 @@ from config.validateHours import validate_json_hours_structure
 from db import db
 eventhall = Blueprint('eventhall', __name__)
 
-@eventhall.route('/')
 @eventhall.route('/eventhall/<id>', methods=["GET"])
 def query_salon(id):
     eventhall = Eventhall.query.filter_by(id=id).first()
     if not eventhall:
         return ["Error: Event hall not found"]
     return {'id' : eventhall.id, 'nombre' : eventhall.nombre, 'descripcion' : eventhall.descripcion, 'calle_domicilio' : eventhall.calle_domicilio, 'numero_domicilio' : eventhall.numero_domicilio, 'email_contacto' : eventhall.email_contacto, 'telefono_contacto' : eventhall.telefono_contacto, 'precio_sena' : eventhall.precio_sena, 'imagenes' : eventhall.imagenes, 'reserva_instantanea' : eventhall.reserva_instantanea, 'creado_en' : eventhall.creado_en, 'actualizado_en' : eventhall.actualizado_en} 
+
+@eventhall.route('/register/eventhall', methods=["GET", "POST"])
+@login_required
+def create_eventhall():
+    if request.method == 'GET':
+        return render_template('register_eventhall.html', user=current_user)
+    #POST:
+    data = request.form.to_dict(flat=True)
+    print("pene:", current_user.id)
+    login_user_dto = Eventhall.validate_eventhall(owner_id=current_user.id, **data)
+    if login_user_dto[0] == False:
+        flash(login_user_dto[1], category='error')
+        return render_template('register_eventhall.html', user=current_user)
+    eventhall = login_user_dto[0]
+    AuthService.create_eventhall(eventhall)
+    return "datos"
+
+
+# @auth.route('/register/eventhall', methods=["GET", "POST"])
+# @login_required
+# def register_eventhall():
+#     data = request.get_json()
+#     userId = current_user.id
+#     validate_hall_dto = Eventhall.validate_eventhall(**data, owner=userId)
+#     if validate_hall_dto[0] != None:
+#         return validate_hall_dto
+#     eventhall = validate_hall_dto[1]
+#     print(userId, eventhall)
+#     AuthService.create_eventhall(eventhall)
+
+#     return render_template("index.html")
+
+
+
 
 @eventhall.route('/eventhall/<id>', methods=["PUT"])
 @login_required

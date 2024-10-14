@@ -1,0 +1,9 @@
+{% extends "base.html" %}{% block title %}Inicio{% endblock %}{% block content%}
+  <h1>Salones:</h1>
+    <div id="eventhall-container">
+        {% for eventhall in eventhalls %}
+            <div class="eventhall">{{ eventhall.name }}</div>
+        {% endfor %}
+    </div>
+    <div id="loading-container"></div>
+{% endblock %}

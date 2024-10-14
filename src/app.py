@@ -46,10 +46,12 @@ app.register_blueprint(auth)
 app.register_blueprint(upload)
 app.register_blueprint(eventhall)
 
+@app.route('/', methods=["GET"])
+def index():
+    eventhalls = Eventhall.query.limit(10).all()
+    return render_template('home.html', user=current_user, eventhalls=eventhalls)
 
-@app.route('/')
-def home():
-    return render_template("base.html", user=current_user)
+
 @app.route('/availability')
 def availability():
     return render_template("availability.html", user=current_user)

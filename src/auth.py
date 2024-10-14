@@ -36,21 +36,6 @@ def login_user():
     return redirect("http://localhost:5000/")
 
 
-@auth.route('/register/eventhall', methods=["GET", "POST"])
-@login_required
-def register_eventhall():
-    data = request.get_json()
-    userId = current_user.id
-    validate_hall_dto = Eventhall.validate_eventhall(**data, owner=userId)
-    if validate_hall_dto[0] != None:
-        return validate_hall_dto
-    eventhall = validate_hall_dto[1]
-    print(userId, eventhall)
-    AuthService.create_eventhall(eventhall)
-
-    return render_template("index.html")
-
-
 @auth.route('/logout', methods=["GET"])
 @login_required
 def logout():
