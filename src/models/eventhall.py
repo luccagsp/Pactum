@@ -31,7 +31,7 @@ class Eventhall(db.Model):
         # Verifica que no haya espacios al principio ni al final
         print(instant_booking)
         if not deposit_price:
-            return [False, 'Falta deposit_price']
+            return [False, 'Falta deposit']
         if name != name.strip():
             return [False, "Error: invalid name"]
         # Expresión regular para verificar solo caracteres alfanuméricos y espacios
