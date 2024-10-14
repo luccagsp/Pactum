@@ -16,6 +16,26 @@ def allowed_file(filename):
         return filename.rsplit('.', 1)[1].lower()
     return None
 
+def query_image(file, eventhallId, type_image='image'):
+    filename = secure_filename(file.filename)
+    if not allowed_file(filename):
+        flash(f"Extensión de 'file' invalida. Extensiones validas: {ALLOWED_EXTENSIONS}")
+        return f"Extensión de 'file' invalida. Extensiones validas: {ALLOWED_EXTENSIONS}"
+    upload_folder = current_app.config['UPLOAD_FOLDER']
+    if not os.path.exists(upload_folder):
+        os.makedirs(upload_folder)
+    
+    fileExtension = f".{filename.rsplit('.', 1)[1].lower()}"
+    filename = f"{shortuuid.uuid()}{fileExtension}" #Cambia el nombre del archivo a un UUID
+    file.save(os.path.join(upload_folder, filename)) # Then save the file
+
+    image_url = f"{Envs.ROOT_URL}{url_for('upload.uploaded_file', filename=filename)}"
+    image:Image = Image(eventhall_id=eventhallId, file_url=image_url, type_image=type_image)
+    db.session.add(image)
+    db.session.commit()
+
+    return image_url
+
 @upload.route('/upload', methods=["POST", 'GET'])
 @login_required
 def upload_image():
@@ -31,21 +51,8 @@ def upload_image():
     file = request.files["file"]
     if not file:
         return "Falta 'file'"
-    filename = secure_filename(file.filename)
-    if not allowed_file(filename):
-        return f"Extensión de 'file' invalida. Extensiones validas: {ALLOWED_EXTENSIONS}"
-    upload_folder = current_app.config['UPLOAD_FOLDER']
-    if not os.path.exists(upload_folder):
-        os.makedirs(upload_folder)
     
-    fileExtension = f".{filename.rsplit('.', 1)[1].lower()}"
-    filename = f"{shortuuid.uuid()}{fileExtension}" #Cambia el nombre del archivo a un UUID
-    file.save(os.path.join(upload_folder, filename)) # Then save the file
-
-    image_url = f"{Envs.ROOT_URL}{url_for('upload.uploaded_file', filename=filename)}"
-    image:Image = Image(eventhall_id=eventhallId, file_url=image_url)
-    db.session.add(image)
-    db.session.commit()
+    image_url = query_image(file, eventhallId)
     
     return image_url
 

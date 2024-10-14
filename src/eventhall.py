@@ -5,6 +5,8 @@ from auth_service import AuthService
 from config.objToStr import objToStr
 from config.validateHours import validate_json_hours_structure
 from db import db
+from upload import query_image
+
 eventhall = Blueprint('eventhall', __name__)
 
 @eventhall.route('/eventhall/<id>', methods=["GET"])
@@ -21,14 +23,18 @@ def create_eventhall():
         return render_template('register_eventhall.html', user=current_user)
     #POST:
     data = request.form.to_dict(flat=True)
-    print("pene:", current_user.id)
+    print(data)
+    image = request.files["file"]
+    if not image:
+        return "Falta 'file'"
+    
     login_user_dto = Eventhall.validate_eventhall(owner_id=current_user.id, **data)
     if login_user_dto[0] == False:
         flash(login_user_dto[1], category='error')
         return render_template('register_eventhall.html', user=current_user)
     eventhall = login_user_dto[0]
-    AuthService.create_eventhall(eventhall)
-    return "datos"
+    AuthService.create_eventhall(eventhall, image)
+    return render_template('register_eventhall.html', user=current_user)
 
 
 # @auth.route('/register/eventhall', methods=["GET", "POST"])

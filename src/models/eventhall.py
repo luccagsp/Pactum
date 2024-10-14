@@ -9,7 +9,7 @@ class Eventhall(db.Model):
     name = db.Column(db.String(50), nullable=False, unique=True)
     description = db.Column(db.String(2200))
     street_address = db.Column(db.String(80))
-    place_number = db.Column(db.String(2200))
+    street_number = db.Column(db.String(2200))
     alias = db.Column(db.String(200))
     deposit_price = db.Column(db.Integer, nullable=False)
     instant_booking  = db.Column(db.Boolean, default=True)
@@ -27,9 +27,10 @@ class Eventhall(db.Model):
                             instant_booking = False, 
                             description = None, 
                             street_address=None, 
-                            place_number=None):
+                            street_number=None):
         # Verifica que no haya espacios al principio ni al final
         print(instant_booking)
+        instant_booking = bool(instant_booking)
         if not deposit_price:
             return [False, 'Falta deposit']
         if name != name.strip():
@@ -50,5 +51,5 @@ class Eventhall(db.Model):
                         instant_booking=instant_booking, 
                         description=description, 
                         street_address=street_address, 
-                        place_number=place_number,
+                        street_number=street_number,
                         alias=alias)]

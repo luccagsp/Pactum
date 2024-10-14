@@ -2,7 +2,7 @@ from models.user import User
 from models.availability import Availability
 from models.reservation import Reservation
 from models.eventhall import Eventhall
-
+from upload import query_image
 from db import db
 from config.bcrypt_adapter import BcryptAdapter
 from flask_login import login_user, login_required, logout_user, current_user
@@ -36,7 +36,7 @@ class AuthService:
       
       login_user(userFound, remember=True) 
       return ["successfully logged in"]
-  def create_eventhall(eventhall):
+  def create_eventhall(eventhall, image):
     # Verifica si el parámetro eventhall es una instancia de la clase Eventhall
     if not isinstance(eventhall, Eventhall):
       raise TypeError(f"Se esperaba una instancia de Eventhall, pero se recibió {type(eventhall).__name__}")
@@ -45,4 +45,6 @@ class AuthService:
       return "Eventhall name already taken"
     db.session.add(eventhall)
     db.session.commit()
+    print(image, eventhall)
+    query_image(file=image, eventhallId=eventhall.id, type_image='logo')
     return f"Event hall'{eventhall.name}' created successfully"

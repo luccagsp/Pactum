@@ -10,7 +10,7 @@ class Reservation(db.Model):
     reservation_date = db.Column(db.DateTime, nullable=False)
     hora_reserva = db.Column(db.DateTime, nullable=False)
     url_payment = db.Column(db.String(255))
-    state = db.Column(db.String(50), default="Pendiente")
+    state = db.Column(db.String(50), default="pendiente")
     reservation_price = db.Column(db.Integer)
     validated_by = db.Column(db.Integer)
     validated_at = db.Column(db.DateTime)
