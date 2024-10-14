@@ -10,6 +10,7 @@ class Eventhall(db.Model):
     description = db.Column(db.String(2200))
     street_address = db.Column(db.String(80))
     place_number = db.Column(db.String(2200))
+    alias = db.Column(db.String(200))
     deposit_price = db.Column(db.Integer, nullable=False)
     instant_booking  = db.Column(db.Boolean, default=True)
     created_at = db.Column(db.DateTime, default=func.now())  # Columna timestamp con valor por defecto de la hora actual
@@ -22,12 +23,15 @@ class Eventhall(db.Model):
     def validate_eventhall( owner_id,
                             name,
                             deposit_price,
+                            alias = None,
                             instant_booking = False, 
                             description = None, 
                             street_address=None, 
                             place_number=None):
         # Verifica que no haya espacios al principio ni al final
         print(instant_booking)
+        if not deposit_price:
+            return [False, 'Falta deposit_price']
         if name != name.strip():
             return [False, "Error: invalid name"]
         # Expresión regular para verificar solo caracteres alfanuméricos y espacios
@@ -46,4 +50,5 @@ class Eventhall(db.Model):
                         instant_booking=instant_booking, 
                         description=description, 
                         street_address=street_address, 
-                        place_number=place_number)]
+                        place_number=place_number,
+                        alias=alias)]
