@@ -2,6 +2,8 @@ from models.user import User
 from models.availability import Availability
 from models.reservation import Reservation
 from models.eventhall import Eventhall
+from sqlalchemy import or_
+from flask import flash 
 
 from db import db
 from config.bcrypt_adapter import BcryptAdapter
@@ -14,9 +16,19 @@ class AuthService:
     # Verifica si el parámetro user es una instancia de la clase User
     if not isinstance(user, User):
       raise TypeError(f"Se esperaba una instancia de User, pero se recibió {type(user).__name__}")
-    user_exists = User.query.filter_by(email=user.email, phone=user.phone).first()
+    user_exists = User.query.filter(or_(User.email == user.email)).first()
+    number_exists = User.query.filter(or_(User.phone == user.phone)).first()
+    user_and_number_exists = User.query.filter(User.phone == user.phone, User.email == user.email).first()
+
+    if user_and_number_exists:
+      flash("Ya existe un usuario con el mismo correo electrónico y numero de telefono", category="error")
+      return
     if user_exists:
-      return ["Email or phone already registered"]
+      flash("Ya existe un usuario con el mismo correo electrónico", category="error")
+      return
+    if number_exists:
+      flash("Ya existe un usuario con el mismo numero de telefono", category="error")
+      return
   
     user.password = BcryptAdapter.hash(password=user.password)
     db.session.add(user)
