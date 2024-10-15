@@ -19,22 +19,26 @@ def query_salon(id):
 @eventhall.route('/register/eventhall', methods=["GET", "POST"])
 @login_required
 def create_eventhall():
+    
     if request.method == 'GET':
         return render_template('register_eventhall.html', user=current_user)
     #POST:
     data = request.form.to_dict(flat=True)
-    print(data)
     image = request.files["file"]
-    if not image:
-        return "Falta 'file'"
-    
     login_user_dto = Eventhall.validate_eventhall(owner_id=current_user.id, **data)
+    
     if login_user_dto[0] == False:
         flash(login_user_dto[1], category='error')
-        return render_template('register_eventhall.html', user=current_user)
+        return redirect(url_for('eventhall.create_eventhall'))
+    print(login_user_dto)
+    if not image:
+        flash('Falta cargar imagen', category='error')
+        return redirect(url_for('eventhall.create_eventhall'))
+
+    
     eventhall = login_user_dto[0]
     AuthService.create_eventhall(eventhall, image)
-    return render_template('register_eventhall.html', user=current_user)
+    return redirect(url_for('eventhall.create_eventhall'))
 
 
 # @auth.route('/register/eventhall', methods=["GET", "POST"])

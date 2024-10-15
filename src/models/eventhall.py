@@ -28,22 +28,21 @@ class Eventhall(db.Model):
                             description = None, 
                             street_address=None, 
                             street_number=None):
-        # Verifica que no haya espacios al principio ni al final
-        print(instant_booking)
-        instant_booking = bool(instant_booking)
+        if not name: return [False, 'Falta nombre del salón']
         if not deposit_price:
-            return [False, 'Falta deposit']
+            return [False, 'Falta precio de deposito']
+        # Verifica que no haya espacios al principio ni al final
         if name != name.strip():
-            return [False, "Error: invalid name"]
+            return [False, "Nombre invalido"]
         # Expresión regular para verificar solo caracteres alfanuméricos y espacios
         if not regular_exps.name.match(name):
-            return [False, "Error: invalid name"]
+            return [False, "El nombre no puede contener caracteres especiales"]
         if not int(deposit_price) or int(deposit_price) < 0:
-            return [False, "Error: invalid deposit_price"]
+            return [False, "Precio de deposito invalido"]
         if not isinstance(instant_booking, bool):
             print(instant_booking)
             print(type(instant_booking))
-            return [False, "Error: instant_booking must be boolean"]
+            return [False, "'instant_booking' debe ser Booleano"]
 
         return [Eventhall(owner_id=owner_id,
                         name=name,
