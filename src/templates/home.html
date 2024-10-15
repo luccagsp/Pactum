@@ -3,6 +3,8 @@
     <div id="eventhall-container">
         {% for eventhall in eventhalls %}
             <div class="eventhall">{{ eventhall.name }}</div>
+            <div class="eventhall">{{ eventhall.deposit_price }}</div>
+            <div class="eventhall">{{ eventhall.owner_id }}</div>
         {% endfor %}
     </div>
     <div id="loading-container"></div>

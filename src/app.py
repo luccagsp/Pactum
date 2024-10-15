@@ -14,7 +14,7 @@ current_directory = os.path.dirname(os.path.abspath(__file__))
 parent_directory = os.path.dirname(current_directory)
 #Seleccionar carpeta images
 folder_path = os.path.join(parent_directory, 'images')
-#Inicializaciones
+#InicializacionesF
 app = Flask(__name__)
 envs = Envs()
 # Configurando parametros de app
@@ -55,6 +55,10 @@ def index():
 @app.route('/availability')
 def availability():
     return render_template("availability.html", user=current_user)
+
+@app.route('/register_eventhall', methods=["GET", "POST"])
+def register_eventhall():
+    return render_template("register_eventhall.html", user=current_user)
 
 if __name__ == "__main__":
     from pathlib import Path

@@ -1,5 +1,5 @@
 {% extends "base.html" %} {% block title %}Registrar salón{% endblock %} {% block content%}
-  <form method="POST">
+  <form method="POST" action="/register_eventhall" enctype="multipart/form-data">
     <h1 align="center" class="fs-6" style="font-size: 30px;">Crear salón</h1>
     <div class="form-group">
       <label for="name">Name</label>
@@ -22,6 +22,6 @@
       />
     </div>
     <br />
-    <button type="submit" class="btn btn-primary">Login</button>
+    <button type="submit" class="btn btn-primary">Submit</button>
   </form>
 {% endblock %}
