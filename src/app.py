@@ -7,7 +7,6 @@ from config.dotenv_handler import Envs
 from db import create_db
 from werkzeug.exceptions import RequestEntityTooLarge
 
-
 # Obtener el directorio del archivo que se está ejecutando
 current_directory = os.path.dirname(os.path.abspath(__file__))
 # Ir una carpeta atrás
@@ -76,6 +75,5 @@ if __name__ == "__main__":
             db.session.commit()
             print("Successfully created default user for Users and eventhall for Eventhalls")
         app.run(debug=True ,port=5000)
-
     else:
         app.run(debug=True ,port=5000)

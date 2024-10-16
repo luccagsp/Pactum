@@ -20,35 +20,21 @@ class Eventhall(db.Model):
     
     # user = db.relationship('User', back_populates='images')
 
-    def validate_eventhall( owner_id,
-                            name,
-                            deposit_price,
-                            alias = None,
-                            instant_booking = False, 
-                            description = None, 
-                            street_address=None, 
-                            place_number=None):
+    def validate_eventhall( owner_id,name,deposit_price,alias = None,instant_booking = False, description = None, street_address=None, place_number=None):
         # Verifica que no haya espacios al principio ni al final
         print(instant_booking)
         if not deposit_price:
-            return [False, 'Falta deposit']
+            return [False, 'Falta precio de deposito']
         if name != name.strip():
-            return [False, "Error: invalid name"]
+            return [False, "Falta nombre"]
         # Expresión regular para verificar solo caracteres alfanuméricos y espacios
         if not regular_exps.name.match(name):
-            return [False, "Error: invalid name"]
+            return [False, "Nombre invalido"]
         if not int(deposit_price) or int(deposit_price) < 0:
-            return [False, "Error: invalid deposit_price"]
+            return [False, "deposito invalido"]
         if not isinstance(instant_booking, bool):
             print(instant_booking)
             print(type(instant_booking))
             return [False, "Error: instant_booking must be boolean"]
 
-        return [Eventhall(owner_id=owner_id,
-                        name=name,
-                        deposit_price=deposit_price, 
-                        instant_booking=instant_booking, 
-                        description=description, 
-                        street_address=street_address, 
-                        place_number=place_number,
-                        alias=alias)]
+        return [Eventhall(owner_id=owner_id,name=name,deposit_price=deposit_price, instant_booking=instant_booking, description=description, street_address=street_address, place_number=place_number,alias=alias)]

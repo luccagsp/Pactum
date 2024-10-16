@@ -20,13 +20,13 @@ class User(db.Model, UserMixin):
 
     def from_user(name:str, surname:str, email:str, phone:str, password:str) -> list:
         if type(name) != str or type(surname) != str or type(email) != str or type(password) != str:
-            return [False, "Name, surname, email and password must be strings"]
+            return [False, "El Nombre, Apellido, Email y Contraseña solo pueden contener letras"]
         if len(name) > 20 or len(surname) > 40 or " " in name or " " in surname:
-            return [False, "Name or surname not valid"]
+            return [False, "Nombre o Apellido invalidos"]
         if regular_exps.email.match(email) == None:
-            return [False, "Invalid email"]
+            return [False, "Email invalido"]
         if verify_phone(phone) == False:
-            return [False, "Invalid phone"]
+            return [False, h"Telefono Invalido"]
 
         return[None, User(name=name, surname=surname, email=email, phone=phone, password=password)]
         # return[None, {'nombre':nombre, 'apellido':apellido, 'email':email, 'phone':phone}]
