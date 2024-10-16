@@ -67,8 +67,9 @@ if __name__ == "__main__":
         with app.app_context():
             db.create_all()
             print(f"Database successfully created in '{path.abspath('../instance/project.db')}'")
-            db.session.add(User(name="Lucca", surname="Martina", phone='543564609685', email="admin", password=BcryptAdapter.hash(password='admin')))
-            db.session.add(Eventhall(name="Puerto aventura", deposit_price=3000, owner_id=1))
+            db.session.add(User(name="Lucca", surname="Martina", phone='543564609685', email="lccmartina@gmail.com", password=BcryptAdapter.hash(password='luccamartina')))
+            db.session.add(User(name="admin", surname="admin", phone='543564609683', email="admin@gmail.com", password=BcryptAdapter.hash(password='admin')))
+            db.session.add(Eventhall(alias="puerto.aventura", name="Puerto aventura", deposit_price=3000, owner_id=1))
             db.session.commit()
             print("Successfully created default user for Users and eventhall for Eventhalls")
         app.run(debug=True ,port=5000)

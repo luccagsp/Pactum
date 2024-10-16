@@ -34,6 +34,7 @@ def create_eventhall():
         return render_template('register_eventhall.html', user=current_user)
     eventhall = login_user_dto[0]
     AuthService.create_eventhall(eventhall, image)
+    flash('Salón creado exitosamente', category='success')
     return render_template('register_eventhall.html', user=current_user)
 
 
@@ -54,30 +55,45 @@ def create_eventhall():
 
 
 
-@eventhall.route('/eventhall/<id>', methods=["PUT"])
+@eventhall.route('/update/eventhall', methods=["GET", "POST"])
 @login_required
-def edit_eventhall(id):
-    data = request.get_json()
+def edit_eventhall():
+    if request.method == "GET":
+        return render_template("put_eventhall.html", user=current_user)
+    #POST:
+    data = request.form.to_dict(flat=True)
+    print(data)
+    print("asdad")
+    id = request.form["eventhallId"]
+
     eventhall = Eventhall.query.filter_by(id=id).first()  
 
     if not eventhall:
-        return[f"Event hall with ID '{id}' not found"]
-    if "owner" in data and eventhall.owner != data.get("owner"):
-        return["No se puede cambiar de dueño, flaco, picá de acá"]
-    if current_user.id != eventhall.owner:
-        return ["Este no es tu salón, flaco, picá de acá"]
-    
+        flash(f"Event hall with ID '{id}' not found", category='error')
+        return redirect(url_for('eventhall.edit_eventhall'))
+    if "owner_id" in data and eventhall.owner != data.get("owner"):
+        flash("No se puede cambiar de dueño", category='error')
+        return redirect(url_for('eventhall.edit_eventhall'))
+    if current_user.id != eventhall.owner_id:
+        flash(f"Solo se pueden cambiar tus salones", category='error')
+        return redirect(url_for('eventhall.edit_eventhall'))
+    print(data)
     for column in data:
         setattr(eventhall, column, data[column]) # Actualiza eventhall
     destructured_eventhall = objToStr(eventhall)
     destructured_eventhall.pop('id', None)
     destructured_eventhall.pop('updated_at', None)
     destructured_eventhall.pop('created_at', None)
-
-    if Eventhall.validate_eventhall(**destructured_eventhall)[0] == None:
+    destructured_eventhall.pop('eventhallId', None)
+    eventhall.description = destructured_eventhall['description']
+    dto = Eventhall.validate_eventhall(**destructured_eventhall)
+    if dto[0] != False:
         db.session.commit()
-
-    return objToStr(eventhall)
+    else:
+        flash(dto[1], category='error')
+        return redirect(url_for('eventhall.edit_eventhall'))
+    flash('Descripcion cabiada exitosamente', category='success')
+    return redirect(url_for('eventhall.edit_eventhall'))
 @eventhall.route('/eventhall/<id>/addAvailability', methods=["POST"])
 @login_required
 def add_availability(id):

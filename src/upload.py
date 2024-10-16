@@ -39,6 +39,9 @@ def query_image(file, eventhallId, type_image='image'):
 @upload.route('/upload', methods=["POST", 'GET'])
 @login_required
 def upload_image():
+    if current_user.eventhalls == []:
+        flash('Para subir imagenes necesitas salones asociados a tu usuario', category='error')
+        return redirect(url_for('index'))
     if request.method == "GET":
         return render_template('upload.html', user=current_user)
     #POST:

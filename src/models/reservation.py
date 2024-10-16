@@ -15,7 +15,7 @@ class Reservation(db.Model):
     validated_by = db.Column(db.Integer)
     validated_at = db.Column(db.DateTime)
     created_at = db.Column(db.DateTime, default=func.now())
-    updated_at = db.Column(db.DateTime, default=func.now())
+    updated_at = db.Column(db.DateTime, default=func.now(), onupdate=func.now())
     deleted_at = db.Column(db.DateTime)
     @staticmethod
     def from_reserva(eventhall_id, client_id, reservation_date, hora_reserva, url_payment=None, state="Pendiente", reservation_price=int, validated_by=None, validated_at=None, deleted_at=None):
