@@ -1,0 +1,35 @@
+{% extends "base.html" %} {% block title %}Registrar salón{% endblock %} {% block content%}
+  <form method="POST" enctype="multipart/form-data" action="/update/eventhall">
+    <h1 align="center" class="fs-6" style="font-size: 30px;">Modificar salón</h1>
+
+    <select name="eventhallId" id="eventhalls-selector" required>
+      {%for eventhall in user.eventhalls%}
+        <option value="{{eventhall.id}}">{{eventhall.name}}</option>
+      {%endfor%}
+    </select>
+
+    <label for="description">Descripcion</label>
+    <input
+      onkeyup="textCounter(this,'counter',10);"
+      type="text"
+      class="form-control"
+      id="description"   
+      name="description"
+      placeholder="Descripción del salón"
+    />
+
+    <button type="submit" class="btn btn-primary">Login</button>
+  </form>
+  <script>
+    function textCounter(field,field2,maxlimit)
+    {
+      var countfield = document.getElementById(field2);
+      if ( field.value.length > maxlimit ) {
+        field.value = field.value.substring( 0, maxlimit );
+        return false;
+      } else {
+        countfield.value = maxlimit - field.value.length;
+      }
+    }
+  </script>
+{% endblock %}

@@ -8,10 +8,10 @@ auth = Blueprint('auth', __name__)
 @auth.route('/register', methods=["GET", "POST"])
 def register_user():
     if request.method == 'GET':
-        return render_template('register.html', user=current_user)
+        return render_template('register_user.html', user=current_user)
     #Tomando JSON
-    #POST:
-    data = request.form
+    data = request.form.to_dict(flat=True)
+    print(data)
     validate_user_dto = User.from_user(**data)
     dto = validate_user_dto
     if dto[0] == False:
@@ -20,6 +20,7 @@ def register_user():
     
     user = validate_user_dto[1]
     response = AuthService.create_user(user)
+    flash('Usuario creado', category='success')
     return render_template("register.html", user=current_user)
 @auth.route('/login', methods=["GET", "POST"])
 def login_user():

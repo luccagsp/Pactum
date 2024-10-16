@@ -1,12 +1,12 @@
 {% extends "base.html" %} {% block title %}Registrar salón{% endblock %} {% block content%}
-  <form method="POST" action="/register_eventhall" enctype="multipart/form-data">
+  <form method="POST" enctype="multipart/form-data" action="/register/eventhall">
     <h1 align="center" class="fs-6" style="font-size: 30px;">Crear salón</h1>
     <div class="form-group">
       <label for="name">Nombre</label>
       <input
         type="text"
         class="form-control"
-        id="name"
+        id="name"   
         name="name"
         placeholder="Nombre del salón"
       />
@@ -20,6 +20,39 @@
         name="deposit_price"
         placeholder="Enter price"
       />
+      <input
+      type="file"
+      name="file"
+      class="form-control"
+      autocomplete="off"
+      
+      />
+      <input
+      type="text"
+      name="alias"
+      class="form-control"
+      autocomplete="off"
+      placeholder="Calle"
+      
+      />
+      <input
+      type="text"
+      name="street_number"
+      class="form-control"
+      autocomplete="off"
+      placeholder="Número"
+      
+      />
+      <input
+      type="text"
+      name="street_number"
+      class="form-control"
+      autocomplete="off"
+      placeholder="Alias"
+      required
+      />
+    <label for="vehicle3">Reserva instantanea</label>
+    <input type="checkbox" id="vehicle3" name="instant_booking" value="True"/>
     </div>
     <br />
     <button type="submit" class="btn btn-primary">Subir</button>

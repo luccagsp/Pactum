@@ -1,6 +1,6 @@
 {% extends "base.html" %} {% block title %}Home{% endblock %} {% block content%}
 <div class="container">
-  <h2>Select Time Availability for the Week</h2>
+  <h2>Seleccionar disponibilidad para la semana</h2>
   {% with messages = get_flashed_messages(with_categories=true) %} {% if
   messages %} {% for category, message in messages %} {% if category ==
     'error' %}
@@ -22,7 +22,7 @@
   <form id="availability-form">
     <!-- Days of the week -->
     <div class="day">
-      <h3>Monday</h3>
+      <h3>Lunes</h3>
       <div class="inputs">
         <div class="time-inputs">
           <input type="time" id="start-time-mon" name="start-time-mon" />
@@ -33,7 +33,7 @@
       </div>
     </div>
     <div class="day">
-      <h3>Tuesday</h3>
+      <h3>Martes</h3>
       <div class="inputs">
         <div class="time-inputs">
           <input type="time" id="start-time-tue" name="start-time-tue" />
@@ -44,7 +44,7 @@
       </div>
     </div>
     <div class="day">
-      <h3>Wednesday</h3>
+      <h3>Miercoles</h3>
       <div class="inputs">
         <div class="time-inputs">
           <input type="time" id="start-time-wed" name="start-time-wed" />
@@ -55,7 +55,7 @@
       </div>
     </div>
     <div class="day">
-      <h3>Thursday</h3>
+      <h3>Jueves</h3>
       <div class="inputs">
         <div class="time-inputs">
           <input type="time" id="start-time-thu" name="start-time-thu" />
@@ -66,7 +66,7 @@
       </div>
     </div>
     <div class="day">
-      <h3>Friday</h3>
+      <h3>Viernes</h3>
       <div class="inputs">
         <div class="time-inputs">
           <input type="time" id="start-time-fri" name="start-time-fri" />
@@ -77,7 +77,7 @@
       </div>
     </div>
     <div class="day">
-      <h3>Saturday</h3>
+      <h3>Sabado</h3>
       <div class="inputs">
         <div class="time-inputs">
           <input type="time" id="start-time-sat" name="start-time-sat" />
@@ -88,7 +88,7 @@
       </div>
     </div>
     <div class="day">
-      <h3>Sunday</h3>
+      <h3>Domingo</h3>
       <div class="inputs">
         <div class="time-inputs">
           <input type="time" id="start-time-sun" name="start-time-sun" />
@@ -122,7 +122,7 @@
         headers: {
           "Content-Type": "application/json",
         },
-        body: datajson,
+        body: JSON.stringify(datajson),
       }
     ).then((resp) => resp.json());
     console.log(newTweet);

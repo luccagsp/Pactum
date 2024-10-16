@@ -10,12 +10,12 @@ class Reservation(db.Model):
     reservation_date = db.Column(db.DateTime, nullable=False)
     hora_reserva = db.Column(db.DateTime, nullable=False)
     url_payment = db.Column(db.String(255))
-    state = db.Column(db.String(50), default="Pendiente")
+    state = db.Column(db.String(50), default="pendiente")
     reservation_price = db.Column(db.Integer)
     validated_by = db.Column(db.Integer)
     validated_at = db.Column(db.DateTime)
     created_at = db.Column(db.DateTime, default=func.now())
-    updated_at = db.Column(db.DateTime, default=func.now())
+    updated_at = db.Column(db.DateTime, default=func.now(), onupdate=func.now())
     deleted_at = db.Column(db.DateTime)
     @staticmethod
     def from_reserva(eventhall_id, client_id, reservation_date, hora_reserva, url_payment=None, state="Pendiente", reservation_price=int, validated_by=None, validated_at=None, deleted_at=None):

@@ -1,0 +1,48 @@
+{% extends "base.html" %} {% block title %}Registrar salón{% endblock %} {% block content%}
+  <form method="POST" enctype="multipart/form-data" action="/register/user">
+    <h1 align="center" class="fs-6" style="font-size: 30px;">Crear usuario</h1>
+      <input
+        type="text"
+        class="form-control"
+        id="name"   
+        name="name"
+        placeholder="Nombre"
+        required
+      />
+      <input
+      type="text"
+      name="surname"
+      class="form-control"
+      autocomplete="off"
+      placeholder="Apellido"
+      required
+      />
+      <input
+      type="email"
+      class="form-control"
+      id="email"
+      name="email"
+      placeholder="Email"
+      required
+      />
+      <input
+      type="text"
+      name="phone"
+      class="form-control"
+      autocomplete="off"
+      placeholder="Telefono"
+      required
+      />
+      <input
+      type="password"
+      name="password"
+      class="form-control"
+      autocomplete="off"
+      placeholder="Alias"
+      required
+      />
+      <button type="submit" class="btn btn-primary">Login</button>
+    </div>
+
+  </form>
+{% endblock %}
