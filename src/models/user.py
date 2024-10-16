@@ -26,7 +26,7 @@ class User(db.Model, UserMixin):
         if regular_exps.email.match(email) == None:
             return [False, "Email invalido"]
         if verify_phone(phone) == False:
-            return [False, h"Telefono Invalido"]
+            return [False, "Telefono Invalido"]
 
         return[None, User(name=name, surname=surname, email=email, phone=phone, password=password)]
         # return[None, {'nombre':nombre, 'apellido':apellido, 'email':email, 'phone':phone}]
