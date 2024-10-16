@@ -1,60 +1,53 @@
 {% extends "base.html" %} {% block title %}Registrar salón{% endblock %} {% block content%}
-  <form method="POST" enctype="multipart/form-data" action="/register/eventhall">
-    <h1 align="center" class="fs-6" style="font-size: 30px;">Crear salón</h1>
-    <div class="form-group">
-      <label for="name">Nombre</label>
-      <input
-        type="text"
-        class="form-control"
-        id="name"   
-        name="name"
-        placeholder="Nombre del salón"
-      />
-    </div>
-    <div class="form-group">
-      <label for="price">Precio</label>
-      <input
-        type="number"
-        class="form-control"
-        id="deposit_price"
-        name="deposit_price"
-        placeholder="Enter price"
-      />
-      <input
-      type="file"
-      name="file"
-      class="form-control"
-      autocomplete="off"
-      
-      />
-      <input
-      type="text"
-      name="alias"
-      class="form-control"
-      autocomplete="off"
-      placeholder="Calle"
-      
-      />
-      <input
-      type="text"
-      name="street_number"
-      class="form-control"
-      autocomplete="off"
-      placeholder="Número"
-      
-      />
-      <input
-      type="text"
-      name="street_number"
-      class="form-control"
-      autocomplete="off"
-      placeholder="Alias"
-      required
-      />
-    <label for="vehicle3">Reserva instantanea</label>
-    <input type="checkbox" id="vehicle3" name="instant_booking" value="True"/>
-    </div>
-    <br />
-    <button type="submit" class="btn btn-primary">Subir</button>
-  </form>
-{% endblock %}
+
+<div class="container mt-5" style="max-width: 600px; background-color: white; padding: 30px; border-radius: 10px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);">
+    <h2 class="text-center mb-4" style="font-weight: bold; color: #333;">Datos del Salon</h2>
+    <form method="POST" enctype="multipart/form-data" action="/register/eventhall">
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label for="SalonesName" class="form-label" style="font-weight: bold;">Nombre del Salon</label>
+                <input type="text" class="form-control" id="SalonesName" placeholder="Ingrese Nombre" style="border-radius: 5px;">
+            </div>
+            <div class="col-md-6">
+                <label for="depositPrice" class="form-label" style="font-weight: bold;">Precio</label>
+                <input type="number" class="form-control" id="depositPrice" placeholder="Ingrese precio del salon" style="border-radius: 5px;">
+            </div>
+        </div>
+        <div class="mb-3">
+            <label for="location" class="form-label" style="font-weight: bold;">Ubicacion</label>
+            <input type="text" class="form-control" id="location" placeholder="Ingrese Ubicacion" style="border-radius: 5px;">
+        </div>
+        <div class="mb-3">
+            <label for="description" class="form-label" style="font-weight: bold;">Descripcion del Salon</label>
+            <textarea class="form-control" id="description" rows="3" placeholder="Ingrese Descripcion del Salon" style="border-radius: 5px;"></textarea>
+        </div>
+        <label for="vehicle3">Reserva instantanea</label>
+        <input type="checkbox" id="vehicle3" name="instant_booking" value="True"/>       
+        <div class="text-center">
+            <a href="ListaSalones.html"><button type="submit" class="btn btn-primary" style="width: 100%; border-radius: 5px; font-weight: bold;">Registrar</button></a>
+        </div>
+    </form>
+</div>
+
+<style>
+    .nav-item:hover .nav-link {
+        transition: 700ms;
+        transform: scale(1.4);
+        color: rgb(32, 50, 111); 
+    }
+    .nav-item{
+        font-weight:500;
+    }
+    @media (max-width: 768px) {
+        .container {
+            max-width: 100vw;
+            height: auto;
+            margin: 0;
+            padding: 20px;
+            box-shadow: none;
+            border-radius: 0;
+        }
+    }
+</style>
+</body>
+</html>

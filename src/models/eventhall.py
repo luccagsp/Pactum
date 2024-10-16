@@ -47,11 +47,4 @@ class Eventhall(db.Model):
             print(type(instant_booking))
             return [False, "'instant_booking' debe ser Booleano"]
 
-        return [Eventhall(owner_id=owner_id,
-                        name=name,
-                        deposit_price=deposit_price, 
-                        instant_booking=instant_booking, 
-                        description=description, 
-                        street_address=street_address, 
-                        street_number=street_number,
-                        alias=alias)]
+        return [Eventhall(owner_id=owner_id, name=name, deposit_price=deposit_price, instant_booking=instant_booking, description=description, street_address=street_address, street_number=street_number, alias=alias)]
