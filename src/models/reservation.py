@@ -19,6 +19,7 @@ class Reservation(db.Model):
     deleted_at = db.Column(db.DateTime)
     @staticmethod
     def from_reserva(eventhall_id, client_id, reservation_date, hora_reserva, url_payment=None, state="Pendiente", reservation_price=int, validated_by=None, validated_at=None, deleted_at=None):
+    def from_reserva(eventhall_id, client_id, reservation_date, hora_reserva, url_payment=None, state="Pendiente", reservation_price=int, validated_by=None, validated_at=None, deleted_at=None):
         # Validar si el precio es un número
         if not isinstance(reservation_price, int):
             return ["El precio solo puede conotener numeros"]
@@ -45,4 +46,5 @@ class Reservation(db.Model):
             return ["url invalida"]
 
         # Crear el objeto Reservation
+        return [None, Reservation(eventhall_id=eventhall_id, client_id=client_id, reservation_date=reservation_date, hora_reserva=hora_reserva, url_payment=url_payment, state=state, reservation_price=reservation_price, validated_by=validated_by, validated_at=validated_at, deleted_at=deleted_at)]
         return [None, Reservation(eventhall_id=eventhall_id, client_id=client_id, reservation_date=reservation_date, hora_reserva=hora_reserva, url_payment=url_payment, state=state, reservation_price=reservation_price, validated_by=validated_by, validated_at=validated_at, deleted_at=deleted_at)]
