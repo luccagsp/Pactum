@@ -6,7 +6,7 @@ from config.objToStr import objToStr
 from config.validateHours import validate_json_hours_structure
 from db import db
 from upload import query_image
-
+from flask_cors import cross_origin
 eventhall = Blueprint('eventhall', __name__)
 
 @eventhall.route('/eventhall/<id>', methods=["GET"])
@@ -98,11 +98,23 @@ def edit_eventhall():
         return redirect(url_for('eventhall.edit_eventhall'))
     flash('Descripcion cabiada exitosamente', category='success')
     return redirect(url_for('eventhall.edit_eventhall'))
+@eventhall.route('/availability')
+def availability():
+    print("aloja")
+    return render_template("availability.html", user=current_user)
+
 @eventhall.route('/eventhall/<id>/addAvailability', methods=["POST"])
 @login_required
 def add_availability(id):
-    data = request.get_json()
+    print("json", request.is_json)
+    data = request.form
     checkedData = validate_json_hours_structure(data)
+    if checkedData[0] == False:
+        flash(checkedData[1], category='error')
+        print("blakc")
+        return redirect(url_for('eventhall.availability'))
+    eventhallId = request.form.get('eventhallId')
+    print(eventhallId) 
     if checkedData[0] == False: #Si el verificador retorna 'False'
         flash(checkedData[1])
         return(checkedData[1]) 

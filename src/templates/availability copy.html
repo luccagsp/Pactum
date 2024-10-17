@@ -1,13 +1,25 @@
 {% extends "base.html" %} {% block title %}Home{% endblock %} {% block content%}
 <div class="container">
   <h2>Seleccionar disponibilidad para la semana</h2>
-  <form id="availability-form" method="POST" action="/eventhall/1/addAvailability">
-    <select name="eventhallId" id="eventhalls-selector" required>
-      {%for eventhall in user.eventhalls%}
-        <option value="{{eventhall.id}}">{{eventhall.name}}</option>
-      {%endfor%}
-    </select>
-    
+  {% with messages = get_flashed_messages(with_categories=true) %} {% if
+  messages %} {% for category, message in messages %} {% if category ==
+    'error' %}
+    <div class="alert alert-danger alter-dismissable fade show" role="alert">
+      {{ message }}
+      <button type="button" class="close" data-dismiss="alert">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    {% else %}
+    <div class="alert alert-success alter-dismissable fade show" role="alert">
+      {{ message }}
+      <button type="button" class="close" data-dismiss="alert">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+  {% endif %} {% endfor %} {% endif %} {% endwith %}
+
+  <form id="availability-form">
     <!-- Days of the week -->
     <div class="day">
       <h3>Lunes</h3>
@@ -86,16 +98,67 @@
         </div>
       </div>
     </div>
-  
+
     <!-- Submit Button -->
     <button type="submit">Submit Availability</button>
   </form>
-  
 
   <!-- Display the Result -->
   <div id="result" style="margin-top: 20px"></div>
 </div>
 
+<script>
+  // Get the form and result div elements
+  const form = document.getElementById("availability-form");
+  const resultDiv = document.getElementById("result");
+
+  async function fetchPost(datajson) {
+    console.log(JSON.stringify(datajson))
+    const newTweet = await fetch(
+      "http://localhost:5000/eventhall/1/addAvailability",
+      {
+        mode: "cors",
+        credentials: "include",
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(datajson),
+      }
+    ).then((resp) => resp.json());
+    console.log(newTweet);
+  }
+
+  // Add a submit event listener to the form
+  form.addEventListener("submit", function (event) {
+    event.preventDefault(); // Prevent form from submitting normally
+
+    // Initialize an object to hold the availability data
+    const availability = {};
+
+    // Iterate over each day to gather the start and end times
+    ["mon", "tue", "wed", "thu", "fri", "sat", "sun"].forEach((day) => {
+      const startTime =
+        document.getElementById(`start-time-${day}`).value ||
+        "Not specified";
+      const endTime =
+        document.getElementById(`end-time-${day}`).value || "Not specified";
+      availability[day] = { startTime, endTime };
+    });
+    console.log(availability);
+    // Display the selected availability
+    let output = "<h3>Selected Availability:</h3>";
+    for (const [day, times] of Object.entries(availability)) {
+      output += `<p><strong>${
+        day.charAt(0).toUpperCase() + day.slice(1)
+      }:</strong> Start Time: ${times.startTime}, End Time: ${
+        times.endTime
+      }</p>`;
+    }
+    resultDiv.innerHTML = output;
+    fetchPost(availability);
+  });
+</script>
 <style>
   .inputs {
     display: flex;

@@ -6,6 +6,7 @@ from config.objToStr import objToStr
 from config.dotenv_handler import Envs
 from db import create_db
 from werkzeug.exceptions import RequestEntityTooLarge
+from flask_cors import CORS
 
 # Obtener el directorio del archivo que se está ejecutando
 current_directory = os.path.dirname(os.path.abspath(__file__))
@@ -15,6 +16,7 @@ parent_directory = os.path.dirname(current_directory)
 folder_path = os.path.join(parent_directory, 'images')
 #InicializacionesF
 app = Flask(__name__)
+CORS(app)
 envs = Envs()
 # Configurando parametros de app
 app.config["UPLOAD_FOLDER"] = folder_path
@@ -41,9 +43,12 @@ def load_user(id):
 from auth import auth
 from upload import upload
 from eventhall import eventhall
+from reserva import reserve
 app.register_blueprint(auth)
 app.register_blueprint(upload)
 app.register_blueprint(eventhall)
+app.register_blueprint(reserve)
+
 
 @app.route('/', methods=["GET"])
 def index():
@@ -51,9 +56,14 @@ def index():
     return render_template('home.html', user=current_user, eventhalls=eventhalls)
 
 
-@app.route('/availability')
-def availability():
-    return render_template("availability.html", user=current_user)
+# @app.route('/availability')
+# def availability():
+#     return render_template("availability.html", user=current_user)
+
+@app.route('/availability/<eventhallId>')
+def get_availability(eventhallId):
+    pass
+
 
 @app.route('/register_eventhall', methods=["GET", "POST"])
 def register_eventhall():
