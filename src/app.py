@@ -44,10 +44,12 @@ from auth import auth
 from upload import upload
 from eventhall import eventhall
 from reserva import reserve
+from availability import availability
 app.register_blueprint(auth)
-app.register_blueprint(upload)
+app.register_blueprint(upload)  
 app.register_blueprint(eventhall)
 app.register_blueprint(reserve)
+app.register_blueprint(availability)
 
 
 @app.route('/', methods=["GET"])
