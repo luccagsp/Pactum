@@ -6,25 +6,44 @@
         <div class="row mb-3">
             <div class="col-md-6">
                 <label for="SalonesName" class="form-label" style="font-weight: bold;">Nombre del Salon</label>
-                <input type="text" class="form-control" id="SalonesName" placeholder="Ingrese Nombre" style="border-radius: 5px;">
+                <input type="text" name="name" class="form-control" id="SalonesName" placeholder="Ingrese Nombre" style="border-radius: 5px;">
             </div>
             <div class="col-md-6">
                 <label for="depositPrice" class="form-label" style="font-weight: bold;">Precio</label>
-                <input type="number" class="form-control" id="depositPrice" placeholder="Ingrese precio del salon" style="border-radius: 5px;">
+                <input type="number" name="deposit_price" class="form-control" id="depositPrice" placeholder="Ingrese precio del salon" style="border-radius: 5px;">
             </div>
         </div>
         <div class="mb-3">
-            <label for="location" class="form-label" style="font-weight: bold;">Ubicacion</label>
-            <input type="text" class="form-control" id="location" placeholder="Ingrese Ubicacion" style="border-radius: 5px;">
+            <label for="location" class="form-label" style="font-weight: bold;">Calle</label>
+            <input type="text" name="street_address" class="form-control" id="location" placeholder="Ingrese calle del salon" style="border-radius: 5px;">
+        </div>
+        <div class="mb-3">
+            <label for="location" class="form-label" style="font-weight: bold;">Numero de Direccion</label>
+            <input type="text" name="street_number" class="form-control" id="location" placeholder="Ingrese Numero" style="border-radius: 5px;">
         </div>
         <div class="mb-3">
             <label for="description" class="form-label" style="font-weight: bold;">Descripcion del Salon</label>
-            <textarea class="form-control" id="description" rows="3" placeholder="Ingrese Descripcion del Salon" style="border-radius: 5px;"></textarea>
+            <textarea class="form-control" name="description" id="description" rows="3" placeholder="Ingrese Descripcion del Salon" style="border-radius: 5px;"></textarea>
+        </div>
+        <div class="mb-3">
+            <label for="alias" class="form-label" style="font-weight: bold;">Alias de Mercado Pago</label>
+            <input type="text" name="alias" class="form-control" id="alias" placeholder="Ingrese Alias" style="border-radius: 5px;">
+        </div>
+        <div>
+            <label for="images" name="images" class="form-label" style="font-weight: bold;">Imagen del Salon</label>
+            <input
+            type="file"
+            name="file"
+            class="form-control"
+            autocomplete="off"
+            accept="image/png, image/gif, image/jpeg, image/webp, image/jpg" 
+            required
+          />
         </div>
         <label for="vehicle3">Reserva instantanea</label>
         <input type="checkbox" id="vehicle3" name="instant_booking" value="True"/>       
         <div class="text-center">
-            <a href="ListaSalones.html"><button type="submit" class="btn btn-primary" style="width: 100%; border-radius: 5px; font-weight: bold;">Registrar</button></a>
+            <button type="submit" class="btn btn-primary" style="width: 100%; border-radius: 5px; font-weight: bold;">Registrar</button>
         </div>
     </form>
 </div>
@@ -51,3 +70,4 @@
 </style>
 </body>
 </html>
+{% endblock %}
