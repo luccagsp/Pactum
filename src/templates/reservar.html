@@ -1,48 +1,61 @@
-{% extends "base.html" %} {% block title %}Registrar salón{% endblock %} {% block content%}
-  <form method="POST" enctype="multipart/form-data" action="/register/user">
-    <h1 align="center" class="fs-6" style="font-size: 30px;">Crear usuario</h1>
-      <input
-        type="text"
-        class="form-control"
-        id="name"   
-        name="name"
-        placeholder="Nombre"
-        required
-      />
-      <input
-      type="text"
-      name="surname"
-      class="form-control"
-      autocomplete="off"
-      placeholder="Apellido"
-      required
-      />
-      <input
-      type="email"
-      class="form-control"
-      id="email"
-      name="email"
-      placeholder="Email"
-      required
-      />
-      <input
-      type="text"
-      name="phone"
-      class="form-control"
-      autocomplete="off"
-      placeholder="Telefono"
-      required
-      />
-      <input
-      type="password"
-      name="password"
-      class="form-control"
-      autocomplete="off"
-      placeholder="Alias"
-      required
-      />
-      <button type="submit" class="btn btn-primary">Login</button>
-    </div>
+{% extends "base.html" %} {% block title %}Reservar salón{% endblock %} {% block content%}
+<style>
+    input {
+        margin: 10px;
+        padding: 10px;
+        font-size: 16px;
+    }
+    button {
+        padding: 10px 20px;
+        font-size: 16px;
+        cursor: pointer;
+    }
+</style>
 
-  </form>
+
+<h1>Selecciona una fecha y una hora</h1>
+
+<form method="POST">
+    <label for="date">Fecha:</label>
+    <input name="date" type="date" id="date" required><br>
+
+    <label for="time">Hora:</label>
+    <input name="time" type="time" id="time" required><br>
+
+    <button type="submit" onclick="showDateTime()">Confirmar</button>
+</form>
+
+<p id="result"></p>
+
+
+<script>
+    // Obtener la fecha actual y establecerla como el valor mínimo en el campo de fecha
+    const today = new Date().toISOString().split('T')[0];
+    document.getElementById('date').setAttribute('min', today);
+    async function fetchPost() {
+      const newTweet = await fetch(
+        "http://localhost:5000/availability/1",
+        {
+          mode: "cors",
+          credentials: "include",
+          method: "GET",
+        }
+      ).then((resp) => {
+        resp.json()
+      });
+      console.log(newTweet);
+    }
+
+    fetchPost()
+    function showDateTime() {
+        const date = document.getElementById('date').value;
+        const time = document.getElementById('time').value;
+
+        if (date && time) {
+            document.getElementById('result').innerText = `Fecha seleccionada: ${date}, Hora seleccionada: ${time}`;
+        } else {
+            document.getElementById('result').innerText = 'Por favor, selecciona una fecha y una hora.';
+        }
+    }
+</script>
 {% endblock %}

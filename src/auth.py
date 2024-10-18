@@ -16,12 +16,12 @@ def register_user():
     dto = validate_user_dto
     if dto[0] == False:
         flash(dto[1], category='error')
-        return render_template("register.html", user=current_user)
+        return render_template("register_user.html", user=current_user)
     
     user = validate_user_dto[1]
     response = AuthService.create_user(user)
     flash('Usuario creado', category='success')
-    return render_template("register.html", user=current_user)
+    return render_template("register_user.html", user=current_user)
 @auth.route('/login', methods=["GET", "POST"])
 def login_user():
     if request.method == 'POST':

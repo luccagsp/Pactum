@@ -9,26 +9,34 @@ from db import db
 from config.dotenv_handler import Envs
 reserve = Blueprint('reserve', __name__)
 
-@reserve.route('/reservar/<eventhallId>')
+
+@reserve.route('/reserve/<eventhallId>', methods=["POST", "GET"])
 @login_required
-def create_reserve(eventhallId):
-    user = current_user
+def frontend(eventhallId):
     if request.method == 'GET':
         return render_template('reservar.html', user=current_user)
     #POST:
-    data = request.form.to_dict(flat=True)
-    image = request.files["file"]
-    login_user_dto = Eventhall.validate_eventhall(owner_id=current_user.id, **data)
-    
-    if login_user_dto[0] == False:
-        flash(login_user_dto[1], category='error')
-        return redirect(url_for('eventhall.create_eventhall'))
-    print(login_user_dto)
-    if not image:
-        flash('Falta cargar imagen', category='error')
-        return redirect(url_for('eventhall.create_eventhall'))
+    date=request.form.get('date')
+    time=request.form.get('time')
+    user = current_user 
+    eventhall = Eventhall.query.filter_by(id=eventhallId).first()
 
+    if not eventhall:
+        flash('Salón no encontrado', category='error')
+        return redirect(url_for('reserve.frontend', eventhallId=eventhallId))
     
-    eventhall = login_user_dto[0]
-    flash('Salón creado exitosamente', category='success')
-    return redirect(url_for('eventhall.create_eventhall'))
+    dto = Reservation.from_reserva(reservation_time=time, reservation_date=date, eventhall_id=eventhallId, user_id=user.id, reservation_price=eventhall.reservation_price)
+    if dto[0] == False:
+        flash(dto[1], category='error')
+        return redirect(url_for('reserve.frontend', eventhallId=eventhallId))
+
+    reservation = dto[1]
+    if eventhall.instant_booking == False and reservation.url_payment == None:
+        flash('Los salones con reserva instantanea desactivada requieren de un comprobante de pago', category='error')
+        return redirect(url_for('reserve.frontend', eventhallId=eventhallId))
+    print(objToStr(reservation))
+    db.session.add(reservation)
+    db.session.commit()
+    flash('Reserva creada exitosamente', category='success')
+    return redirect(url_for('reserve.frontend', eventhallId=eventhallId))
+

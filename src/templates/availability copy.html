@@ -122,10 +122,14 @@
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          'Access-Control-Allow-Credentials': 'true',
         },
         body: JSON.stringify(datajson),
       }
-    ).then((resp) => resp.json());
+    ).then((resp) => {
+      resp.json()
+      console.log(resp)
+    });
     console.log(newTweet);
   }
 
@@ -154,14 +158,14 @@
       }:</strong> Start Time: ${times.startTime}, End Time: ${
         times.endTime
       }</p>`;
-    }
-    resultDiv.innerHTML = output;
-    fetchPost(availability);
-  });
-</script>
-<style>
-  .inputs {
-    display: flex;
+      }
+      resultDiv.innerHTML = output;
+      fetchPost(availability);
+    });
+  </script>
+  <style>
+    .inputs {
+      display: flex;
     flex-direction: row;
     gap: 10px;
   }

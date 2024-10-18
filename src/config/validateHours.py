@@ -5,41 +5,41 @@ import re
 time_pattern = re.compile(r'^([01]\d|2[0-3]):([0-5]\d)$')
 
 def checkHour(hour):
-    if hour == "":
+    if hour == "" or hour == None:
         return "Not specified"
     else:
         return hour
 
 def parseToJson(data):
-    
+    print(data)
     availability = {
-        'mon': {
-            'startTime': checkHour(data.get('start-time-mon')),
-            'endTime': checkHour(data.get('end-time-mon'))
+        "mon": {
+            "startTime": checkHour(data.get("start-time-mon")),
+            "endTime": checkHour(data.get("end-time-mon"))
         },
-        'tue': {
-            'startTime': checkHour(data.get('start-time-tue')),
-            'endTime': checkHour(data.get('end-time-tue'))
+        "tue": {
+            "startTime": checkHour(data.get("start-time-tue")),
+            "endTime": checkHour(data.get("end-time-tue"))
         },
-        'wed': {
-            'startTime': checkHour(data.get('start-time-wed')),
-            'endTime': checkHour(data.get('end-time-wed'))
+        "wed": {
+            "startTime": checkHour(data.get("start-time-wed")),
+            "endTime": checkHour(data.get("end-time-wed"))
         },
-        'thu': {
-            'startTime': checkHour(data.get('start-time-thu')),
-            'endTime': checkHour(data.get('end-time-thu'))
+        "thu": {
+            "startTime": checkHour(data.get("start-time-thu")),
+            "endTime": checkHour(data.get("end-time-thu"))
         },
-        'fri': {
-            'startTime': checkHour(data.get('start-time-fri')),
-            'endTime': checkHour(data.get('end-time-fri'))
+        "fri": {
+            "startTime": checkHour(data.get("start-time-fri")),
+            "endTime": checkHour(data.get("end-time-fri"))
         },
-        'sat': {
-            'startTime': checkHour(data.get('start-time-sat')),
-            'endTime': checkHour(data.get('end-time-sat'))
+        "sat": {
+            "startTime": checkHour(data.get("start-time-sat")),
+            "endTime": checkHour(data.get("end-time-sat"))
         },
-        'sun': {
-            'startTime': checkHour(data.get('start-time-sun')),
-            'endTime': checkHour(data.get('end-time-sun'))
+        "sun": {
+            "startTime": checkHour(data.get("start-time-sun")),
+            "endTime": checkHour(data.get("end-time-sun"))
         }
     }
     return availability
@@ -48,6 +48,7 @@ def validate_json_hours_structure(data):
     # Días de la semana esperados
     expected_days = {"mon", "tue", "wed", "thu", "fri", "sat", "sun"}
     data = parseToJson(data)
+    print("data ABAJO:")
     print(data)
     # Asegúrate de que data sea un diccionario
     if not isinstance(data, dict):
@@ -60,7 +61,6 @@ def validate_json_hours_structure(data):
 
     for day in expected_days:
         times = data[day]
-        print(times)
         if not isinstance(times, dict):
             return [False, f"Invalid structure for {day}: Expected a dictionary"]
         
@@ -79,8 +79,8 @@ def validate_json_hours_structure(data):
             return [False, f"Invalid startTime format in {day}: Expected 'HH:MM' (24-hour)"]
         if times["endTime"] != "Not specified" and not time_pattern.match(times["endTime"]):
             return [False, f"Invalid endTime format in {day}: Expected 'HH:MM' (24-hour)"]
-    
-    return True, "Valid JSON structure"
+    print("paso todo")
+    return True, data
 
 #EXPECTED SYNTAX:
 # {

@@ -11,35 +11,37 @@ availability = Blueprint('availability', __name__)
 
 
 @availability.route('/availability')
-def get_availability():
-    print("aloja")
+def availability_frontend():
     return render_template("availability.html", user=current_user)
 
-@availability.route('/eventhall/<id>/addAvailability', methods=["POST"])
+@availability.route('/eventhall/<eventhallId>/addAvailability', methods=["POST"])
 @login_required
-def add_availability(id):
-    print("json", request.is_json)
+def add_availability(eventhallId):
+    print("isJson:", request.is_json)
     data = request.form
     checkedData = validate_json_hours_structure(data)
     if checkedData[0] == False:
         flash(checkedData[1], category='error')
-        print("blakc")
-        return redirect(url_for('eventhall.availability'))
-    eventhallId = request.form.get('eventhallId')
-    print(eventhallId) 
-    if checkedData[0] == False: #Si el verificador retorna 'False'
-        flash(checkedData[1])
-        return(checkedData[1]) 
+        return redirect(url_for('availability.availability_frontend'))
+
     availabilityExists = Availability.query.filter_by(eventhall_id=id).first()
     if availabilityExists:
-        return [f"Error: Availability for Event hall with id '{id}' already exists"]
+        flash(f"Availability for Event hall with id '{id}' already exists")
+        return redirect(url_for('availability.availability_frontend'))
+    
     eventhall = Eventhall.query.filter_by(id=id).first()
     if current_user.id != eventhall.owner_id:
         return f"Error: Only event hall owners can change Availability"
     flash(f"Successfully added Availability to Event Hall: '{eventhall.name}'", category='success')
-    availability = Availability(eventhall_id=id, hours=data)
+    availability = Availability(eventhall_id=eventhallId, hours=checkedData[1])
     db.session.add(availability)
     db.session.commit()
 
-    print(objToStr(availability))
+    return redirect(url_for('availability.availability_frontend'))
+
+@availability.route('/availability/<eventhallId>')
+def get_availability(eventhallId):
+    availability = Availability.query.filter_by(eventhall_id=eventhallId).first()
+    print(availability)
+    if not availability: return "None"
     return objToStr(availability)
