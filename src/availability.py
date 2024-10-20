@@ -20,16 +20,19 @@ def add_availability(eventhallId):
     print("isJson:", request.is_json)
     data = request.form
     checkedData = validate_json_hours_structure(data)
+    print("1")
     if checkedData[0] == False:
         flash(checkedData[1], category='error')
         return redirect(url_for('availability.availability_frontend'))
-
-    availabilityExists = Availability.query.filter_by(eventhall_id=id).first()
+    print("2")
+    availabilityExists = Availability.query.filter_by(eventhall_id=eventhallId).first()
+    print("3")
     if availabilityExists:
         flash(f"Availability for Event hall with id '{id}' already exists")
         return redirect(url_for('availability.availability_frontend'))
-    
-    eventhall = Eventhall.query.filter_by(id=id).first()
+    print("4")
+    eventhall = Eventhall.query.filter_by(id=eventhallId).first()
+    print("5")
     if current_user.id != eventhall.owner_id:
         return f"Error: Only event hall owners can change Availability"
     flash(f"Successfully added Availability to Event Hall: '{eventhall.name}'", category='success')
