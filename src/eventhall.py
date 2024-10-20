@@ -3,10 +3,7 @@ from flask import Blueprint, request, render_template, jsonify, flash, redirect,
 from models import Availability, Eventhall
 from auth_service import AuthService
 from config.objToStr import objToStr
-from config.validateHours import validate_json_hours_structure
 from db import db
-from upload import query_image
-from flask_cors import cross_origin
 eventhall = Blueprint('eventhall', __name__)
 
 @eventhall.route('/eventhall/<id>', methods=["GET"])
@@ -66,8 +63,6 @@ def edit_eventhall():
         return render_template("put_eventhall.html", user=current_user)
     #POST:
     data = request.form.to_dict(flat=True)
-    print(data)
-    print("asdad")
     id = request.form["eventhallId"]
 
     eventhall = Eventhall.query.filter_by(id=id).first()  
@@ -81,7 +76,6 @@ def edit_eventhall():
     if current_user.id != eventhall.owner_id:
         flash(f"Solo se pueden cambiar tus salones", category='error')
         return redirect(url_for('eventhall.edit_eventhall'))
-    print(data)
     for column in data:
         setattr(eventhall, column, data[column]) # Actualiza eventhall
     destructured_eventhall = objToStr(eventhall)
