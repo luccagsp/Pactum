@@ -6,6 +6,7 @@ from config.objToStr import objToStr
 from config.dotenv_handler import Envs
 from db import create_db
 from werkzeug.exceptions import RequestEntityTooLarge
+from flask import redirect, url_for
 
 # Obtener el directorio del archivo que se está ejecutando
 current_directory = os.path.dirname(os.path.abspath(__file__))
@@ -45,11 +46,14 @@ app.register_blueprint(auth)
 app.register_blueprint(upload)
 app.register_blueprint(eventhall)
 
-@app.route('/', methods=["GET"])
+@app.route('/')
+def ingresar_a_pagina():
+    return redirect(url_for('home'))
+
+@app.route('/home', methods=["GET"], endpoint='home')
 def index():
     eventhalls = Eventhall.query.limit(10).all()
     return render_template('home.html', user=current_user, eventhalls=eventhalls)
-
 
 @app.route('/availability')
 def availability():
