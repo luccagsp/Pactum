@@ -1,17 +1,22 @@
 {% extends "base.html" %} {% block title %}Login{% endblock %} {% block content
   %}
 
-  <form method="post" action="/upload" enctype="multipart/form-data">
+  <div class="grid-container">
+    {%for image in eventhall.images%}
+        <div class="grid-item">
+          <a href="{{image.file_url}}">
+            <img src="{{image.file_url}}" alt="Image {{image.id}}">
+          </a>
+          <a href="/upload/delete/{{image.id}}">eliminar</a>
+        </div>
+    {%endfor%}
+    <!-- Agrega más imágenes aquí -->
+  </div>
+
+    
+
+  <form method="post" action="/upload/{{eventhall.id}}" enctype="multipart/form-data">
     <dl>
-      <p>
-        <!------ Selector de salones ------>
-        <select name="eventhallId" id="eventhalls-selector" required>
-          {%for eventhall in user.eventhalls%}
-            <option value="{{eventhall.id}}">{{eventhall.name}}</option>
-          {%endfor%}
-        </select>
-        <!--------------------------------->
-      </p>
       <p>
         <input
           type="file"
@@ -27,4 +32,26 @@
       <input type="submit" value="Submit" class="btn btn-info" />
     </p>
   </form>
+
+  <style>
+  .grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Ajusta el tamaño mínimo según sea necesario */
+    grid-gap: 10px; /* Espaciado entre las imágenes */
+    padding: 10px;
+  }
+
+  .grid-item {
+    width: 100%; 
+    overflow: hidden; /* Evita que los elementos desborden el contenedor */
+  }
+
+  .grid-item img {
+    width: 100%;  /* Ajusta la imagen al ancho del contenedor */
+    height: 200px; /* Ajusta la altura según lo que quieras */
+    object-fit: cover; /* Asegura que la imagen mantenga su proporción y llene el contenedor */
+  }
+
+  </style>
+  
   {% endblock %}

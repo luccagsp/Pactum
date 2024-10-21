@@ -1,5 +1,3 @@
-import base64
-
 def objToStr(object):
     # Filtrar y solo imprimir los atributos que no son metadatos
     object_filtered = {}

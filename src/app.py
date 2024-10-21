@@ -14,6 +14,10 @@ current_directory = os.path.dirname(os.path.abspath(__file__))
 parent_directory = os.path.dirname(current_directory)
 #Seleccionar carpeta images
 folder_path = os.path.join(parent_directory, 'images')
+
+if not os.path.exists(folder_path):
+        os.makedirs(folder_path)
+
 #InicializacionesF
 app = Flask(__name__)
 CORS(app, supports_credentials=True)
