@@ -8,3 +8,4 @@ class Image(db.Model):
     type_image = db.Column(db.String(50), nullable=False, default="image") 
     created_at = db.Column(db.DateTime, default=func.now())
     deleted_at = db.Column(db.DateTime)
+    file_data = db.Column(db.Text, nullable=True)

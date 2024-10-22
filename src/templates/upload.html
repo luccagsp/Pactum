@@ -5,7 +5,7 @@
     {%for image in eventhall.images%}
         <div class="grid-item">
           <a href="{{image.file_url}}">
-            <img src="{{image.file_url}}" alt="Image {{image.id}}">
+            <img src="data:application/octet-stream;base64,{{image.file_data}}" alt="Image {{image.id}}">
           </a>
           <a href="/upload/delete/{{image.id}}">eliminar</a>
         </div>

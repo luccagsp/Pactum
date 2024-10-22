@@ -1,5 +1,6 @@
 import shortuuid
 import os
+import base64
 from datetime import datetime
 from flask import Blueprint, request, render_template, jsonify, flash, redirect, url_for, send_from_directory, current_app
 from flask_login import login_required, current_user
@@ -26,10 +27,15 @@ def query_image(file, eventhallId, type_image='image'):
     
     fileExtension = f".{filename.rsplit('.', 1)[1].lower()}"
     filename = f"{shortuuid.uuid()}{fileExtension}" #Cambia el nombre del archivo a un UUID
-    file.save(os.path.join(upload_folder, filename)) # Then save the file
+    
+    # Convertir a Base64
+    file_data = base64.b64encode(file.read()).decode('utf-8')
+
+   # file.save(os.path.join(upload_folder, filename)) # Then save the file
+
 
     image_url = f"{Envs.ROOT_URL}{url_for('upload.uploaded_file', filename=filename)}"
-    image:Image = Image(eventhall_id=eventhallId, file_url=image_url, type_image=type_image, filename=filename)
+    image:Image = Image(eventhall_id=eventhallId, file_url=image_url, type_image=type_image, filename=filename, file_data=file_data)
     db.session.add(image)
     db.session.commit()
 
@@ -68,7 +74,8 @@ def uploaded_file(filename):
         return "imagen no encontrada", 404
     if image.deleted_at != None:
         return "imagen no encontrada", 404
-    return send_from_directory(current_app.config['UPLOAD_FOLDER'], filename)
+    return jsonify({'image': image.file_data})
+    #return send_from_directory(current_app.config['UPLOAD_FOLDER'], filename)
 
 @upload.route('/upload/delete/<imageId>')
 def delete(imageId):

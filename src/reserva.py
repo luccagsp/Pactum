@@ -48,7 +48,8 @@ def delete(reserveId):
     setattr(reserve, "deleted_at", datetime.now())
     print(objToStr(reserve))
     db.session.commit()
-    return "no tiene id ni a palo"
+    flash('reserva eliminada exitosamente', category='success')
+    return redirect(url_for('upload.frontend'))
 
 @reserve.route("/reserve/validate/<reserveId>")
 def validate(reserveId):
