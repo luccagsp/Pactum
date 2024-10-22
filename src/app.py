@@ -65,6 +65,13 @@ def index():
 def register_eventhall():
     return render_template("register_eventhall.html", user=current_user)
 
+@app.route('/reservation/<id>', methods=["GET", "POST"])
+def reservation(id):
+    eventhall = Eventhall.query.filter_by(id=id).first()
+    if not eventhall:
+        return ["Error: Event hall not found"]
+    return render_template("reservation.html", user=current_user, eventhall=eventhall)
+
 if __name__ == "__main__":
     from pathlib import Path
     from os import path

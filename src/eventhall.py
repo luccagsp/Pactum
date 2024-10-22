@@ -15,7 +15,7 @@ def query_salon(id):
     eventhall = Eventhall.query.filter_by(id=id).first()
     if not eventhall:
         return ["Error: Event hall not found"]
-    return {'id' : eventhall.id, 'nombre' : eventhall.nombre, 'descripcion' : eventhall.descripcion, 'calle_domicilio' : eventhall.calle_domicilio, 'numero_domicilio' : eventhall.numero_domicilio, 'email_contacto' : eventhall.email_contacto, 'telefono_contacto' : eventhall.telefono_contacto, 'precio_sena' : eventhall.precio_sena, 'imagenes' : eventhall.imagenes, 'reserva_instantanea' : eventhall.reserva_instantanea, 'creado_en' : eventhall.creado_en, 'actualizado_en' : eventhall.actualizado_en} 
+    return render_template('eventhall.html', user=current_user, eventhall=eventhall)
 
 @eventhall.route('/register/eventhall', methods=["GET", "POST"])
 @login_required
