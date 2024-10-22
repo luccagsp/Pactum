@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", function () {
   const calendar = document.getElementById("calendar");
   const dateInput = document.getElementById("date");
-  const horariosSelect = document.getElementById("horarios");
+  const horariosSelect = document.getElementById("time");
 
   // Mostrar fecha actual en el calendario inicialmente
   const today = new Date();
@@ -33,9 +33,7 @@ document.addEventListener("DOMContentLoaded", function () {
       } else {
           const selectedOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
           calendar.innerHTML = `
-              <h3>${selectedDate.toLocaleDateString('es-ES', selectedOptions)}</h3>
-              <p>Horario Reservado: ${selectedTime}</p>
-          `;
+              <h3>${selectedDate.toLocaleDateString('es-ES', selectedOptions)}</h3>          `;
       }
   }
 

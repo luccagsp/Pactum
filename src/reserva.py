@@ -14,17 +14,18 @@ def err(error):
 @reserve.route('/reserve/<eventhallId>', methods=["POST", "GET"])
 @login_required
 def frontend(eventhallId):
+    eventhall = Eventhall.query.filter_by(id=eventhallId).first()
+    if not eventhall:
+        flash('Salón no encontrado', category='error')
+        return redirect(url_for('index'))
     if request.method == 'GET':
-        return render_template('reservar.html', user=current_user)
+        return render_template('reservation.html', user=current_user, eventhall=eventhall)
+    
     #POST:
     date=request.form.get('date')
     time=request.form.get('time')
     user = current_user 
-    eventhall = Eventhall.query.filter_by(id=eventhallId).first()
 
-    if not eventhall:
-        flash('Salón no encontrado', category='error')
-        return redirect(url_for('reserve.frontend', eventhallId=eventhallId))
     
     dto = Reservation.from_reserva(reservation_time=time, reservation_date=date, eventhall_id=eventhallId, user_id=user.id, reservation_price=eventhall.reservation_price)
     if dto[0] == False:

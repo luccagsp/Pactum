@@ -1,174 +1,166 @@
-{% extends "base.html"%}{% block title %}resrvation{% endblock %}{% block content %}
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reserva</title>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap">
-    <link rel="shortcut icon" href="img/pactumfavicon.png">
-</head>
 <style>
-        * {
-        box-sizing: border-box;
-        margin: 0;
-        padding: 0;
-        font-family: 'Poppins', sans-serif;
-    }
+    * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+}
 
-    body {
-        background-color: #f7f8fa;
-        color: #444;
-        line-height: 1.8; /* Mejora la legibilidad */
-        font-size: 20px; /* Aumenta el tamaño de la fuente base */
-    }
+body {
+    background-color: #f7f8fa;
+    color: #444;
+    line-height: 1.8; /* Mejora la legibilidad */
+    font-size: 20px; /* Aumenta el tamaño de la fuente base */
+}
 
-    .form-inline input {
-        border-radius: 12px;
-        padding: 14px 20px; /* Espacio interno más amplio */
-        border: 1px solid #ddd;
-        background-color: #e3f2fd; /* Fondo azul claro */
-        margin-right: 20px;
-        font-size: 18px; /* Ajuste del tamaño de fuente */
-    }
+.form-inline input {
+    border-radius: 12px;
+    padding: 14px 20px; /* Espacio interno más amplio */
+    border: 1px solid #ddd;
+    background-color: #e3f2fd; /* Fondo azul claro */
+    margin-right: 20px;
+    font-size: 18px; /* Ajuste del tamaño de fuente */
+}
 
-    .cointainer a img {
-        height: 60px; /* Ajusta el tamaño del ícono de usuario */
-        border-radius: 50%; /* Hace la imagen de perfil circular */
-        transition: transform 0.3s ease; /* Animación suave */
-    }
+.cointainer a img {
+    height: 60px; /* Ajusta el tamaño del ícono de usuario */
+    border-radius: 50%; /* Hace la imagen de perfil circular */
+    transition: transform 0.3s ease; /* Animación suave */
+}
 
-    .cointainer a img:hover {
-        transform: scale(1.1); /* Efecto de agrandado en hover */
-    }
+.cointainer a img:hover {
+    transform: scale(1.1); /* Efecto de agrandado en hover */
+}
 
+.main-container {
+    display: flex;
+    gap: 50px; /* Aumenta el espacio entre secciones */
+    justify-content: center;
+    padding: 80px 60px; /* Aumenta el padding para dar más espacio */
+}
+
+.left-section, .right-section {
+    background-color: white;
+    padding: 50px; /* Aumenta el padding interno */
+    border-radius: 16px;
+    box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.1);
+    flex: 1;
+    max-width: 700px; /* Aumenta el ancho máximo de las secciones */
+}
+
+.calendar-container {
+    background-color: #ffffff;
+    border-radius: 16px;
+    padding: 30px;
+    box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    color: #0d47a1; /* Azul oscuro */
+    font-weight: 600;
+    font-size: 28px; /* Aumenta el tamaño de la fecha */
+    margin-bottom: 30px;
+}
+
+.account-info h2 {
+    font-size: 26px; /* Aumenta el tamaño del título */
+    margin-bottom: 20px;
+}
+
+.account-info p {
+    font-size: 20px; /* Aumenta el tamaño de la fuente de los textos */
+    margin-bottom: 15px;
+}
+
+.drag-drop-area {
+    border: 3px dashed #0d47a1; /* Azul oscuro */
+    padding: 40px;
+    border-radius: 12px;
+    background-color: #e3f2fd; /* Fondo azul claro */
+    text-align: center;
+    margin-top: 20px;
+    font-size: 20px; /* Aumenta el tamaño de la fuente */
+}
+
+#dragDropButton {
+    background-color: #ff7043; /* Botón anaranjado */
+    color: white;
+    padding: 20px 40px; /* Aumenta el tamaño del botón */
+    border-radius: 12px;
+    margin-top: 20px;
+    border: none;
+    cursor: pointer;
+    font-size: 20px; /* Aumenta el tamaño de la fuente */
+}
+
+#dragDropButton:hover {
+    background-color: #e64a19;
+}
+
+form h2 {
+    color: #0d47a1; /* Azul oscuro */
+    margin-bottom: 25px;
+    font-size: 26px; /* Aumenta el tamaño del título */
+}
+
+label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: 500;
+    font-size: 20px; /* Aumenta el tamaño de la fuente */
+}
+
+input, textarea {
+    width: 100%;
+    padding: 20px; /* Aumenta el tamaño del padding */
+    margin-bottom: 25px;
+    border-radius: 12px;
+    border: 1px solid #ddd;
+    font-size: 20px; /* Aumenta el tamaño de la fuente */
+}
+
+#button_submit {
+    background-color: #0d47a1; /* Azul oscuro */
+    color: white;
+    border: none;
+    padding: 18px 24px; /* Aumenta el tamaño del botón */
+    border-radius: 10px;
+    cursor: pointer;
+    width: 100%;
+    font-size: 22px; /* Aumenta el tamaño de la fuente */
+}
+
+button:hover {
+    background-color: #0b3d91; /* Azul más oscuro */
+}
+
+select {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 20px;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+    background-color: #f8f8f8; /* Fondo ligero */
+}
+
+select:focus {
+    border-color: #4a90e2;
+    outline: none;
+}
+
+@media (max-width: 768px) {
     .main-container {
-        display: flex;
-        gap: 50px; /* Aumenta el espacio entre secciones */
-        justify-content: center;
-        padding: 80px 60px; /* Aumenta el padding para dar más espacio */
+        flex-direction: column;
+        align-items: center;
     }
 
     .left-section, .right-section {
-        background-color: white;
-        padding: 50px; /* Aumenta el padding interno */
-        border-radius: 16px;
-        box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.1);
-        flex: 1;
-        max-width: 700px; /* Aumenta el ancho máximo de las secciones */
-    }
-
-    .calendar-container {
-        background-color: #ffffff;
-        border-radius: 16px;
-        padding: 30px;
-        box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.1);
-        text-align: center;
-        color: #0d47a1; /* Azul oscuro */
-        font-weight: 600;
-        font-size: 28px; /* Aumenta el tamaño de la fecha */
-        margin-bottom: 30px;
-    }
-
-    .account-info h2 {
-        font-size: 26px; /* Aumenta el tamaño del título */
+        max-width: 100%;
         margin-bottom: 20px;
     }
-
-    .account-info p {
-        font-size: 20px; /* Aumenta el tamaño de la fuente de los textos */
-        margin-bottom: 15px;
-    }
-
-    .drag-drop-area {
-        border: 3px dashed #0d47a1; /* Azul oscuro */
-        padding: 40px;
-        border-radius: 12px;
-        background-color: #e3f2fd; /* Fondo azul claro */
-        text-align: center;
-        margin-top: 20px;
-        font-size: 20px; /* Aumenta el tamaño de la fuente */
-    }
-
-    #dragDropButton {
-        background-color: #ff7043; /* Botón anaranjado */
-        color: white;
-        padding: 20px 40px; /* Aumenta el tamaño del botón */
-        border-radius: 12px;
-        margin-top: 20px;
-        border: none;
-        cursor: pointer;
-        font-size: 20px; /* Aumenta el tamaño de la fuente */
-    }
-
-    #dragDropButton:hover {
-        background-color: #e64a19;
-    }
-
-    form h2 {
-        color: #0d47a1; /* Azul oscuro */
-        margin-bottom: 25px;
-        font-size: 26px; /* Aumenta el tamaño del título */
-    }
-
-    label {
-        display: block;
-        margin-bottom: 10px;
-        font-weight: 500;
-        font-size: 20px; /* Aumenta el tamaño de la fuente */
-    }
-
-    input, textarea {
-        width: 100%;
-        padding: 20px; /* Aumenta el tamaño del padding */
-        margin-bottom: 25px;
-        border-radius: 12px;
-        border: 1px solid #ddd;
-        font-size: 20px; /* Aumenta el tamaño de la fuente */
-    }
-
-    button {
-        background-color: #0d47a1; /* Azul oscuro */
-        color: white;
-        border: none;
-        padding: 18px 24px; /* Aumenta el tamaño del botón */
-        border-radius: 10px;
-        cursor: pointer;
-        width: 100%;
-        font-size: 22px; /* Aumenta el tamaño de la fuente */
-    }
-
-    button:hover {
-        background-color: #0b3d91; /* Azul más oscuro */
-    }
-
-    select {
-        width: 100%;
-        padding: 12px;
-        margin-bottom: 20px;
-        border: 2px solid #ddd;
-        border-radius: 8px;
-        font-size: 1rem;
-        transition: border-color 0.3s ease;
-        background-color: #f8f8f8; /* Fondo ligero */
-    }
-
-    select:focus {
-        border-color: #4a90e2;
-        outline: none;
-    }
-
-    @media (max-width: 768px) {
-        .main-container {
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .left-section, .right-section {
-            max-width: 100%;
-            margin-bottom: 20px;
-        }
-    }
+}
 </style>
-<body>
+{% extends "base.html"%}{% block title %}Reserva{% endblock %}{% block content %}
     <div class="main-container">
         <div class="left-section">
             <div id="calendar" class="calendar-container">
@@ -177,39 +169,65 @@
                 <h2>Información de Cuenta</h2>
                 <p><strong>Alias:</strong> {{eventhall.alias}}</p>
                 <p><strong>CBU:</strong> 0123456789012345678901</p>
-                <p><strong>Propietario:</strong> {{eventhall.owner_id.name}}</p>
+                <p><strong>Propietario:</strong> {{eventhall.user.name}}</p>
                 <div class="drag-drop-area" id="drag-drop-area">
                     <p>Arrastra y suelta tu archivo aquí o haz clic para subir.</p>
-                    <button type="button" id="dragDropButton">Subir Archivo</button>
+                    <button id="button_submit"type="button" id="dragDropButton">Subir Archivo</button>
                     <input type="file" id="fileInput" accept="image/*" multiple style="display: none;">
                 </div>
             </div>
         </div>
 
         <div class="right-section">
-            <form>
+            <form method="post">
                 <h2>Haz tu reserva en PACTUM</h2>
                 <label for="salon">Salón:</label>
-                <input type="text" id="salon" placeholder="{{eventhall.name}}" />
-
-                <label for="horarios">Horarios:</label>
-                <select id="horarios">
-                    <option value="15:00-16:00">15:00 - 16:00</option>
-                    <option value="16:00-17:00">16:00 - 17:00</option>
-                    <option value="17:00-18:00">17:00 - 18:00</option>
-                    <option value="18:00-19:30">18:00 - 19:30</option>
-                </select>
-
+                <input type="text" id="salon" placeholder="{{eventhall.name}}" readonly />
+                
                 <label for="precio">Precio Fijo del Salón:</label>
-                <input type="text" id="precio" placeholder="{{eventhall.deposit_price}}" readonly />
+                <input type="text" id="precio" placeholder="{{eventhall.reservation_price}}" readonly />
+
+                <label for="date">Horarios:</label>
+                <input type="time" name="time" id="time" />
 
                 <label for="date">Seleccionar Fecha:</label>
-                <input type="date" id="date" />
+                <input type="date" name="date" id="date" />
 
-                <button type="submit">Enviar</button>
+                <button id="button_submit"type="submit">Enviar</button>
             </form>
         </div>
     </div>
-    <script src="reservation-script.js"></script>
-</body>
+    <script src="/static/js/reservation-script.js"></script>
+    
+<script>
+    // Obtener la fecha actual y establecerla como el valor mínimo en el campo de fecha
+    const today = new Date().toISOString().split('T')[0];
+    document.getElementById('date').setAttribute('min', today);
+    async function fetchPost() {
+      const newTweet = await fetch(
+        "http://localhost:5000/availability/1",
+        {
+          mode: "cors",
+          credentials: "include",
+          method: "GET",
+        }
+      ).then((resp) => {
+        resp.json()
+      });
+      console.log(newTweet);
+    }
+
+    fetchPost()
+    function showDateTime() {
+        const date = document.getElementById('date').value;
+        const time = document.getElementById('time').value;
+
+        if (date && time) {
+            document.getElementById('result').innerText = `Fecha seleccionada: ${date}, Hora seleccionada: ${time}`;
+        } else {
+            document.getElementById('result').innerText = 'Por favor, selecciona una fecha y una hora.';
+        }
+    }
+</script>
+
 {% endblock %}
