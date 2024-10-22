@@ -1,103 +1,215 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends "base.html"%}{% block title %}resrvation{% endblock %}{% block content %}
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="reservas.css">
-    <title>Reserva-individual</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <title>Reserva</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap">
     <link rel="shortcut icon" href="img/pactumfavicon.png">
 </head>
+<style>
+        * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        font-family: 'Poppins', sans-serif;
+    }
 
-<body  >
-    <div class="conteiner-fluid navbar ">
-        <nav class="navbar navbar-expand-lg navbar-light bg-light col-12" >
-            <div class=" conteiner-fluid">
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01"
-                    aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse d-flex-md-none" style=" justify-content: space-between;" id="navbarTogglerDemo01">
-                    <div class="" style="display: flex; flex-direction: row; align-items: center;">
-                        <a class="navbar-brand p-2" href="#"><img src="img/Pactum2.png" alt="" style="height: 8vh;"></a>
-                        
-                    </div>
-                    <ul class="navbar-nav mr-auto mt-2 mt-lg-0 ">
-                        <li class="nav-item active">
-                            <a class="nav-link" href="#">Contacto</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Servicio</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Reservas</a>
-                        </li>
-                    </ul>
+    body {
+        background-color: #f7f8fa;
+        color: #444;
+        line-height: 1.8; /* Mejora la legibilidad */
+        font-size: 20px; /* Aumenta el tamaño de la fuente base */
+    }
 
-                </div>
+    .form-inline input {
+        border-radius: 12px;
+        padding: 14px 20px; /* Espacio interno más amplio */
+        border: 1px solid #ddd;
+        background-color: #e3f2fd; /* Fondo azul claro */
+        margin-right: 20px;
+        font-size: 18px; /* Ajuste del tamaño de fuente */
+    }
 
+    .cointainer a img {
+        height: 60px; /* Ajusta el tamaño del ícono de usuario */
+        border-radius: 50%; /* Hace la imagen de perfil circular */
+        transition: transform 0.3s ease; /* Animación suave */
+    }
+
+    .cointainer a img:hover {
+        transform: scale(1.1); /* Efecto de agrandado en hover */
+    }
+
+    .main-container {
+        display: flex;
+        gap: 50px; /* Aumenta el espacio entre secciones */
+        justify-content: center;
+        padding: 80px 60px; /* Aumenta el padding para dar más espacio */
+    }
+
+    .left-section, .right-section {
+        background-color: white;
+        padding: 50px; /* Aumenta el padding interno */
+        border-radius: 16px;
+        box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.1);
+        flex: 1;
+        max-width: 700px; /* Aumenta el ancho máximo de las secciones */
+    }
+
+    .calendar-container {
+        background-color: #ffffff;
+        border-radius: 16px;
+        padding: 30px;
+        box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        color: #0d47a1; /* Azul oscuro */
+        font-weight: 600;
+        font-size: 28px; /* Aumenta el tamaño de la fecha */
+        margin-bottom: 30px;
+    }
+
+    .account-info h2 {
+        font-size: 26px; /* Aumenta el tamaño del título */
+        margin-bottom: 20px;
+    }
+
+    .account-info p {
+        font-size: 20px; /* Aumenta el tamaño de la fuente de los textos */
+        margin-bottom: 15px;
+    }
+
+    .drag-drop-area {
+        border: 3px dashed #0d47a1; /* Azul oscuro */
+        padding: 40px;
+        border-radius: 12px;
+        background-color: #e3f2fd; /* Fondo azul claro */
+        text-align: center;
+        margin-top: 20px;
+        font-size: 20px; /* Aumenta el tamaño de la fuente */
+    }
+
+    #dragDropButton {
+        background-color: #ff7043; /* Botón anaranjado */
+        color: white;
+        padding: 20px 40px; /* Aumenta el tamaño del botón */
+        border-radius: 12px;
+        margin-top: 20px;
+        border: none;
+        cursor: pointer;
+        font-size: 20px; /* Aumenta el tamaño de la fuente */
+    }
+
+    #dragDropButton:hover {
+        background-color: #e64a19;
+    }
+
+    form h2 {
+        color: #0d47a1; /* Azul oscuro */
+        margin-bottom: 25px;
+        font-size: 26px; /* Aumenta el tamaño del título */
+    }
+
+    label {
+        display: block;
+        margin-bottom: 10px;
+        font-weight: 500;
+        font-size: 20px; /* Aumenta el tamaño de la fuente */
+    }
+
+    input, textarea {
+        width: 100%;
+        padding: 20px; /* Aumenta el tamaño del padding */
+        margin-bottom: 25px;
+        border-radius: 12px;
+        border: 1px solid #ddd;
+        font-size: 20px; /* Aumenta el tamaño de la fuente */
+    }
+
+    button {
+        background-color: #0d47a1; /* Azul oscuro */
+        color: white;
+        border: none;
+        padding: 18px 24px; /* Aumenta el tamaño del botón */
+        border-radius: 10px;
+        cursor: pointer;
+        width: 100%;
+        font-size: 22px; /* Aumenta el tamaño de la fuente */
+    }
+
+    button:hover {
+        background-color: #0b3d91; /* Azul más oscuro */
+    }
+
+    select {
+        width: 100%;
+        padding: 12px;
+        margin-bottom: 20px;
+        border: 2px solid #ddd;
+        border-radius: 8px;
+        font-size: 1rem;
+        transition: border-color 0.3s ease;
+        background-color: #f8f8f8; /* Fondo ligero */
+    }
+
+    select:focus {
+        border-color: #4a90e2;
+        outline: none;
+    }
+
+    @media (max-width: 768px) {
+        .main-container {
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .left-section, .right-section {
+            max-width: 100%;
+            margin-bottom: 20px;
+        }
+    }
+</style>
+<body>
+    <div class="main-container">
+        <div class="left-section">
+            <div id="calendar" class="calendar-container">
             </div>
-        </nav>
-    </div>
-    <br>
-    <br>
-    <div class="conteiner-fluid col-4 calendar ">
-        <div class="calendar">
-            <div class="header">
-                <div class="month">Julio 2021</div>
-                    <div class="btns">
-                        <!-- today -->
-                        <div class="btn today">
-                            <i class="fi fi-rs-calendar"></i>
-                        </div>
-                        <!-- previous month -->
-                        <div class="btn prev">
-                            <i class="fi fi-rr-angle-small-left"></i>
-
-                        </div>
-                        <!-- next month -->
-                        <div class="btn next">
-                            <i class="fi fi-rr-angle-small-right"></i>
-                        </div>
-                    </div>
-                </div>
-                <div class="weekdays">
-                    <div class="day">Dom</div>
-                    <div class="day">Lun</div>
-                    <div class="day">Mar</div>
-                    <div class="day">Mie</div>
-                    <div class="day">Jue</div>
-                    <div class="day">Vie</div>
-                    <div class="day">Sab</div>
-                </div>
-                <div class="days">
-                    <!-- render days with js -->
+            <div class="account-info">
+                <h2>Información de Cuenta</h2>
+                <p><strong>Alias:</strong> {{eventhall.alias}}</p>
+                <p><strong>CBU:</strong> 0123456789012345678901</p>
+                <p><strong>Propietario:</strong> {{eventhall.owner_id.name}}</p>
+                <div class="drag-drop-area" id="drag-drop-area">
+                    <p>Arrastra y suelta tu archivo aquí o haz clic para subir.</p>
+                    <button type="button" id="dragDropButton">Subir Archivo</button>
+                    <input type="file" id="fileInput" accept="image/*" multiple style="display: none;">
                 </div>
             </div>
         </div>
-      </div>
 
+        <div class="right-section">
+            <form>
+                <h2>Haz tu reserva en PACTUM</h2>
+                <label for="salon">Salón:</label>
+                <input type="text" id="salon" placeholder="{{eventhall.name}}" />
+
+                <label for="horarios">Horarios:</label>
+                <select id="horarios">
+                    <option value="15:00-16:00">15:00 - 16:00</option>
+                    <option value="16:00-17:00">16:00 - 17:00</option>
+                    <option value="17:00-18:00">17:00 - 18:00</option>
+                    <option value="18:00-19:30">18:00 - 19:30</option>
+                </select>
+
+                <label for="precio">Precio Fijo del Salón:</label>
+                <input type="text" id="precio" placeholder="{{eventhall.deposit_price}}" readonly />
+
+                <label for="date">Seleccionar Fecha:</label>
+                <input type="date" id="date" />
+
+                <button type="submit">Enviar</button>
+            </form>
+        </div>
     </div>
-    <br>
-    <div class=" form-container ">
-        <div class="form-group">
-            <label for="salon">Salón:</label>
-            <select id="salon" class="form-control">
-                <option>Club de leones</option>
-                <option>Puerto aventura</option>
-                <option>opcion</option>
-            </select>
-        </div>
-        <div class="form-group">
-            <label for="horarios">Horarios:</label>
-            <input type="text" id="horarios" class="form-control" value="de 15:00 a 19:30">
-        </div>
-        <div class="form-group">
-            <label for="precio">Precio Fijo del Salón:</label>
-            <input type="text" id="precio" class="form-control" value="500.000">
-        </div>
-    </div> 
-    <script src="reserva.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script src="reservation-script.js"></script>
 </body>
-</html>
+{% endblock %}

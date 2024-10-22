@@ -18,6 +18,9 @@
             <!-- ----------------------------------------------------------- -->
         </div>
         <div class="row">
+            {% if not eventhalls %}
+            <h1 class="d-flex justify-content-center">Aun no hay salones registrados</h1>
+            {% endif %}
             {% for eventhall in eventhalls %}
             <div class="col-12 col-md-6 col-lg-4 pt-3">
                 <!--Aca establezco tamaño y pocision de cada tarjeta en varias resoluciones -->

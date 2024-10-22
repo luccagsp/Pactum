@@ -63,6 +63,13 @@ def availability():
 def register_eventhall():
     return render_template("register_eventhall.html", user=current_user)
 
+@app.route('/reservation/<id>', methods=["GET", "POST"])
+def reservation(id):
+    eventhall = Eventhall.query.filter_by(id=id).first()
+    if not eventhall:
+        return ["Error: Event hall not found"]
+    return render_template("reservation.html", user=current_user, eventhall=eventhall)
+
 if __name__ == "__main__":
     from pathlib import Path
     from os import path
@@ -74,11 +81,6 @@ if __name__ == "__main__":
         with app.app_context():
             db.create_all()
             print(f"Database successfully created in '{path.abspath('../instance/project.db')}'")
-            db.session.add(User(name="Lucca", surname="Martina", phone='543564609685', email="lccmartina@gmail.com", password=BcryptAdapter.hash(password='luccamartina')))
-            db.session.add(User(name="admin", surname="admin", phone='543564609683', email="admin@gmail.com", password=BcryptAdapter.hash(password='admin')))
-            db.session.add(Eventhall(alias="puerto.aventura", name="Puerto aventura", deposit_price=3000, owner_id=1))
-            db.session.commit()
-            print("Successfully created default user for Users and eventhall for Eventhalls")
         app.run(debug=True ,port=5000)
     else:
         app.run(debug=True ,port=5000)

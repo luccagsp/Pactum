@@ -18,7 +18,7 @@ def query_salon(id):
     eventhall = Eventhall.query.filter_by(id=id).first()
     if not eventhall:
         return ["Error: Event hall not found"]
-    return render_template('eventhall.html', user=current_user)
+    return render_template('eventhall.html', user=current_user, eventhall=eventhall)
 
 @eventhall.route('/register/eventhall', methods=["GET", "POST"])
 @login_required

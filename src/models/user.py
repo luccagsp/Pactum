@@ -13,7 +13,7 @@ class User(db.Model, UserMixin):
     phone = db.Column(db.String(20), unique=True, nullable=False)
     profile_pic = db.Column(db.TEXT)
     password = db.Column(db.String(72), nullable = False)
-    eventhalls = db.relationship('Eventhall', backref='user')
+    eventhalls = db.relationship('Eventhall', backref='user', lazy=True)
 
     # Relación con Reserva
     # reservas = db.relationship('Reserva', backref='cliente', lazy='dynamic')
