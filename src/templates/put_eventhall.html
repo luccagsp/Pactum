@@ -1,35 +1,204 @@
-{% extends "base.html" %} {% block title %}Registrar salón{% endblock %} {% block content%}
-  <form method="POST" enctype="multipart/form-data" action="/update/eventhall">
-    <h1 align="center" class="fs-6" style="font-size: 30px;">Modificar salón</h1>
 
-    <select name="eventhallId" id="eventhalls-selector" required>
-      {%for eventhall in user.eventhalls%}
-        <option value="{{eventhall.id}}">{{eventhall.name}}</option>
-      {%endfor%}
-    </select>
+{% extends "base.html" %} {% block title %}Lista de Salones{% endblock %} {% block content%}
 
-    <label for="description">Descripcion</label>
-    <input
-      onkeyup="textCounter(this,'counter',10);"
-      type="text"
-      class="form-control"
-      id="description"   
-      name="description"
-      placeholder="Descripción del salón"
-    />
-
-    <button type="submit" class="btn btn-primary">Login</button>
-  </form>
-  <script>
-    function textCounter(field,field2,maxlimit)
-    {
-      var countfield = document.getElementById(field2);
-      if ( field.value.length > maxlimit ) {
-        field.value = field.value.substring( 0, maxlimit );
-        return false;
-      } else {
-        countfield.value = maxlimit - field.value.length;
-      }
+<style>
+    button {
+        background-color: #ffffff00;
+        border: none;
     }
-  </script>
+
+    button:hover {
+        background-color: #a6a6a6;
+    }
+</style>
+<script>
+
+    const dropzone = document.getElementById('dropzone');
+
+
+    ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+        dropzone.addEventListener(eventName, (e) => e.preventDefault(), false);
+        dropzone.addEventListener(eventName, (e) => e.stopPropagation(), false);
+    });
+
+
+    dropzone.addEventListener('drop', (e) => {
+        const files = e.dataTransfer.files;
+        handleFiles(files);
+    });
+
+
+    dropzone.addEventListener('click', () => {
+        const input = document.createElement('input');
+        input.type = 'file';
+        input.accept = 'image/*';
+        input.multiple = true;
+
+        input.addEventListener('change', (e) => {
+            const files = e.target.files;
+            handleFiles(files);
+        });
+
+        input.click();
+    });
+
+    function handleFiles(files) {
+        [...files].forEach(file => {
+            console.log('Archivo subido:', file.name);
+        });
+    }
+    function triggerFileUpload() {
+        document.getElementById('file-input').click();
+    }
+
+    function handleFiles(files) {
+        const imageContainer = document.getElementById('image-container');
+        [...files].forEach(file => {
+            const reader = new FileReader();
+            reader.onload = function (event) {
+
+                const caparoja = document.createElement('div');
+                caparoja.style.width = '100%';
+                caparoja.style.height = '100%';
+                caparoja.style.display = 'flex';
+                caparoja.style.alignItems = 'center';
+                caparoja.style.justifyContent = 'center';
+                caparoja.style.backgroundColor = 'red';
+                caparoja.style.opacity = '0';
+                caparoja.style.position = 'absolute';
+                caparoja.style.top = '0';
+                caparoja.style.left = '0';
+                caparoja.style.zIndex = '1';
+
+                const papelera = document.createElement('img');
+                papelera.style.width = '100%';
+                papelera.style.height = '100%';
+                papelera.style.display = 'flex';
+                papelera.style.alignItems = 'center';
+                papelera.style.justifyContent = 'center';
+                papelera.style.backgroundColor = 'red';
+                papelera.style.opacity = '0';
+                papelera.style.position = 'absolute';
+                papelera.style.top = '0';
+                papelera.style.left = '0';
+                papelera.style.zIndex = '1';
+
+
+                const imgContainer = document.createElement('div');
+                imgContainer.style.width = '17%';
+                imgContainer.style.height = '100%';
+                imgContainer.style.display = 'flex';
+                imgContainer.style.alignItems = 'center';
+                imgContainer.style.justifyContent = 'center';
+                imgContainer.style.border = '1px solid #ccc';
+                imgContainer.style.position = 'relative';
+                imgContainer.style.backgroundColor = '#f8f9fa';
+
+                const img = document.createElement('img');
+                img.src = event.target.result;
+                img.style.maxWidth = '100%';
+                img.style.maxHeight = '100%';
+                img.style.objectFit = 'cover';
+
+                imgContainer.addEventListener('mouseover', () => {
+                    caparoja.style.opacity = '0.5';
+                    papelera.style.opacity = '0.7';
+                });
+
+                imgContainer.addEventListener('mouseout', () => {
+                    caparoja.style.opacity = '0';
+                    papelera.style.opacity = '0';
+                });
+
+                imgContainer.addEventListener('click', () => {
+                    imgContainer.remove();
+                });
+                imgContainer.appendChild(img);
+                imgContainer.appendChild(caparoja);
+                imageContainer.insertBefore(imgContainer, imageContainer.lastChild);
+            };
+
+            reader.readAsDataURL(file);
+        });
+    }
+</script>
+    <div class="d-flex" style="height: 90vh; margin-top: 10vh;">
+        <!-- SIDEBAR -->
+        <div id="sidebar" class="bg-light h-100"
+            style="width: 15%; border-right: 2px solid rgb(172, 172, 172); transition: all 0.3s;">
+            <div class="mt-3 collapse d-lg-block py-3 text-center">
+                <img src="img/Pactum2.png" alt="">
+            </div>
+
+            <ul class="list-unstyled">
+                <div class="container flex-column d-flex aling-items-center mt-3 mt-lg-0">
+                    <button style="background-color: #a6a6a6"
+                        class="d-flex align-items-center px-4 py-3 justify-content-lg-start justify-content-center rounded-2">
+                        <i class="bi-pencil-square me-2"></i>
+                        <span class="sidebar-text collapse d-lg-block ">Editar</span>
+                    </button>
+                    <button
+                        class="d-flex align-items-center px-4 py-3 justify-content-lg-start justify-content-center rounded-2">
+                        <i class="bi-envelope-open me-2"></i>
+                        <span class="sidebar-text collapse d-lg-block">Solicitudes</span>
+                    </button>
+                    <button
+                        class="d-flex align-items-center px-4 py-3 justify-content-lg-start justify-content-center rounded-2">
+                        <i class="bi-calendar-check me-2"></i>
+                        <span class="sidebar-text collapse d-lg-block">Reservas</span>
+                    </button>
+                    <button
+                        class="d-flex align-items-center px-4 py-3 justify-content-lg-start justify-content-center rounded-2">
+                        <i class="bi-trash3 me-2"></i>
+                        <span class="sidebar-text collapse d-lg-block">Papelera</span>
+                    </button>
+                </div>
+            </ul>
+        </div>
+        <!-- Contenido -->
+        <div style="flex-grow: 1; background-color: rgb(255, 255, 255); height: 100%;" >
+            <div class="row mt-lg-5">
+                <div class="container d-flex justify-content-center w-90">
+                    <H1>Edita tu salon</H1>
+                </div>
+                    <!-- Aqui esta el contenedor para dropear IMGS -->
+                    <form method="post" action="/upload/{{eventhall.id}}" enctype="multipart/form-data" class="col-md-6 mt-2 d-flex flex-column align-items-center justify-content-center mt-5 pb-5">
+                    <div id="dropzone"
+                        class="border border-primary rounded d-flex align-items-center justify-content-center col-10"
+                        style="background-color: #e9f5ff; cursor: pointer; position: relative; height: 90%;"
+                        ondragover="event.preventDefault()" onclick="triggerFileUpload()">
+                        <span class="text-primary" style="font-size: 100%;">+Sube Imagen De Salon</span>
+                        <input type="file" name="file" id="file-input" style="display: none;" accept="image/*" multiple="multiple"
+                            onchange="handleFiles(this.files)">
+                    </div>
+                    <input type="submit" value="Submit" class="btn btn-info" />
+
+                    <div id="image-container" class="d-flex flex-wrap overflow-auto border rounded col-10"
+                        style="background-color: rgb(240, 241, 152); height: 35%;">
+                    </div>
+                  </form>
+
+                <input type="file" id="file-input" style="display: none;" accept="image/*" onchange="handleFiles(this.files)" />
+                <div class="col-md-6 d-flex flex-column justify-content-around align-items-center align-items-lg-start mb-5">
+                    <form method="POST" enctype="multipart/form-data" action="/update/eventhall/{{eventhall.id}}">
+                      <div class="cointainer mt-3 col-10 mb-2">
+                          <label for="SalonesName" class="form-label mt-2" style="font-weight: bold;">Cambia el nombe del salon</label>
+                          <input type="text" class="form-control" id="SalonesName" placeholder="Ingrese Nombre" name="name" style="border-radius: 5px;">
+                      </div>
+                      <!-- <div class="cointainer col-10 mb-2">
+                          <label for="SalonesName" class="form-label mt-2" style="font-weight: bold;">Cambia
+                              Ubicacion</label>
+                          <input type="text" class="form-control" id="SalonesName" placeholder="Ingrese Ubicacion"
+                              style="border-radius: 5px;">
+                      </div> -->
+                      <div class="cointainer col-10 ">
+                          <label for="SalonesName" class="form-label mt-2" style="font-weight: bold;">Cambia la descripcion</label>
+                          <textarea class="form-control" id="description" name="description" rows="3" placeholder="Ingrese Descripcion del Salon" style="border-radius: 5px;"></textarea>
+                      </div>
+                      <button type="submit" style="background-color: #5349e2;" class=" w-20 col-12 btn btn-primary btn-lg rounded-5"> <h5 class="px-4">Guardar</h5> </button>
+                    </form>
+
+                </div>
+            </div>
+        </div>
 {% endblock %}

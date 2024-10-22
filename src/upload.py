@@ -53,6 +53,7 @@ def upload_image(eventhallId):
         return redirect(url_for('index'))
     if request.method == "GET":
         return render_template('upload.html', user=current_user, eventhall=eventhall)
+    
     #POST:
     # eventhallId = request.form["eventhallId"]
     
@@ -67,7 +68,6 @@ def upload_image(eventhallId):
 
 @upload.route('/upload/view/<filename>', methods=["GET"])
 
-#TODO: terminar delete
 def uploaded_file(filename):
     image = Image.query.filter_by(filename=filename).first()
     if not image:

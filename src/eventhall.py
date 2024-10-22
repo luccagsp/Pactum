@@ -60,26 +60,24 @@ def create_eventhall():
 
 
 
-@eventhall.route('/update/eventhall', methods=["GET", "POST"])
+@eventhall.route('/update/eventhall/<eventhallId>', methods=["GET", "POST"])
 @login_required
-def edit_eventhall():
+def edit_eventhall(eventhallId):
+    eventhall = Eventhall.query.filter_by(id=eventhallId).first()  
+    if not eventhall:
+        flash(f"Event hall with ID '{eventhallId}' not found", category='error')
+        return redirect(url_for('index'))
     if request.method == "GET":
-        return render_template("put_eventhall.html", user=current_user)
+        return render_template("put_eventhall.html", user=current_user, eventhall=objToStr(eventhall))
     #POST:
     data = request.form.to_dict(flat=True)
-    id = request.form["eventhallId"]
 
-    eventhall = Eventhall.query.filter_by(id=id).first()  
-
-    if not eventhall:
-        flash(f"Event hall with ID '{id}' not found", category='error')
-        return redirect(url_for('eventhall.edit_eventhall'))
     if "owner_id" in data and eventhall.owner != data.get("owner"):
         flash("No se puede cambiar de dueño", category='error')
-        return redirect(url_for('eventhall.edit_eventhall'))
+        return redirect(url_for('eventhall.edit_eventhall', eventhallId=eventhallId))
     if current_user.id != eventhall.owner_id:
         flash(f"Solo se pueden cambiar tus salones", category='error')
-        return redirect(url_for('eventhall.edit_eventhall'))
+        return redirect(url_for('eventhall.edit_eventhall', eventhallId=eventhallId))
     for column in data:
         setattr(eventhall, column, data[column]) # Actualiza eventhall
     destructured_eventhall = objToStr(eventhall)
@@ -93,6 +91,6 @@ def edit_eventhall():
         db.session.commit()
     else:
         flash(dto[1], category='error')
-        return redirect(url_for('eventhall.edit_eventhall'))
-    flash('Descripcion cabiada exitosamente', category='success')
-    return redirect(url_for('eventhall.edit_eventhall'))
+        return redirect(url_for('eventhall.edit_eventhall', eventhallId=eventhallId))
+    flash('Datos cambiados correctamente', category='success')
+    return redirect(url_for('eventhall.edit_eventhall', eventhallId=eventhallId))

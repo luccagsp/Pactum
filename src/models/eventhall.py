@@ -9,7 +9,7 @@ class Eventhall(db.Model):
     name = db.Column(db.String(50), nullable=False, unique=True)
     description = db.Column(db.String(2200))
     street_address = db.Column(db.String(80))
-    street_number = db.Column(db.String(2200))
+    street_number = db.Column(db.String(10))
     alias = db.Column(db.String(200), nullable=False)
     reservation_price = db.Column(db.Integer, nullable=False)
     instant_booking  = db.Column(db.Boolean, default=True)

@@ -6,28 +6,28 @@
         <div class="row mb-3">
             <div class="col-md-6">
                 <label for="SalonesName" class="form-label" style="font-weight: bold;">Nombre del Salon</label>
-                <input type="text" name="name" class="form-control" id="SalonesName" placeholder="Ingrese Nombre" style="border-radius: 5px;">
+                <input type="text" name="name" class="form-control" id="SalonesName" placeholder="Ingrese Nombre" style="border-radius: 5px;" maxlength="50" required>
             </div>
             <div class="col-md-6">
                 <label for="depositPrice" class="form-label" style="font-weight: bold;">Precio</label>
-                <input type="number" name="deposit_price" class="form-control" id="depositPrice" placeholder="Ingrese precio del salon" style="border-radius: 5px;">
+                <input type="number" name="reservation_price" class="form-control" id="depositPrice" placeholder="Ingrese precio del salon" style="border-radius: 5px;" maxlength="10" required>
             </div>
         </div>
         <div class="mb-3">
             <label for="location" class="form-label" style="font-weight: bold;">Calle</label>
-            <input type="text" name="street_address" class="form-control" id="location" placeholder="Ingrese calle del salon" style="border-radius: 5px;">
+            <input type="text" name="street_address" class="form-control" id="location" placeholder="Ingrese calle del salon" style="border-radius: 5px;" maxlength="80" required>
         </div>
         <div class="mb-3">
-            <label for="location" class="form-label" style="font-weight: bold;">Numero de Direccion</label>
-            <input type="text" name="street_number" class="form-control" id="location" placeholder="Ingrese Numero" style="border-radius: 5px;">
+            <label for="location" class="form-label" style="font-weight: bold;">Número de calle</label>
+            <input type="text" name="street_number" class="form-control" id="location" placeholder="Ingrese Numero" style="border-radius: 5px;" maxlength="10" required>
         </div>
-        <div class="mb-3">
+        <!-- <div class="mb-3">
             <label for="description" class="form-label" style="font-weight: bold;">Descripcion del Salon</label>
-            <textarea class="form-control" name="description" id="description" rows="3" placeholder="Ingrese Descripcion del Salon" style="border-radius: 5px;"></textarea>
-        </div>
+            <textarea class="form-control" name="description" id="description" rows="3" placeholder="Ingrese Descripcion del Salon" style="border-radius: 5px;" maxlength="2200"></textarea required>
+        </div> -->
         <div class="mb-3">
             <label for="alias" class="form-label" style="font-weight: bold;">Alias de Mercado Pago</label>
-            <input type="text" name="alias" class="form-control" id="alias" placeholder="Ingrese Alias" style="border-radius: 5px;">
+            <input type="text" name="alias" class="form-control" id="alias" placeholder="Ingrese Alias" style="border-radius: 5px;" maxlength="200" required>
         </div>
         <div>
             <label for="images" name="images" class="form-label" style="font-weight: bold;">Imagen del Salon</label>
