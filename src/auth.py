@@ -16,11 +16,14 @@ def register_user():
     dto = validate_user_dto
     if dto[0] == False:
         flash(dto[1], category='error')
-        return render_template("register_user.html", user=current_user)
+        return redirect(url_for('auth.register_user'))
     
     user = validate_user_dto[1]
     response = AuthService.create_user(user)
-    flash('Usuario creado', category='success')
+    print(response)
+    if response == False:
+        return redirect(url_for('auth.register_user'))
+    flash('Usuario creado, por favor inicie sesion', category='success')
     return render_template("register_user.html", user=current_user)
 @auth.route('/login', methods=["GET", "POST"])
 def login_user():
@@ -33,7 +36,7 @@ def login_user():
             flash(res[1], category='error')
             return redirect(url_for('auth.login_user')) #Usando POST-Redirect-GET pattern
 
-        flash("Successfully logged", category='success')
+        flash("sesion iniciada correctamente", category='success')
         # return ["Successfully logged"]
     if not current_user.is_authenticated:
         return render_template('login.html', user=current_user)
@@ -43,8 +46,8 @@ def login_user():
 @auth.route('/logout', methods=["GET"])
 @login_required
 def logout():
-    logout_user()
     flash('Sesión cerrada', category='success')
+    logout_user()
     return redirect("http://localhost:5000/", code=302)
 
 @auth.route('/current')

@@ -22,13 +22,13 @@ class AuthService:
 
     if user_and_number_exists:
       flash("Ya existe un usuario con el mismo correo electrónico y numero de telefono", category="error")
-      return
+      return False
     if user_exists:
       flash("Ya existe un usuario con el mismo correo electrónico", category="error")
-      return
+      return False
     if number_exists:
       flash("Ya existe un usuario con el mismo numero de telefono", category="error")
-      return
+      return False
   
     user.password = BcryptAdapter.hash(password=user.password)
     db.session.add(user)
