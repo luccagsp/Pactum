@@ -94,4 +94,4 @@ def edit_eventhall(eventhallId):
         flash(dto[1], category='error')
         return redirect(url_for('eventhall.edit_eventhall', eventhallId=eventhallId))
     flash('Datos cambiados correctamente', category='success')
-    return redirect(url_for('eventhall.edit_eventhall', eventhallId=eventhallId))
+    return redirect(url_for('eventhall.eventhall_list', eventhallId=eventhallId))

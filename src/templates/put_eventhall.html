@@ -194,8 +194,8 @@
                     <li class="nav-item">
                         <a class="nav-link" href="/logout">Cerrar Sesion</a>
                     </li>
-                    <li>
-                        <a href="#"><svg xmlns="http://www.w3.org/2000/svg" width="100" height="70" viewBox="0 0 24 24" style="fill: rgba(0, 0, 0, 1);transform: ;msFilter:;"><path d="M12 2C6.579 2 2 6.579 2 12s4.579 10 10 10 10-4.579 10-10S17.421 2 12 2zm0 5c1.727 0 3 1.272 3 3s-1.273 3-3 3c-1.726 0-3-1.272-3-3s1.274-3 3-3zm-5.106 9.772c.897-1.32 2.393-2.2 4.106-2.2h2c1.714 0 3.209.88 4.106 2.2C15.828 18.14 14.015 19 12 19s-3.828-.86-5.106-2.228z"></path></svg></a>
+                    <li class="nav-item collapse d-lg-block">
+                        <a href="#"><img class="px-4" src="/static/img/user.png" alt="" style="height: 7vh;"></a>
                     </li>
                     {% else %}
                     <li class="nav-item">
@@ -207,7 +207,6 @@
         </div>
     </nav>
     <!-- HEADER FINAL -->
-
     <div class="d-flex " style="height: 90vh;">
         <!-- SIDEBAR FALSO -->
         <div id="sidebar" class="bg-light h-100 "
@@ -257,7 +256,7 @@
             </ul>
         </div>
         <!-- Contenido -->
-        <form action="/upload/eventhall/{{eventhall.id}}">
+        <form method="POST" enctype="multipart/form-data" action="/update/eventhall/{{eventhall.id}}">
             <div style="flex-grow: 1; background-color: rgb(255, 255, 255); height: 100%;">
                 <div class="row mt-lg-5">
                     <div class="container d-flex justify-content-center w-90">
@@ -279,40 +278,35 @@
                             style="background-color: rgb(240, 241, 152); height: 25%;">
                         </div>
                     </div>
-    
+
                     <input type="file" id="file-input" style="display: none;" accept="image/*" multiple
                         onchange="handleFiles(this.files)" />
-                    <div
-                        class="col-md-6 d-flex flex-column justify-content-around align-items-center align-items-lg-start mb-5">
-                        <div class="cointainer mt-3 col-10 mb-2">
-                            <label class="form-label mt-2" style="font-weight: bold;">Cambia el nombe del
-                                salon</label>
-                            <input type="text" name="name" class="form-control" id="name" placeholder="Ingrese Nombre"
-                                style="border-radius: 5px;">
+
+                        <div 
+                            class="col-md-6 d-flex flex-column justify-content-around align-items-center align-items-lg-start mb-5">
+                            <div class="cointainer mt-3 col-10 mb-2">
+                                <label class="form-label mt-2" style="font-weight: bold;">Cambia el nombe del
+                                    salon</label>
+                                <input type="text" name="name" class="form-control" id="name" placeholder="Ingrese Nombre"
+                                    style="border-radius: 5px;">
+                            </div>
+                            <div class="cointainer col-10 mb-2">
+                                <label class="form-label mt-2" style="font-weight: bold;">Cambia
+                                    Ubicacion</label>
+                                <input type="text" name="street_address" class="form-control mb-3" id="SalonesName" placeholder="Ingrese Calle del Salon"
+                                    style="border-radius: 5px;">
+                                <input type="text" name="street_number" class="form-control" id="SalonesName" placeholder="Ingrese Numero de Calle"
+                                    style="border-radius: 5px;">
+                            </div>
+                            <div class="cointainer col-10 ">
+                                <label class="form-label mt-2" style="font-weight: bold;">Cambia la
+                                    Descripcion</label>
+                                <textarea class="form-control" name="description" id="description" rows="3"
+                                    placeholder="Ingrese Descripcion del Salon" style="border-radius: 5px;"></textarea>
+                            </div>
+                            <button type="submit" style="background-color: #5349e2;" class=" w-20 col-12 btn btn-primary btn-lg rounded-5"> <h5 class="px-4"> <a href="/eventhall_list"></a></h5>Guardar</h5> </button>
                         </div>
-                        <div class="cointainer col-10 mb-2">
-                            <label class="form-label mt-2" style="font-weight: bold;">Cambia
-                                Ubicacion</label>
-                            <input type="text" name="street_address" class="form-control mb-3" id="SalonesName" placeholder="Ingrese Calle del Salon"
-                                style="border-radius: 5px;">
-                            <input type="text" name="street_number" class="form-control" id="SalonesName" placeholder="Ingrese Numero de Calle"
-                                style="border-radius: 5px;">
-                        </div>
-                        <div class="cointainer col-10 ">
-                            <label class="form-label mt-2" style="font-weight: bold;">Cambia la
-                                Descripcion</label>
-                            <textarea class="form-control" name="description" id="description" rows="3"
-                                placeholder="Ingrese Descripcion del Salon" style="border-radius: 5px;"></textarea>
-                        </div>
-                    </div>
-                    <div class="container d-flex justify-content-center mt-5 px-5"><a href="/update/eventhall/{{eventhall.id}}"><button
-                                type="submit" style="background-color: #5349e2;"
-                                class=" w-20 col-12 btn btn-primary btn-lg rounded-5">
-                                <h5 class="px-4">Guardar</h5>
-                            </button></a>
-                    </div>
                 </div>
             </div>
         </form>
-
 </body>
