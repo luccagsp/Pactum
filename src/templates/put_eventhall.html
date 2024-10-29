@@ -1,5 +1,19 @@
-{% extends "base.html" %} {% block title %}Lista de Salones{% endblock %} {% block content%}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pactum</title>
 
+    <!-- Bootstrap -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
+    <!-- Bootstrap Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.5/font/bootstrap-icons.min.css"
+        rel="stylesheet">
+</head>
 <style>
     button {
         background-color: #ffffff00;
@@ -9,7 +23,16 @@
     button:hover {
         background-color: #a6a6a6;
     }
+
+    @media (max-width: 500px) {
+
+        #dropzone,
+        #contenedor {
+            height: 200%;
+        }
+    }
 </style>
+
 <script>
 
     const dropzone = document.getElementById('dropzone');
@@ -121,140 +144,175 @@
         });
     }
 </script>
-<div class="d-flex" style="height: 90vh; margin-top: 10vh;">
-    <!-- SIDEBAR -->
-    <div id="sidebar" class="bg-light h-100"
-        style="width: 15%; border-right: 2px solid rgb(172, 172, 172); transition: all 0.3s;">
-        <div class="mt-3 collapse d-lg-block py-3 text-center">
-            <img src="img/Pactum2.png" alt="">
-        </div>
 
-        <ul class="list-unstyled">
-            <div class="container flex-column d-flex aling-items-center mt-3 mt-lg-0">
-                <button style="background-color: #a6a6a6"
-                    class="d-flex align-items-center px-4 py-3 justify-content-lg-start justify-content-center rounded-2">
-                    <i class="bi-pencil-square me-2"></i>
-                    <span class="sidebar-text collapse d-lg-block ">Editar</span>
+<body style="margin: 0; padding: 0; overflow: hidden; height: 100vh;">
+    <!-- HEADER -->
+    <div class="navbar navbar-expand-lg navbar-light bg-light fixed-top" id="HEADER"
+        style="width: 100%; background-color: #fff; border-bottom: 1px solid rgb(172, 172, 172);">
+        <div class="container-fluid" style="padding-left: 9%; padding-right: 9%;">
+            <div class="d-lg-none">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false"
+                    aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
                 </button>
-                <button
-                    class="d-flex align-items-center px-4 py-3 justify-content-lg-start justify-content-center rounded-2">
-                    <i class="bi-envelope-open me-2"></i>
-                    <span class="sidebar-text collapse d-lg-block">Solicitudes</span>
-                </button>
-                <button
-                    class="d-flex align-items-center px-4 py-3 justify-content-lg-start justify-content-center rounded-2">
-                    <i class="bi-calendar-check me-2"></i>
-                    <span class="sidebar-text collapse d-lg-block">Reservas</span>
-                </button>
-                <button
-                    class="d-flex align-items-center px-4 py-3 justify-content-lg-start justify-content-center rounded-2">
-                    <i class="bi-trash3 me-2"></i>
-                    <span class="sidebar-text collapse d-lg-block">Papelera</span>
-                </button>
+                <li class="nav-item collapse d-lg-none">
+                    <a href="#"><img class="px-4 img-fluid" src="img/user.png" alt=""></a>
+                </li>
             </div>
-        </ul>
+        </div>
     </div>
-    <!-- Contenido -->
-    <div class="row mt-lg-5" style="background-color: rgb(255, 255, 255); height: 100%;">
-        <div class="container d-flex justify-content-center w-90">
-            <H1>Edita tu salon</H1>
-        </div>
-        
-        <form method="POST" enctype="multipart/form-data" action="/update/eventhall/{{eventhall.id}}"
-            class="d-flex flex-row justify-content-around align-items-center align-items-lg-start mb-5">
-            <div class="image col-6">
-                <div id="dropzone"
-                class="border border-primary rounded d-flex align-items-center justify-content-center col-10"
-                style="background-color: #e9f5ff; cursor: pointer; position: relative; height: 90%;"
-                ondragover="event.preventDefault()" onclick="triggerFileUpload()">
-                <span class="text-primary" style="font-size: 100%;">+Sube Imagen De Salon</span>
-
-                <input
-                type="file"
-                name='files[]'
-                id="file-input"
-                class="form-control"
-                autocomplete="off"
-                accept="image/png, image/gif, image/jpeg, image/webp, image/jpg" 
-                multiple
-                style="display: none;"
-                onchange="handleFiles(this.files)"
-                />
+    <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top position-fixed" id="HEADER"
+        style="width: 100%; background-color: #fff; border-bottom: 1px solid rgb(172, 172, 172);">
+        <div class="container-fluid" style="padding-left: 9%; padding-right: 9%;">
+            <div class="d-lg-none">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false"
+                    aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <li class="nav-item collapse d-lg-none">
+                    <a href="#"><img class="px-4 img-fluid" src="/static/img/user.png" alt=""></a>
+                </li>
             </div>
-            <div id="image-container" class="d-flex flex-wrap overflow-auto border rounded col-10"
-                style="background-color: rgb(240, 241, 152); height: 35%;">
-            </div>
-            </div>
-            <div class="data col-6">
-                <div class="mt-3  mb-2">
-                    <label for="SalonesName" class="form-label mt-2" style="font-weight: bold;">Nombre</label>
-                    <input type="text" class="form-control" id="SalonesName" placeholder="Ingrese Nombre" name="name"
-                        style="border-radius: 5px;" value="{{eventhall.name}}">
-                </div>
-                <!-- <div class="col-10 mb-2">
-                        <label for="SalonesName" class="form-label mt-2" style="font-weight: bold;">Cambia
-                            Ubicacion</label>
-                        <input type="text" class="form-control" id="SalonesName" placeholder="Ingrese Ubicacion"
-                            style="border-radius: 5px;">
-                    </div> -->
-                <div class=" ">
-                    <label for="SalonesName" class="form-label mt-2" style="font-weight: bold;">Descripción</label>
-                    <textarea class="form-control" id="description" name="description" rows="3"
-                        placeholder="Ingrese Descripcion del Salon"
-                        style="border-radius: 5px;">{{eventhall.description}}</textarea>
-                </div>
-            </div>
-
-        </form>
-        
-        <button type="submit" style="background-color: #5349e2;"
-            class=" w-20 col-12 btn btn-primary btn-lg rounded-5"
-            onclick="submit()">
-            Guardar
-        </button>
-        <div class="grid-container">
-            {%for image in eventhall.images%}
-            <div class="grid-item">
-                <a href="{{image.file_url}}">
-                    <img src="{{image.file_url}}" alt="Image {{image.id}}">
+            <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
+                <a class="navbar-brand" href="/">
+                    <img src="/static/img/Pactum2.png" alt="" style="height: 10vh;">
                 </a>
-                <p class="delete-button">eliminar</p>
+                <form class="d-flex mx-auto" style="width: 50%;">
+                    <input class="form-control rounded-5 py-2 mt-3 w-100" type="search" placeholder="Buscar"
+                        aria-label="Search" style="background-color: rgba(255, 255, 255, 0.53);">
+                </form>
+                <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/eventhall_list">Salones</a>
+                    </li>
+                    {% if user.is_authenticated %}
+                    <li class="nav-item">
+                      <a style="text-align: center;" class="nav-link" href="/register/eventhall">Registrar Salon</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/logout">Cerrar Sesion</a>
+                    </li>
+                    <li>
+                        <a href="#"><svg xmlns="http://www.w3.org/2000/svg" width="100" height="70" viewBox="0 0 24 24" style="fill: rgba(0, 0, 0, 1);transform: ;msFilter:;"><path d="M12 2C6.579 2 2 6.579 2 12s4.579 10 10 10 10-4.579 10-10S17.421 2 12 2zm0 5c1.727 0 3 1.272 3 3s-1.273 3-3 3c-1.726 0-3-1.272-3-3s1.274-3 3-3zm-5.106 9.772c.897-1.32 2.393-2.2 4.106-2.2h2c1.714 0 3.209.88 4.106 2.2C15.828 18.14 14.015 19 12 19s-3.828-.86-5.106-2.228z"></path></svg></a>
+                    </li>
+                    {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="/login">Iniciar Sesion</a>
+                    </li>
+                    {% endif %}
+                </ul>
             </div>
-            {%endfor%}
         </div>
-    </div>
-    <script>
-        function submit(){
-            let forms = document.querySelectorAll("form");
-            console.log(forms)
-            for(var i =0; i < forms.length; i++){
-                forms[i].submit();
-            }
-        }
-    </script>
-    <style>
-        .grid-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            /* Ajusta el tamaño mínimo según sea necesario */
-            grid-gap: 10px;
-            /* Espaciado entre las imágenes */
-            padding: 10px;
-        }
+    </nav>
+    <!-- HEADER FINAL -->
 
-        .grid-item {
-            width: 100%;
-            overflow: hidden;
-            /* Evita que los elementos desborden el contenedor */
-        }
+    <div class="d-flex " style="height: 90vh;">
+        <!-- SIDEBAR FALSO -->
+        <div id="sidebar" class="bg-light h-100 "
+            style="width: 15%; border-right: 2px solid rgb(172, 172, 172); transition: all 0.3s; opacity: 0;">
+            <div class="mt-3 collapse d-lg-block text-center">
+                <img src="/static/img/Pactum2.png" alt="">
+            </div>
+            <ul class="list-unstyled">
+                <div class="container flex-column d-flex aling-items-center mt-3 mt-lg-0">
+                    <button
+                        class="d-flex align-items-center px-4 py-3 justify-content-lg-start justify-content-center rounded-2">
+                        <i class="bi-pencil-square me-2"></i>
+                        <span class="sidebar-text collapse d-lg-block">Editar</span>
+                    </button>
+                </div>
+            </ul>
+        </div>
+        <!-- SIDEBAR -->
+        <div id="sidebar" class="bg-light h-100 position-fixed pt-5 mt-lg-5 mt-0    "
+            style="width: 15%; border-right: 2px solid rgb(172, 172, 172); transition: all 0.3s;">
+            <div class="mt-3 collapse d-lg-block text-center">
+                <img src="/static/img/Pactum2.png" alt="">
+            </div>
+            <ul class="list-unstyled">
+                <div class="container flex-column d-flex aling-items-center mt-3 mt-lg-0">
+                    <button
+                        class="d-flex align-items-center px-4 py-3 justify-content-lg-start justify-content-center rounded-2">
+                        <i class="bi-pencil-square me-2"></i>
+                        <span class="sidebar-text collapse d-lg-block">Editar</span>
+                    </button>
+                    <button style="background-color: #a6a6a6;"
+                        class="d-flex align-items-center px-4 py-3 justify-content-lg-start justify-content-center rounded-2">
+                        <i class="bi-envelope-open me-2"></i>
+                        <span class="sidebar-text collapse d-lg-block">Solicitudes</span>
+                    </button>
+                    <button
+                        class="d-flex align-items-center px-4 py-3 justify-content-lg-start justify-content-center rounded-2">
+                        <i class="bi-calendar-check me-2"></i>
+                        <span class="sidebar-text collapse d-lg-block">Reservas</span>
+                    </button>
+                    <button
+                        class="d-flex align-items-center px-4 py-3 justify-content-lg-start justify-content-center rounded-2">
+                        <i class="bi-trash3 me-2"></i>
+                        <span class="sidebar-text collapse d-lg-block">Papelera</span>
+                    </button>
+                </div>
+            </ul>
+        </div>
+        <!-- Contenido -->
+        <form action="/upload/eventhall/{{eventhall.id}}">
+            <div style="flex-grow: 1; background-color: rgb(255, 255, 255); height: 100%;">
+                <div class="row mt-lg-5">
+                    <div class="container d-flex justify-content-center w-90">
+                        <H1>Edita tu salon</H1>
+                    </div>
+                    <div
+                        class="col-md-6 mt-2 d-flex flex-column align-items-center justify-content-center mt-5 pb-5 pt-3 ps-md-5">
+                        <!-- Aqui esta el contenedor para dropear IMGS -->
+                        <div id="dropzone"
+                            class="border border-primary rounded d-flex align-items-center justify-content-center col-10"
+                            style="background-color: #e9f5ff; cursor: pointer; position: relative; height: 90%; "
+                            ondragover="event.preventDefault()" onclick="triggerFileUpload()">
+                            <span class="text-primary" style="font-size: 100%;">+Sube Imagen De Salon</span>
+                            <input type="file" id="file-input" style="display: none;" accept="image/*" multiple
+                                onchange="handleFiles(this.files)">
+                        </div>
+                        <div id="image-container"
+                            class="d-flex flex-wrap overflow-auto border rounded col-10 d-md-flex d-none"
+                            style="background-color: rgb(240, 241, 152); height: 25%;">
+                        </div>
+                    </div>
+    
+                    <input type="file" id="file-input" style="display: none;" accept="image/*" multiple
+                        onchange="handleFiles(this.files)" />
+                    <div
+                        class="col-md-6 d-flex flex-column justify-content-around align-items-center align-items-lg-start mb-5">
+                        <div class="cointainer mt-3 col-10 mb-2">
+                            <label class="form-label mt-2" style="font-weight: bold;">Cambia el nombe del
+                                salon</label>
+                            <input type="text" name="name" class="form-control" id="name" placeholder="Ingrese Nombre"
+                                style="border-radius: 5px;">
+                        </div>
+                        <div class="cointainer col-10 mb-2">
+                            <label class="form-label mt-2" style="font-weight: bold;">Cambia
+                                Ubicacion</label>
+                            <input type="text" name="street_address" class="form-control mb-3" id="SalonesName" placeholder="Ingrese Calle del Salon"
+                                style="border-radius: 5px;">
+                            <input type="text" name="street_number" class="form-control" id="SalonesName" placeholder="Ingrese Numero de Calle"
+                                style="border-radius: 5px;">
+                        </div>
+                        <div class="cointainer col-10 ">
+                            <label class="form-label mt-2" style="font-weight: bold;">Cambia la
+                                Descripcion</label>
+                            <textarea class="form-control" name="description" id="description" rows="3"
+                                placeholder="Ingrese Descripcion del Salon" style="border-radius: 5px;"></textarea>
+                        </div>
+                    </div>
+                    <div class="container d-flex justify-content-center mt-5 px-5"><a href="/update/eventhall/{{eventhall.id}}"><button
+                                type="submit" style="background-color: #5349e2;"
+                                class=" w-20 col-12 btn btn-primary btn-lg rounded-5">
+                                <h5 class="px-4">Guardar</h5>
+                            </button></a>
+                    </div>
+                </div>
+            </div>
+        </form>
 
-        .grid-item img {
-            width: 100%;
-            /* Ajusta la imagen al ancho del contenedor */
-            height: 200px;
-            /* Ajusta la altura según lo que quieras */
-            object-fit: cover;
-            /* Asegura que la imagen mantenga su proporción y llene el contenedor */
-        }
-    </style>
-    {% endblock %}
+</body>
