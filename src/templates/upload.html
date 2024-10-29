@@ -5,26 +5,23 @@
     {%for image in eventhall.images%}
         <div class="grid-item">
           <a href="{{image.file_url}}">
-            <img src="data:application/octet-stream;base64,{{image.file_data}}" alt="Image {{image.id}}">
+            <img src="{{image.file_url}}" alt="Image {{image.id}}">
           </a>
-          <a href="/upload/delete/{{image.id}}">eliminar</a>
+          <p class="delete-button">eliminar</p>
         </div>
     {%endfor%}
-    <!-- Agrega más imágenes aquí -->
   </div>
 
-    
-
-  <form method="post" action="/upload/{{eventhall.id}}" enctype="multipart/form-data">
+  <form id="uploadForm" method="POST" action="/upload/{{eventhall.id}}" enctype="multipart/form-data">
     <dl>
       <p>
         <input
           type="file"
           name='files[]'
+          id="fileInput"
           class="form-control"
           autocomplete="off"
           accept="image/png, image/gif, image/jpeg, image/webp, image/jpg" 
-          required
           multiple
         />
       </p>
@@ -54,5 +51,64 @@
   }
 
   </style>
+  <div id="preview"></div>
+
+  <script>
+    let selectedFiles = [];
+    const buttons_delete = document.querySelectorAll('.delete-button');
+
+
+    document.getElementById('fileInput').addEventListener('change', function (event) {
+      // Agrega los nuevos archivos seleccionados al array de archivos
+      selectedFiles = [...selectedFiles, ...event.target.files];
+      
+      // Mostrar una vista previa de los archivos seleccionados
+      updatePreview();
   
+      // Limpia el input para permitir seleccionar más archivos en el futuro
+      event.target.value = '';
+    });
+  
+    function updatePreview() {
+      const previewContainer = document.getElementById('preview');
+      previewContainer.innerHTML = ''; // Limpiar el contenido previo
+  
+      selectedFiles.forEach(file => {
+        const fileReader = new FileReader();
+        fileReader.onload = function (e) {
+          const img = document.createElement('img');
+          img.src = e.target.result;
+          img.style.width = '100px';
+          img.style.margin = '10px';
+          previewContainer.appendChild(img);
+        };
+        fileReader.readAsDataURL(file);
+      });
+    }
+  
+    document.getElementById('uploadForm').addEventListener('submit', function (event) {
+      
+      const formData = new FormData();
+      selectedFiles.forEach(file => {
+        formData.append('files[]', file);
+      });
+      
+      // Aquí puedes enviar el formData con fetch o cualquier método
+      console.log('/upload/{{eventhall.id}}')
+      fetch('/upload/{{eventhall.id}}', {
+        method: 'POST',
+        body: formData
+      })
+      .then(response => {
+        location.reload();
+      } )
+      .catch(error => {
+        console.error('Error:', error);
+      });
+      event.preventDefault();
+    });
+    buttons_delete.forEach(button => { button.addEventListener('click', (eventh) => {
+      console.log(event.target)
+    })})
+ </script>
   {% endblock %}

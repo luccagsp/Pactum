@@ -1,8 +1,9 @@
 import shortuuid
 import os
+import io
 import base64
 from datetime import datetime
-from flask import Blueprint, request, render_template, jsonify, flash, redirect, url_for, send_from_directory, current_app
+from flask import Blueprint, request, render_template, send_file, flash, redirect, url_for, send_from_directory, current_app
 from flask_login import login_required, current_user
 from models import User, Eventhall, Image
 from config.objToStr import objToStr
@@ -58,24 +59,45 @@ def upload_image(eventhallId):
     # eventhallId = request.form["eventhallId"]
     
     if eventhall.owner_id != current_user.id:
-        return "Solo los dueños del salón pueden agregar imágenes"
-    file = request.files["file"]
-    if not file:
-        return "Falta 'file'"
-    image_url = query_image(file, eventhallId)
+        flash('Solo los dueños del salón pueden agregar imágenes', category='error')
+        return redirect(url_for('index'))
+    # file = request.files["file"]
     
-    return image_url
+    files = request.files.getlist('files[]')
+    print(files)
+    if not files:
+        flash("Falta 'files[]'", category='error')
+        return redirect(url_for('upload.upload_image', eventhallId=eventhallId))
+    urls = []
+    for img in files:
+        if len(eventhall.images) <= 8:
+            urls.append(query_image(img, eventhallId))
+        else:
+            flash("no se subir más de 8 imágenes por salón", category='error')
+
+    # if len(files) > 1: flash("Imágenes subidas", category='success')
+    # else:              flash("Imágen subida", category='success')
+    flash("peneret", category='error')
+    print("xd")
+    return redirect(url_for('index'))
 
 @upload.route('/upload/view/<filename>', methods=["GET"])
-
 def uploaded_file(filename):
-    image = Image.query.filter_by(filename=filename).first()
-    if not image:
+    imagedb = Image.query.filter_by(filename=filename).first()
+    if not imagedb:
         return "imagen no encontrada", 404
-    if image.deleted_at != None:
+    if imagedb.deleted_at != None:
         return "imagen no encontrada", 404
-    return jsonify({'image': image.file_data})
-    #return send_from_directory(current_app.config['UPLOAD_FOLDER'], filename)
+    data = imagedb.file_data 
+
+    # Decode Base64
+    image_data = base64.b64decode(data)
+    image = io.BytesIO(image_data)
+    
+    return send_file(image, mimetype='image/jpeg') 
+
+    # return jsonify({'image': image.file_data})
+    # #return send_from_directory(current_app.config['UPLOAD_FOLDER'], filename)
 
 @upload.route('/upload/delete/<imageId>')
 def delete(imageId):
@@ -92,11 +114,9 @@ def delete(imageId):
         print(eventhall_ids)
         flash(f'Solo los dueños de salones pueden borrar imagenes', category='error')
         return redirect(url_for('index'))
-    upload_folder = current_app.config['UPLOAD_FOLDER']
 
     db.session.delete(image)
     db.session.commit()
-    os.remove(os.path.join(upload_folder, image.filename))
 
     flash(f'Imagen eliminada exitosamente', category='success')
-    return redirect(url_for('index'))
+    return redirect(url_for('upload.upload_image'))

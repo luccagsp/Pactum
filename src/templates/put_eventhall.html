@@ -172,33 +172,60 @@
                             onchange="handleFiles(this.files)">
                     </div>
                     <input type="submit" value="Submit" class="btn btn-info" />
-
                     <div id="image-container" class="d-flex flex-wrap overflow-auto border rounded col-10"
                         style="background-color: rgb(240, 241, 152); height: 35%;">
                     </div>
                   </form>
+                  
 
                 <input type="file" id="file-input" style="display: none;" accept="image/*" onchange="handleFiles(this.files)" />
-                <div class="col-md-6 d-flex flex-column justify-content-around align-items-center align-items-lg-start mb-5">
-                    <form method="POST" enctype="multipart/form-data" action="/update/eventhall/{{eventhall.id}}">
-                      <div class="cointainer mt-3 col-10 mb-2">
-                          <label for="SalonesName" class="form-label mt-2" style="font-weight: bold;">Cambia el nombe del salon</label>
-                          <input type="text" class="form-control" id="SalonesName" placeholder="Ingrese Nombre" name="name" style="border-radius: 5px;">
-                      </div>
-                      <!-- <div class="cointainer col-10 mb-2">
-                          <label for="SalonesName" class="form-label mt-2" style="font-weight: bold;">Cambia
-                              Ubicacion</label>
-                          <input type="text" class="form-control" id="SalonesName" placeholder="Ingrese Ubicacion"
-                              style="border-radius: 5px;">
-                      </div> -->
-                      <div class="cointainer col-10 ">
-                          <label for="SalonesName" class="form-label mt-2" style="font-weight: bold;">Cambia la descripcion</label>
-                          <textarea class="form-control" id="description" name="description" rows="3" placeholder="Ingrese Descripcion del Salon" style="border-radius: 5px;"></textarea>
-                      </div>
-                      <button type="submit" style="background-color: #5349e2;" class=" w-20 col-12 btn btn-primary btn-lg rounded-5"> <h5 class="px-4">Guardar</h5> </button>
-                    </form>
-
-                </div>
+                <form method="POST" enctype="multipart/form-data" action="/update/eventhall/{{eventhall.id}}" class="col-md-6 d-flex flex-column justify-content-around align-items-center align-items-lg-start mb-5">
+                    <div class="cointainer mt-3 col-10 mb-2">
+                        <label for="SalonesName" class="form-label mt-2" style="font-weight: bold;" >Nombre</label>
+                        <input type="text" class="form-control" id="SalonesName" placeholder="Ingrese Nombre" name="name" style="border-radius: 5px;" value="{{eventhall.name}}">
+                    </div>
+                    <!-- <div class="cointainer col-10 mb-2">
+                        <label for="SalonesName" class="form-label mt-2" style="font-weight: bold;">Cambia
+                            Ubicacion</label>
+                        <input type="text" class="form-control" id="SalonesName" placeholder="Ingrese Ubicacion"
+                            style="border-radius: 5px;">
+                    </div> -->
+                    <div class="cointainer col-10 ">
+                        <label for="SalonesName" class="form-label mt-2" style="font-weight: bold;">Descripción</label>
+                        <textarea class="form-control" id="description" name="description" rows="3" placeholder="Ingrese Descripcion del Salon" style="border-radius: 5px;">{{eventhall.description}}</textarea>
+                    </div>
+                    <button type="submit" style="background-color: #5349e2;" class=" w-20 col-12 btn btn-primary btn-lg rounded-5"> <h5 class="px-4">Guardar</h5> </button>
+                </form>
+                <div class="grid-container">
+                    {%for image in eventhall.images%}
+                        <div class="grid-item">
+                          <a href="{{image.file_url}}">
+                            <img src="{{image.file_url}}" alt="Image {{image.id}}">
+                          </a>
+                          <p class="delete-button">eliminar</p>
+                        </div>
+                    {%endfor%}
+                  </div>
             </div>
         </div>
+        <style>
+            .grid-container {
+              display: grid;
+              grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Ajusta el tamaño mínimo según sea necesario */
+              grid-gap: 10px; /* Espaciado entre las imágenes */
+              padding: 10px;
+            }
+          
+            .grid-item {
+              width: 100%; 
+              overflow: hidden; /* Evita que los elementos desborden el contenedor */
+            }
+          
+            .grid-item img {
+              width: 100%;  /* Ajusta la imagen al ancho del contenedor */
+              height: 200px; /* Ajusta la altura según lo que quieras */
+              object-fit: cover; /* Asegura que la imagen mantenga su proporción y llene el contenedor */
+            }
+          
+            </style>
 {% endblock %}

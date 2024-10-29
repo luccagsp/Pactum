@@ -30,7 +30,7 @@ def frontend(eventhallId):
     if dto[0] == False:
         flash(dto[1], category='error')
         return redirect(url_for('reserve.frontend', eventhallId=eventhallId))
-
+        
     reservation = dto[1]
     if eventhall.instant_booking == False and reservation.url_payment == None:
         flash('Los salones con reserva instantanea desactivada requieren de un comprobante de pago', category='error')

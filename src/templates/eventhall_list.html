@@ -5,37 +5,74 @@
             <div class="d-flex justify-content-center"><h1>Registra salones para que aparezcan aqui</h1></div>
             {% endif %}
             {% for eventhall in user.eventhalls %}
-            <div class="container col-xl-3 col-lg-4 col-12 mx-2 my-2 rounded-3"
-                style="box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.4); background-color: white;">
+            <div class="card col-lg-4 col-md-6 m-0 m-lg-2 col-12   rounded-3"
+                style="background-color: #fff;">
                 <a href="/update/eventhall/{{eventhall.id}}">
-                    <div class="container d-flex justify-content-between" style="background-color: white;">
-                        <img src="/static/img/Pactum2.png" alt="">
-                        <div class="container" style=" display: flex; flex-direction: column; justify-content:center;">
-                            <div class="container col-12">
-                                <p style="font-weight: bold; color: #333;">{{eventhall.name}}</p>
+                    <div class="contenido" style="background-color: white;">
+                        <img class="logo"src="/static/img/Pactum2.png" alt="">
+                        <div class="" style=" display: flex; flex-direction: column; justify-content:center;">
+                            <div class="title">
+                                <p style="font-size: 22px; font-weight: bold; color: #333;">{{eventhall.name}}</p>
                             </div>
-                            <div class="container mt-3 col-12">
-                                <p style="font-weight: bold; color: #333; ">{{eventhall.street_address}} {{eventhall.street_number}}</p>
+                            <div class="info mt-3">
+                                <img src="/static/img/location.svg" alt="location">
+                                <p style="color: #333; ">{{eventhall.street_address}} {{eventhall.street_number}}</p>
                             </div>
-                            <div class="container mt-3 col-12">
-                                <p style="font-weight: bold; color: #333;">{{eventhall.reservation_price}}</p>
+                            <div class="info mt-3">
+                                <img src="/static/img/location.svg" alt="location">
+
+                                <p style="color: #333;">{{eventhall.reservation_price}}</p>
                             </div>
                         </div>
                     </div>
                 </a>
             </div>
             {% endfor %}
-            <div class="container col-xl-3 col-lg-4 col-12 mx-2 my-212 mt-2 rounded-3 d-flex justify-content-center align-items-center"
-                style="box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.4); background-color: rgb(70, 123, 214);">
-                <a href="/register/eventhall"><p style="font-size: xxx-large; color: #fff;">
-                    {% if not user.eventhall %}
-                    +Registar
-                    {% else %}
-                    +Agregrar
-                    {% endif %}
-                </p></a>
+
+            <div class="card col-lg-4 col-md-6 m-0 m-lg-2 col-12   rounded-3 d-flex justify-content-center align-items-center"
+                 style="box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.4); background-color: rgb(70, 123, 214);">
+            <a href="/register/eventhall"><p style="font-size: xxx-large; color: #fff;">
+                {% if not user.eventhall %}
+                +Registar
+                {% else %}
+                +Agregrar
+                {% endif %}
+            </p></a>
             </div>
+
         </div>
     </div>
 </body>
+
+<style>
+    .logo {
+        aspect-ratio: 1/1;
+        width: auto;
+        background-repeat: no-repeat;
+        background-size: contain;
+        object-fit: contain;
+    }
+
+    .contenido {
+        width: 100%;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        
+    }
+    a {
+        text-decoration: none;
+    }
+    p {
+        margin: 0;
+    }
+    .info {
+        display: grid;
+        grid-template-columns: 1fr 10fr;
+        align-items: center;
+    }
+
+    .info img {
+        width: 24px;
+    }
+</style>
 {% endblock %}
