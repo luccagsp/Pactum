@@ -4,6 +4,7 @@ from models import Availability, Eventhall
 from auth_service import AuthService
 from config.objToStr import objToStr
 from db import db
+from upload import query_image
 eventhall = Blueprint('eventhall', __name__)
 
 @eventhall.route('/eventhall_list')
@@ -26,6 +27,7 @@ def create_eventhall():
         return render_template('register_eventhall.html', user=current_user)
     #POST:
     data = request.form.to_dict(flat=True)
+    print(data)
     image = request.files["file"]
     login_user_dto = Eventhall.validate_eventhall(owner_id=current_user.id, **data)
     
@@ -60,7 +62,6 @@ def create_eventhall():
 
 
 
-
 @eventhall.route('/update/eventhall/<eventhallId>', methods=["GET", "POST"])
 @login_required
 def edit_eventhall(eventhallId):
@@ -71,8 +72,25 @@ def edit_eventhall(eventhallId):
     if request.method == "GET":
         return render_template("put_eventhall.html", user=current_user, eventhall=objToStr(eventhall))
     #POST:
+    
     data = request.form.to_dict(flat=True)
+    files = request.files.getlist('files[]')
 
+    empty_files = [file for file in files if file.filename == '' or file.content_length == 0]
+
+    if not empty_files:
+        urls = []
+
+        for img in files:
+            filename = secure_filename(file.filename)
+            if len(eventhall.images) <= 8:
+                urls.append(query_image(img, eventhallId))
+            else:
+                flash("no se subir más de 8 imágenes por salón", category='error')
+                return redirect(url_for('eventhall.edit_eventhall', eventhallId=eventhallId))
+        if len(files) > 1: flash("Imágenes subidas", category='success')
+        else:              flash("Imágen subida", category='success')
+    
     if "owner_id" in data and eventhall.owner != data.get("owner"):
         flash("No se puede cambiar de dueño", category='error')
         return redirect(url_for('eventhall.edit_eventhall', eventhallId=eventhallId))
@@ -83,9 +101,11 @@ def edit_eventhall(eventhallId):
         setattr(eventhall, column, data[column]) # Actualiza eventhall
     destructured_eventhall = objToStr(eventhall)
     destructured_eventhall.pop('id', None)
+    destructured_eventhall.pop('images', None)
     destructured_eventhall.pop('updated_at', None)
     destructured_eventhall.pop('created_at', None)
     destructured_eventhall.pop('eventhallId', None)
+    print(destructured_eventhall)
     eventhall.description = destructured_eventhall['description']
     dto = Eventhall.validate_eventhall(**destructured_eventhall)
     if dto[0] != False:

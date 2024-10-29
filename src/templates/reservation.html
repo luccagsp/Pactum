@@ -161,7 +161,7 @@ select:focus {
 }
 </style>
 {% extends "base.html"%}{% block title %}Reserva{% endblock %}{% block content %}
-    <div class="main-container">
+    <form class="main-container" method="post">
         <div class="left-section">
             <div id="calendar" class="calendar-container">
             </div>
@@ -173,30 +173,34 @@ select:focus {
                 <div class="drag-drop-area" id="drag-drop-area">
                     <p>Arrastra y suelta tu archivo aquí o haz clic para subir.</p>
                     <button id="button_submit"type="button" id="dragDropButton">Subir Archivo</button>
-                    <input type="file" name="url_payment" id="fileInput" accept="image/*" multiple style="display: none;">
+                    <input 
+                    type="file" 
+                    name="url_payment" 
+                    id="fileInput" 
+                    accept="image/*" 
+                    name='file'
+                    style="display: none;">
                 </div>
             </div>
         </div>
 
         <div class="right-section">
-            <form method="post">
-                <h2>Haz tu reserva en PACTUM</h2>
-                <label for="salon">Salón:</label>
-                <input type="text" id="salon" placeholder="{{eventhall.name}}" readonly />
-                
-                <label for="precio">Precio Fijo del Salón:</label>
-                <input type="text" id="precio" placeholder="{{eventhall.reservation_price}}" readonly />
+            <h2>Haz tu reserva en PACTUM</h2>
+            <label for="salon">Salón:</label>
+            <input type="text" id="salon" placeholder="{{eventhall.name}}" readonly />
+            
+            <label for="precio">Precio Fijo del Salón:</label>
+            <input type="text" id="precio" placeholder="{{eventhall.reservation_price}}" readonly />
 
-                <label for="date">Horario:</label>
-                <input type="time" name="time" id="time" />
+            <label for="date">Horario:</label>
+            <input type="time" name="time" id="time" required />
 
-                <label for="date">Seleccionar Fecha:</label>
-                <input type="date" name="date" id="date" />
+            <label for="date">Fecha:</label>
+            <input type="date" name="date" id="date" required />
 
-                <button id="button_submit"type="submit">Enviar</button>
-            </form>
+            <button id="button_submit"type="submit">Enviar</button>
         </div>
-    </div>
+    </form>
     <script src="/static/js/reservation-script.js"></script>
     
 <script>

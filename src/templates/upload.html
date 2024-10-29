@@ -7,7 +7,7 @@
           <a href="{{image.file_url}}">
             <img src="{{image.file_url}}" alt="Image {{image.id}}">
           </a>
-          <p class="delete-button">eliminar</p>
+          <a href="/upload/delete/{{image.id}}" class="delete-button">eliminar</a>
         </div>
     {%endfor%}
   </div>

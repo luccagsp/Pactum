@@ -15,40 +15,58 @@
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 </head>
 <style>
-    .nav-item:hover .nav-link {
-        transition: 700ms;
-        transform: scale(1.4);
-        color: rgb(32, 50, 111);
-    }
+  body {
+    margin: 0;
+  }
 
-    .nav-item {
-        font-weight: 500;
-    }
+  header {
+    position: sticky;
+    width: 100%;
+    z-index: 1000;
+    overflow: hidden;
+    top: 0;
+    background-color: #fff;
+  }
+  nav {
+    background-color: #fff;
+  }
+  .navbar-brand img {
+    width: 55px;
+    height: auto;
+  }
+  .nav-item:hover .nav-link {
+      transition: 700ms;
+      transform: scale(1.4);
+      color: rgb(32, 50, 111);
+  }
+  .nav-item {
+      font-weight: 500;
+  }
 
-    .card:hover img {
-        filter: brightness(60%);
-        transition: 1500ms;
-    }
+  .card:hover img {
+      filter: brightness(60%);
+      transition: 500ms;
+  }
 
-    .card {
-        border-radius: 15px;
-        color: black;
-        /* box-shadow: 0 26px 30px rgba(0, 0, 0, 0.1); */
-        /* background-color: #c1c9a3; */
-    }
+  .card {
+      border-radius: 15px;
+      color: black;
+      /* box-shadow: 0 26px 30px rgba(0, 0, 0, 0.1); */
+      /* background-color: #c1c9a3; */
+  }
 
-    .alert {
-      position: fixed;
-      top: 20px; /* Ajusta según tu preferencia */
-      right: 20px; /* Ajusta según tu preferencia */
-      z-index: 9999; /* Asegura que esté sobre otros elementos */
-      width: auto; /* O establece un ancho específico si lo prefieres */
-    }
+  .alert {
+    position: fixed;
+    top: 20px; /* Ajusta según tu preferencia */
+    right: 20px; /* Ajusta según tu preferencia */
+    z-index: 9999; /* Asegura que esté sobre otros elementos */
+    width: auto; /* O establece un ancho específico si lo prefieres */
+  }
 </style>
 
 <body>
-    <!-- --------------------------------Esto es un HEADER-------------------------------------- -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-light"
+  <header>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light"
         style=" background-color: #fff; border-bottom: 1px solid rgb(172, 172, 172);">
         <div class="container">
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01"
@@ -86,6 +104,7 @@
             </div>
         </div>
     </nav>
+    </header>
 
     {% with messages = get_flashed_messages(with_categories=true) %} {% if
     messages %} {% for category, message in messages %} {% if category ==

@@ -27,8 +27,13 @@ def frontend(eventhall_id):
     # POST request para procesar la reserva
     date = request.form.get('date')
     time = request.form.get('time')
+    file = request.files.get('file')
+    print(file)
     user = current_user 
-
+    
+    if eventhall.instant_booking == False:
+        flash('Los salones con "reserva instantánea" desactivada requieren de un comprobante de pago', category='error')
+        return redirect(url_for('reserve.frontend', eventhall_id=eventhall_id))
     # Crear reserva usando la información proporcionada
     dto = Reservation.from_reserva(
         reservation_time=time, 
@@ -54,6 +59,7 @@ def frontend(eventhall_id):
     db.session.add(reservation)
     db.session.commit()
     flash('Reserva creada exitosamente', category='success')
+    return redirect(url_for('index'))
     return redirect(url_for('reserve.frontend', eventhall_id=eventhall_id))
 
 

@@ -28,7 +28,13 @@
             </div>
             <div class="col-4 text-center ">
                 <h3>{{eventhall.name}}</h3>
-                <p  class="fw-lighter  text-center ">{{eventhall.description}}</p>
+                <p  class="fw-lighter  text-center ">
+                    {% if eventhall.description %}
+                        {{ eventhall.description }}
+                    {% else %}
+                        No hay descripción disponible.
+                    {% endif %}
+                </p>
                 <a type="button" class="btn btn-dark btn-lg" href="{% if current_user.is_authenticated %}{{ url_for('reserve.frontend', eventhall_id=eventhall.id) }}{% else %}{{ url_for('auth.login_user') }}{% endif %}">Reservar</a>
             </div>
             <div class="col-4">

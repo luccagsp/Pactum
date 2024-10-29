@@ -56,8 +56,7 @@ def upload_image(eventhallId):
         return render_template('upload.html', user=current_user, eventhall=eventhall)
     
     #POST:
-    # eventhallId = request.form["eventhallId"]
-    
+
     if eventhall.owner_id != current_user.id:
         flash('Solo los dueños del salón pueden agregar imágenes', category='error')
         return redirect(url_for('index'))
@@ -74,12 +73,12 @@ def upload_image(eventhallId):
             urls.append(query_image(img, eventhallId))
         else:
             flash("no se subir más de 8 imágenes por salón", category='error')
+            return redirect(url_for('eventhall.edit_eventhall', eventhallId=eventhallId))
 
-    # if len(files) > 1: flash("Imágenes subidas", category='success')
-    # else:              flash("Imágen subida", category='success')
-    flash("peneret", category='error')
-    print("xd")
-    return redirect(url_for('index'))
+    if len(files) > 1: flash("Imágenes subidas", category='success')
+    else:              flash("Imágen subida", category='success')
+    
+    return redirect(url_for('eventhall.edit_eventhall', eventhallId=eventhallId))
 
 @upload.route('/upload/view/<filename>', methods=["GET"])
 def uploaded_file(filename):
