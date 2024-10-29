@@ -72,7 +72,7 @@ def reservation(id):
         return ["Error: Event hall not found"]
     return render_template("reservation.html", user=current_user, eventhall=eventhall)
 
-if __name__ == "__main__":
+def main():
     from pathlib import Path
     from os import path
     from config.bcrypt_adapter import BcryptAdapter
@@ -92,3 +92,7 @@ if __name__ == "__main__":
         app.run(debug=True ,port=5000)
     else:
         app.run(debug=True ,port=5000)
+
+
+if __name__ == "__main__":
+    main()
