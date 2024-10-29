@@ -257,59 +257,62 @@
             </ul>
         </div>
         <!-- Contenido -->
-        <div style="flex-grow: 1; background-color: rgb(255, 255, 255); height: 100%;">
-            <div class="row mt-lg-5">
-                <div class="container d-flex justify-content-center w-90">
-                    <H1>Edita tu salon</H1>
-                </div>
-                <div
-                    class="col-md-6 mt-2 d-flex flex-column align-items-center justify-content-center mt-5 pb-5 pt-3 ps-md-5">
-                    <!-- Aqui esta el contenedor para dropear IMGS -->
-                    <div id="dropzone"
-                        class="border border-primary rounded d-flex align-items-center justify-content-center col-10"
-                        style="background-color: #e9f5ff; cursor: pointer; position: relative; height: 90%; "
-                        ondragover="event.preventDefault()" onclick="triggerFileUpload()">
-                        <span class="text-primary" style="font-size: 100%;">+Sube Imagen De Salon</span>
-                        <input type="file" id="file-input" style="display: none;" accept="image/*" multiple
-                            onchange="handleFiles(this.files)">
+        <form action="/upload/eventhall/{{eventhall.id}}">
+            <div style="flex-grow: 1; background-color: rgb(255, 255, 255); height: 100%;">
+                <div class="row mt-lg-5">
+                    <div class="container d-flex justify-content-center w-90">
+                        <H1>Edita tu salon</H1>
                     </div>
-                    <div id="image-container"
-                        class="d-flex flex-wrap overflow-auto border rounded col-10 d-md-flex d-none"
-                        style="background-color: rgb(240, 241, 152); height: 25%;">
+                    <div
+                        class="col-md-6 mt-2 d-flex flex-column align-items-center justify-content-center mt-5 pb-5 pt-3 ps-md-5">
+                        <!-- Aqui esta el contenedor para dropear IMGS -->
+                        <div id="dropzone"
+                            class="border border-primary rounded d-flex align-items-center justify-content-center col-10"
+                            style="background-color: #e9f5ff; cursor: pointer; position: relative; height: 90%; "
+                            ondragover="event.preventDefault()" onclick="triggerFileUpload()">
+                            <span class="text-primary" style="font-size: 100%;">+Sube Imagen De Salon</span>
+                            <input type="file" id="file-input" style="display: none;" accept="image/*" multiple
+                                onchange="handleFiles(this.files)">
+                        </div>
+                        <div id="image-container"
+                            class="d-flex flex-wrap overflow-auto border rounded col-10 d-md-flex d-none"
+                            style="background-color: rgb(240, 241, 152); height: 25%;">
+                        </div>
                     </div>
-                </div>
-
-                <input type="file" id="file-input" style="display: none;" accept="image/*" multiple
-                    onchange="handleFiles(this.files)" />
-                <div
-                    class="col-md-6 d-flex flex-column justify-content-around align-items-center align-items-lg-start mb-5">
-                    <div class="cointainer mt-3 col-10 mb-2">
-                        <label class="form-label mt-2" style="font-weight: bold;">Cambia el nombe del
-                            salon</label>
-                        <input type="text" name="name" class="form-control" id="name" placeholder="Ingrese Nombre"
-                            style="border-radius: 5px;">
+    
+                    <input type="file" id="file-input" style="display: none;" accept="image/*" multiple
+                        onchange="handleFiles(this.files)" />
+                    <div
+                        class="col-md-6 d-flex flex-column justify-content-around align-items-center align-items-lg-start mb-5">
+                        <div class="cointainer mt-3 col-10 mb-2">
+                            <label class="form-label mt-2" style="font-weight: bold;">Cambia el nombe del
+                                salon</label>
+                            <input type="text" name="name" class="form-control" id="name" placeholder="Ingrese Nombre"
+                                style="border-radius: 5px;">
+                        </div>
+                        <div class="cointainer col-10 mb-2">
+                            <label class="form-label mt-2" style="font-weight: bold;">Cambia
+                                Ubicacion</label>
+                            <input type="text" name="street_address" class="form-control mb-3" id="SalonesName" placeholder="Ingrese Calle del Salon"
+                                style="border-radius: 5px;">
+                            <input type="text" name="street_number" class="form-control" id="SalonesName" placeholder="Ingrese Numero de Calle"
+                                style="border-radius: 5px;">
+                        </div>
+                        <div class="cointainer col-10 ">
+                            <label class="form-label mt-2" style="font-weight: bold;">Cambia la
+                                Descripcion</label>
+                            <textarea class="form-control" name="description" id="description" rows="3"
+                                placeholder="Ingrese Descripcion del Salon" style="border-radius: 5px;"></textarea>
+                        </div>
                     </div>
-                    <div class="cointainer col-10 mb-2">
-                        <label class="form-label mt-2" style="font-weight: bold;">Cambia
-                            Ubicacion</label>
-                        <input type="text" name="street_address" class="form-control mb-3" id="SalonesName" placeholder="Ingrese Calle del Salon"
-                            style="border-radius: 5px;">
-                        <input type="text" name="street_number" class="form-control" id="SalonesName" placeholder="Ingrese Numero de Calle"
-                            style="border-radius: 5px;">
+                    <div class="container d-flex justify-content-center mt-5 px-5"><a href="/update/eventhall/{{eventhall.id}}"><button
+                                type="submit" style="background-color: #5349e2;"
+                                class=" w-20 col-12 btn btn-primary btn-lg rounded-5">
+                                <h5 class="px-4">Guardar</h5>
+                            </button></a>
                     </div>
-                    <div class="cointainer col-10 ">
-                        <label class="form-label mt-2" style="font-weight: bold;">Cambia la
-                            Descripcion</label>
-                        <textarea class="form-control" name="description" id="description" rows="3"
-                            placeholder="Ingrese Descripcion del Salon" style="border-radius: 5px;"></textarea>
-                    </div>
-                </div>
-                <div class="container d-flex justify-content-center mt-5 px-5"><a href="/update/eventhall/{{eventhall.id}}"><button
-                            type="submit" style="background-color: #5349e2;"
-                            class=" w-20 col-12 btn btn-primary btn-lg rounded-5">
-                            <h5 class="px-4">Guardar</h5>
-                        </button></a>
                 </div>
             </div>
-        </div>
+        </form>
+
 </body>
