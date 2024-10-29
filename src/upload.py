@@ -118,4 +118,4 @@ def delete(imageId):
     db.session.commit()
 
     flash(f'Imagen eliminada exitosamente', category='success')
-    return redirect(url_for('upload.upload_image'))
+    return redirect(url_for('index'))
