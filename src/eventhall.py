@@ -8,6 +8,7 @@ eventhall = Blueprint('eventhall', __name__)
 
 @eventhall.route('/eventhall_list')
 def eventhall_list():
+    
     return render_template('eventhall_list.html', user=current_user)
 
 @eventhall.route('/eventhall/<id>', methods=["GET"])

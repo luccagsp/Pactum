@@ -11,35 +11,51 @@ def err(error):
     flash(error, category=error)
 
 
-@reserve.route('/reserve/<eventhallId>', methods=["POST", "GET"])
+@reserve.route('/reserve/<int:eventhall_id>', methods=["POST", "GET"])
 @login_required
-def frontend(eventhallId):
-    if request.method == 'GET':
-        return render_template('reservar.html', user=current_user)
-    #POST:
-    date=request.form.get('date')
-    time=request.form.get('time')
-    user = current_user 
-    eventhall = Eventhall.query.filter_by(id=eventhallId).first()
-
+def frontend(eventhall_id):
+    # Buscar el salón con el id proporcionado
+    eventhall = Eventhall.query.filter_by(id=eventhall_id).first()
+    
     if not eventhall:
         flash('Salón no encontrado', category='error')
-        return redirect(url_for('reserve.frontend', eventhallId=eventhallId))
+        return redirect(url_for('index'))
+
+    if request.method == 'GET':
+        return render_template('reservation.html', user=current_user, eventhall=eventhall)
     
-    dto = Reservation.from_reserva(reservation_time=time, reservation_date=date, eventhall_id=eventhallId, user_id=user.id, reservation_price=eventhall.reservation_price)
+    # POST request para procesar la reserva
+    date = request.form.get('date')
+    time = request.form.get('time')
+    user = current_user 
+
+    # Crear reserva usando la información proporcionada
+    dto = Reservation.from_reserva(
+        reservation_time=time, 
+        reservation_date=date, 
+        eventhall_id=eventhall_id, 
+        user_id=user.id, 
+        reservation_price=eventhall.reservation_price
+    )
+
+    # Comprobar si la reserva fue creada correctamente
     if dto[0] == False:
         flash(dto[1], category='error')
-        return redirect(url_for('reserve.frontend', eventhallId=eventhallId))
-        
+        return redirect(url_for('reserve.frontend', eventhall_id=eventhall_id))
+
     reservation = dto[1]
+
+    # Validar si se necesita comprobante de pago
     if eventhall.instant_booking == False and reservation.url_payment == None:
-        flash('Los salones con reserva instantanea desactivada requieren de un comprobante de pago', category='error')
-        return redirect(url_for('reserve.frontend', eventhallId=eventhallId))
-    print(objToStr(reservation))
+        flash('Los salones con reserva instantánea desactivada requieren de un comprobante de pago', category='error')
+        return redirect(url_for('reserve.frontend', eventhall_id=eventhall_id))
+
+    # Guardar la reserva en la base de datos
     db.session.add(reservation)
     db.session.commit()
     flash('Reserva creada exitosamente', category='success')
-    return redirect(url_for('reserve.frontend', eventhallId=eventhallId))
+    return redirect(url_for('reserve.frontend', eventhall_id=eventhall_id))
+
 
 @reserve.route("/reserve/<reserveId>", methods=["DELETE"])
 @login_required

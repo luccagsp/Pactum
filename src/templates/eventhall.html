@@ -29,7 +29,7 @@
             <div class="col-4 text-center ">
                 <h3>{{eventhall.name}}</h3>
                 <p  class="fw-lighter  text-center ">{{eventhall.description}}</p>
-                <a type="button" class="btn btn-dark btn-lg" href="/reservation/{{eventhall.id}}">Reservar</a>
+                <a type="button" class="btn btn-dark btn-lg" href="{% if current_user.is_authenticated %}{{ url_for('reserve.frontend', eventhall_id=eventhall.id) }}{% else %}{{ url_for('auth.login_user') }}{% endif %}">Reservar</a>
             </div>
             <div class="col-4">
                 <div class="row">

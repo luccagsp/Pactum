@@ -28,16 +28,9 @@
                 </a>
             </div>
             {% endfor %}
-
-            <div class="card col-lg-4 col-md-6 m-0 m-lg-2 col-12   rounded-3 d-flex justify-content-center align-items-center"
-                 style="box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.4); background-color: rgb(70, 123, 214);">
-            <a href="/register/eventhall"><p style="font-size: xxx-large; color: #fff;">
-                {% if not user.eventhall %}
-                +Registar
-                {% else %}
-                +Agregrar
-                {% endif %}
-            </p></a>
+            <div class="container col-xl-3 col-lg-4 col-12 mx-2 my-212 mt-2 rounded-3 d-flex justify-content-center align-items-center"
+                style="box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.4); background-color: rgb(70, 123, 214);">
+                <a href="{% if current_user.is_authenticated %}{{ url_for('register_eventhall') }}{% else %}{{ url_for('auth.login_user') }}{% endif %}"><p style="font-size: xxx-large; color: #fff;">+Registar</p></a>
             </div>
 
         </div>
