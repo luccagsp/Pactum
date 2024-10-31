@@ -17,7 +17,7 @@ def add_availability(eventhallId):
     data = request.form
     checkedData = validate_json_hours_structure(data)
     if checkedData[0] == False:
-        flash(checkedData[1], category='error')
+        flash(checkedData[1], category='danger')
         return redirect(url_for('availability.availability_frontend'))
     availabilityExists = Availability.query.filter_by(eventhall_id=eventhallId).first()
     if availabilityExists:

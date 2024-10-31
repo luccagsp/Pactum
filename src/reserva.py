@@ -18,7 +18,7 @@ def frontend(eventhall_id):
     eventhall = Eventhall.query.filter_by(id=eventhall_id).first()
     
     if not eventhall:
-        flash('Salón no encontrado', category='error')
+        flash('Salón no encontrado', category='danger')
         return redirect(url_for('index'))
 
     if request.method == 'GET':
@@ -32,7 +32,7 @@ def frontend(eventhall_id):
     user = current_user 
     
     if eventhall.instant_booking == False:
-        flash('Los salones con "reserva instantánea" desactivada requieren de un comprobante de pago', category='error')
+        flash('Los salones con "reserva instantánea" desactivada requieren de un comprobante de pago', category='danger')
         return redirect(url_for('reserve.frontend', eventhall_id=eventhall_id))
     # Crear reserva usando la información proporcionada
     dto = Reservation.from_reserva(
@@ -45,14 +45,14 @@ def frontend(eventhall_id):
 
     # Comprobar si la reserva fue creada correctamente
     if dto[0] == False:
-        flash(dto[1], category='error')
+        flash(dto[1], category='danger')
         return redirect(url_for('reserve.frontend', eventhall_id=eventhall_id))
 
     reservation = dto[1]
 
     # Validar si se necesita comprobante de pago
     if eventhall.instant_booking == False and reservation.url_payment == None:
-        flash('Los salones con reserva instantánea desactivada requieren de un comprobante de pago', category='error')
+        flash('Los salones con reserva instantánea desactivada requieren de un comprobante de pago', category='danger')
         return redirect(url_for('reserve.frontend', eventhall_id=eventhall_id))
 
     # Guardar la reserva en la base de datos

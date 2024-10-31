@@ -15,7 +15,7 @@ def register_user():
     validate_user_dto = User.from_user(**data)
     dto = validate_user_dto
     if dto[0] == False:
-        flash(dto[1], category='error')
+        flash(dto[1], category='danger')
         return redirect(url_for('auth.register_user'))
     
     user = validate_user_dto[1]
@@ -33,7 +33,7 @@ def login_user():
 
         res = AuthService.log_in_user(login_user_dto)
         if res[0] == False:
-            flash(res[1], category='error')
+            flash(res[1], category='danger')
             return redirect(url_for('auth.login_user')) #Usando POST-Redirect-GET pattern
 
         flash("sesion iniciada correctamente", category='success')

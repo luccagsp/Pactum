@@ -7,6 +7,16 @@ from db import db
 from upload import query_image
 eventhall = Blueprint('eventhall', __name__)
 
+def isempty(files):
+    for file in files:
+        if file.filename == '':
+            print("1")
+            return True
+        if file.content_type == 'application/octet-stream': 
+            print("3")
+            return True
+    return False
+
 @eventhall.route('/eventhall_list')
 def eventhall_list():
     
@@ -32,11 +42,11 @@ def create_eventhall():
     login_user_dto = Eventhall.validate_eventhall(owner_id=current_user.id, **data)
     
     if login_user_dto[0] == False:
-        flash(login_user_dto[1], category='error')
+        flash(login_user_dto[1], category='danger')
         return redirect(url_for('eventhall.create_eventhall'))
     print(login_user_dto)
     if not image:
-        flash('Falta cargar imagen', category='error')
+        flash('Falta cargar imagen', category='danger')
         return redirect(url_for('eventhall.create_eventhall'))
 
     
@@ -45,29 +55,12 @@ def create_eventhall():
     flash('Salón creado exitosamente', category='success')
     return redirect(url_for('eventhall.create_eventhall'))
 
-
-# @auth.route('/register/eventhall', methods=["GET", "POST"])
-# @login_required
-# def register_eventhall():
-#     data = request.get_json()
-#     userId = current_user.id
-#     validate_hall_dto = Eventhall.validate_eventhall(**data, owner=userId)
-#     if validate_hall_dto[0] != None:
-#         return validate_hall_dto
-#     eventhall = validate_hall_dto[1]
-#     print(userId, eventhall)
-#     AuthService.create_eventhall(eventhall)
-
-#     return render_template("index.html")
-
-
-
 @eventhall.route('/update/eventhall/<eventhallId>', methods=["GET", "POST"])
 @login_required
 def edit_eventhall(eventhallId):
     eventhall = Eventhall.query.filter_by(id=eventhallId).first()  
     if not eventhall:
-        flash(f"Event hall with ID '{eventhallId}' not found", category='error')
+        flash(f"Event hall with ID '{eventhallId}' not found", category='danger')
         return redirect(url_for('index'))
     if request.method == "GET":
         return render_template("put_eventhall.html", user=current_user, eventhall=objToStr(eventhall))
@@ -75,27 +68,28 @@ def edit_eventhall(eventhallId):
     
     data = request.form.to_dict(flat=True)
     files = request.files.getlist('files[]')
-
-    empty_files = [file for file in files if file.filename == '' or file.content_length == 0]
-
+    print(files)
+    empty_files =  isempty(files)
+    print(empty_files)
     if not empty_files:
+        print("entro aca")
         urls = []
 
         for img in files:
-            filename = secure_filename(file.filename)
+            filename = img.filename
             if len(eventhall.images) <= 8:
                 urls.append(query_image(img, eventhallId))
             else:
-                flash("no se subir más de 8 imágenes por salón", category='error')
+                flash("no se subir más de 8 imágenes por salón", category='danger')
                 return redirect(url_for('eventhall.edit_eventhall', eventhallId=eventhallId))
         if len(files) > 1: flash("Imágenes subidas", category='success')
         else:              flash("Imágen subida", category='success')
     
     if "owner_id" in data and eventhall.owner != data.get("owner"):
-        flash("No se puede cambiar de dueño", category='error')
+        flash("No se puede cambiar de dueño", category='danger')
         return redirect(url_for('eventhall.edit_eventhall', eventhallId=eventhallId))
     if current_user.id != eventhall.owner_id:
-        flash(f"Solo se pueden cambiar tus salones", category='error')
+        flash(f"Solo se pueden cambiar tus salones", category='danger')
         return redirect(url_for('eventhall.edit_eventhall', eventhallId=eventhallId))
     for column in data:
         setattr(eventhall, column, data[column]) # Actualiza eventhall
@@ -111,7 +105,7 @@ def edit_eventhall(eventhallId):
     if dto[0] != False:
         db.session.commit()
     else:
-        flash(dto[1], category='error')
+        flash(dto[1], category='danger')
         return redirect(url_for('eventhall.edit_eventhall', eventhallId=eventhallId))
     flash('Datos cambiados correctamente', category='success')
     return redirect(url_for('eventhall.edit_eventhall', eventhallId=eventhallId))

@@ -29,7 +29,7 @@ app.config["SECRET_KEY"] = envs.SECRET
 app.config['MAX_CONTENT_LENGTH'] = 5 * 1024 * 1024  # 5 MB de limite
 @app.errorhandler(RequestEntityTooLarge)
 def request_entity_too_large(error):
-    flash('Archivo demasiado grande. Tamaño máximo: 5MB', category='error')
+    flash('Archivo demasiado grande. Tamaño máximo: 5MB', category='danger')
     return 'Archivo demasiado grande. Tamaño máximo: 5MB', 413
 
 # Inicializando BBDD y despúes importando sus modelos y servicios

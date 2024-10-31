@@ -22,7 +22,7 @@ def allowed_file(filename):
 def query_image(file, eventhallId, type_image='image'):
     filename = secure_filename(file.filename)
     if not allowed_file(filename):
-        flash(f"Extensión de 'file' invalida. Extensiones validas: {ALLOWED_EXTENSIONS}")
+        flash(f"Extensión de 'file' invalida. Extensiones validas: {ALLOWED_EXTENSIONS}", category='danger')
         return f"Extensión de 'file' invalida. Extensiones validas: {ALLOWED_EXTENSIONS}"
     upload_folder = current_app.config['UPLOAD_FOLDER']
     
@@ -47,10 +47,10 @@ def query_image(file, eventhallId, type_image='image'):
 def upload_image(eventhallId):
     eventhall = Eventhall.query.filter_by(id=eventhallId).first()
     if not eventhall:
-        flash('salón de eventos no encontrado', category='error')
+        flash('salón de eventos no encontrado', category='danger')
         return redirect(url_for('index'))
     if current_user.eventhalls == []:
-        flash('Para subir imagenes necesitas salones asociados a tu usuario', category='error')
+        flash('Para subir imagenes necesitas salones asociados a tu usuario', category='danger')
         return redirect(url_for('index'))
     if request.method == "GET":
         return render_template('upload.html', user=current_user, eventhall=eventhall)
@@ -58,21 +58,21 @@ def upload_image(eventhallId):
     #POST:
 
     if eventhall.owner_id != current_user.id:
-        flash('Solo los dueños del salón pueden agregar imágenes', category='error')
+        flash('Solo los dueños del salón pueden agregar imágenes', category='danger')
         return redirect(url_for('index'))
     # file = request.files["file"]
     
     files = request.files.getlist('files[]')
     print(files)
     if not files:
-        flash("Falta 'files[]'", category='error')
+        flash("Falta 'files[]'", category='danger')
         return redirect(url_for('upload.upload_image', eventhallId=eventhallId))
     urls = []
     for img in files:
         if len(eventhall.images) <= 8:
             urls.append(query_image(img, eventhallId))
         else:
-            flash("no se subir más de 8 imágenes por salón", category='error')
+            flash("no se subir más de 8 imágenes por salón", category='danger')
             return redirect(url_for('eventhall.edit_eventhall', eventhallId=eventhallId))
 
     if len(files) > 1: flash("Imágenes subidas", category='success')
@@ -103,15 +103,15 @@ def delete(imageId):
     print(current_app.config['UPLOAD_FOLDER'])
     image = Image.query.filter_by(id=imageId).first()
     if not image:
-        flash(f'Imagen con id:"{imageId}", no encontrada', category='error')
+        flash(f'Imagen con id:"{imageId}", no encontrada', category='danger')
         return redirect(url_for('index'))
     if image.deleted_at != None:
-        flash(f'Imagen con id:"{imageId}", actualmente eliminada', category='error')
+        flash(f'Imagen con id:"{imageId}", actualmente eliminada', category='danger')
         return redirect(url_for('index'))
     eventhall_ids = [eventhall.id for eventhall in current_user.eventhalls]
     if image.eventhall_id not in eventhall_ids:
         print(eventhall_ids)
-        flash(f'Solo los dueños de salones pueden borrar imagenes', category='error')
+        flash(f'Solo los dueños de salones pueden borrar imagenes', category='danger')
         return redirect(url_for('index'))
 
     db.session.delete(image)
