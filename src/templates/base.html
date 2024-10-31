@@ -68,13 +68,14 @@
   <body>
     <!-- HEADER -->
     <nav
-      class="navbar navbar-expand-lg navbar-light bg-light position-sticky"
+      class="navbar navbar-expand-lg navbar-light bg-light navbar-sticky"
       id="HEADER"
       style="
         width: 100%;
         background-color: #fff;
         border-bottom: 1px solid rgb(172, 172, 172);
         top: 0;
+        z-index: 10;
       "
     >
       <div class="container-fluid" style="padding-left: 9%; padding-right: 9%">
@@ -102,7 +103,7 @@
           </a>
           <form class="d-flex mx-auto" style="width: 50%">
             <input
-              class="form-control rounded-5 py-2 mt-3 w-100"
+              class="form-control rounded-5 w-100"
               type="search"
               placeholder="Buscar"
               aria-label="Search"
