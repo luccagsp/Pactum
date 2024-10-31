@@ -113,9 +113,9 @@ def delete(imageId):
         print(eventhall_ids)
         flash(f'Solo los dueños de salones pueden borrar imagenes', category='danger')
         return redirect(url_for('index'))
-
+    eventhall_id = image.eventhall_id
     db.session.delete(image)
     db.session.commit()
 
     flash(f'Imagen eliminada exitosamente', category='success')
-    return redirect(url_for('index'))
+    return redirect(url_for('eventhall.edit_eventhall', eventhallId=eventhall_id))

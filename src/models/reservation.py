@@ -17,6 +17,8 @@ class Reservation(db.Model):
     created_at = db.Column(db.DateTime, default=func.now())
     updated_at = db.Column(db.DateTime, default=func.now(), onupdate=func.now())
     deleted_at = db.Column(db.DateTime)
+    user = db.relationship('User', backref='reservations', lazy=True)
+
     @staticmethod
     def from_reserva(eventhall_id, user_id, reservation_date, reservation_time, url_payment=None, state="pending", reservation_price=int, validated_by=None, validated_at=None, deleted_at=None):
         # Validar si el precio es un número

@@ -37,6 +37,8 @@ def create_eventhall():
         return render_template('register_eventhall.html', user=current_user)
     #POST:
     data = request.form.to_dict(flat=True)
+    file = request.files.get('file')
+    
     print(data)
     image = request.files["file"]
     login_user_dto = Eventhall.validate_eventhall(owner_id=current_user.id, **data)
@@ -63,25 +65,21 @@ def edit_eventhall(eventhallId):
         flash(f"Event hall with ID '{eventhallId}' not found", category='danger')
         return redirect(url_for('index'))
     if request.method == "GET":
-        return render_template("put_eventhall.html", user=current_user, eventhall=objToStr(eventhall))
+        return render_template("put_eventhall.html", user=current_user, eventhall=eventhall)
     #POST:
     
     data = request.form.to_dict(flat=True)
     files = request.files.getlist('files[]')
-    print(files)
-    empty_files =  isempty(files)
-    print(empty_files)
-    if not empty_files:
-        print("entro aca")
+
+    if not isempty(files):
         urls = []
 
-        for img in files:
-            filename = img.filename
-            if len(eventhall.images) <= 8:
-                urls.append(query_image(img, eventhallId))
-            else:
-                flash("no se subir más de 8 imágenes por salón", category='danger')
-                return redirect(url_for('eventhall.edit_eventhall', eventhallId=eventhallId))
+        images = [img for img in eventhall.images if img.type_image == "image"]
+        if len(files) + len(images) > 7:
+            flash("no se subir más de 7 imágenes por salón", category='danger')
+            return redirect(url_for('eventhall.edit_eventhall', eventhallId=eventhallId))
+        for img in files: urls.append(query_image(img, eventhallId))
+        
         if len(files) > 1: flash("Imágenes subidas", category='success')
         else:              flash("Imágen subida", category='success')
     

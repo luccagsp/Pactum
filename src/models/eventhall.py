@@ -17,6 +17,14 @@ class Eventhall(db.Model):
     updated_at = db.Column(db.DateTime, default=func.now(), onupdate=func.now())  # Col
     db.relationship('availability', backref='person', lazy=True)
     images = db.relationship('Image', backref='eventhall')
+    reservations = db.relationship('Reservation', backref='eventhall')
+
+    @property
+    def logo(self):
+        return next((image for image in self.images if image.type_image == "logo"), None)
+    @property
+    def thumbail(self):
+        return next((image for image in self.images if image.type_image == "image"), None)
     
     # user = db.relationship('User', back_populates='images')
 

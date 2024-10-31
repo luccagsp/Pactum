@@ -29,16 +29,14 @@
             <label for="alias" class="form-label" style="font-weight: bold;">Alias de Mercado Pago</label>
             <input type="text" name="alias" class="form-control" id="alias" placeholder="Ingrese Alias" style="border-radius: 5px;" maxlength="200" required>
         </div>
-        <div>
-            <label for="images" name="images" class="form-label" style="font-weight: bold;">Imagen del Salon</label>
-            <input
-            type="file"
-            name="file"
+        <div class="mb-3 d-flex " style="flex-direction: column;">
+            <label for="alias" class="form-label" style="font-weight: bold;">Logotipo</label>
+            <input 
+            type="file" 
+            name='file'
             class="form-control"
-            autocomplete="off"
-            accept="image/png, image/gif, image/jpeg, image/webp, image/jpg" 
-            required
-          />
+            id="fileInput" 
+            accept="image/*">
         </div>
         <div>
             <label for="SalonesName" class="form-label mt-2" style="font-weight: bold;">Descripcion</label>

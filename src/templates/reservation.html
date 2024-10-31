@@ -161,7 +161,7 @@ select:focus {
 }
 </style>
 {% extends "base.html"%}{% block title %}Reserva{% endblock %}{% block content %}
-    <form class="main-container" method="post">
+    <form class="main-container" method="post" enctype="multipart/form-data">
         <div class="left-section">
             <div id="calendar" class="calendar-container">
             </div>
@@ -174,10 +174,9 @@ select:focus {
                     <button id="button_submit"type="button" id="dragDropButton">Subir Archivo</button>
                     <input 
                     type="file" 
-                    name="url_payment" 
+                    name='file'
                     id="fileInput" 
                     accept="image/*" 
-                    name='file'
                     style="display: none;">
                 </div>
             </div>

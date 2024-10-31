@@ -2,18 +2,18 @@
     <div class="container gap-3">
         <div class="row">
             {% if not eventhalls %}
-            <h1 class="d-flex justify-content-center">Aun no hay salones registrados</h1>
+            <h1 class="d-flex justify-content-center">Aún no hay salones registrados</h1>
             {% endif %}
             {% for eventhall in eventhalls %}
             <div class="col-12 col-md-6 col-lg-4 pt-3">
                 <!--Aca establezco tamaño y pocision de cada tarjeta en varias resoluciones -->
                 <a href="/eventhall/{{eventhall.id}}" style="text-decoration: none;">
                     <div class="card" style="border-radius: 2%">
-                        <img src="/static/img/dj-express-como-elegir-el-salon-de-eventos-correcto.jpg" class="card-img-top"
-                            alt="/static/img/dj-express-como-elegir-el-salon-de-eventos-correcto.jpg" style="border-radius: 2%;">
+                        <img src="{{eventhall.thumbail.file_url}}" class="thumbail card-img-top"
+                            alt="thumbail" style="border-radius: 2%;">
                         <div class="card-body d-flex align-items-center">
-                            <div class="d-inline-block" style="width:10%;">
-                                <img style="width: 100%;" src="/static/img/Instagram-Icon.png" alt="">
+                            <div class="d-inline-block">
+                                <img class="eventhall-logo" src="{{eventhall.logo.file_url}}" alt="">
                             </div>
                             <div class="px-4">
                                 <h5 class="card-title" style="font-weight: bold;">{{eventhall.name}}</h5>
@@ -31,4 +31,21 @@
 
 
 </body>
+<style>
+    .eventhall-logo {
+        aspect-ratio: 1/1;
+        width: 80px;
+        height: 80px;
+        object-fit: cover;
+    }
+    .thumbail {
+        aspect-ratio: 16/9;
+        object-fit: cover;
+
+    }
+    .card:hover .thumbail {
+        filter: brightness(60%);
+        transition: 500ms;
+    }
+</style>
 {% endblock %}

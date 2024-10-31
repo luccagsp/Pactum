@@ -3,16 +3,18 @@
 
   <div class="grid-container">
     {%for image in eventhall.images%}
+      {%if image.type_image == 'image'%}
         <div class="grid-item">
           <a href="{{image.file_url}}">
             <img src="{{image.file_url}}" alt="Image {{image.id}}">
           </a>
           <a href="/upload/delete/{{image.id}}" class="delete-button">eliminar</a>
         </div>
+      {%endif%}
     {%endfor%}
   </div>
 
-  <form id="uploadForm" method="POST" action="/upload/{{eventhall.id}}" enctype="multipart/form-data">
+  <!-- <form id="uploadForm" method="POST" action="/upload/{{eventhall.id}}" enctype="multipart/form-data">
     <dl>
       <p>
         <input
@@ -29,7 +31,7 @@
     <p>
       <input type="submit" value="Submit" class="btn btn-info" />
     </p>
-  </form>
+  </form> -->
 
   <style>
   .grid-container {

@@ -64,6 +64,13 @@ def index():
 @app.route('/register_eventhall', methods=["GET", "POST"])
 def register_eventhall():
     return render_template("register_eventhall.html", user=current_user)
+@app.route('/reserves/<eventhall_id>')
+def reserves(eventhall_id):
+    eventhall = Eventhall.query.filter_by(id=eventhall_id).first()
+    if not eventhall:
+        flash("Error: Event hall not found", category="danger")
+        return ["Error: Event hall not found"]
+    return render_template("solicitudes_eventhall.html", user=current_user, eventhall=eventhall)
 
 @app.route('/reservation/<id>', methods=["GET", "POST"])
 def reservation(id):
@@ -85,8 +92,8 @@ def main():
             print(f"Database successfully created in '{path.abspath('../instance/project.db')}'")
             db.session.add(User(name="Lucca", surname="Martina", phone='543564609685', email="lccmartina@gmail.com", password=BcryptAdapter.hash(password='luccamartina')))
             db.session.add(User(name="admin", surname="admin", phone='543564609683', email="admin@gmail.com", password=BcryptAdapter.hash(password='admin')))
-            db.session.add(Eventhall(alias="puerto.aventura", name="Puerto aventura", reservation_price=3000, owner_id=1, street_number="123", street_address="Juan de Garay"))
-            db.session.add(Eventhall(alias="asd.aventura", name="Kopate", reservation_price=1232, owner_id=1, instant_booking=False, street_number="1200", street_address="Alfredo Goiran"))
+            # db.session.add(Eventhall(alias="puerto.aventura", name="Puerto aventura", reservation_price=3000, owner_id=1, street_number="123", street_address="Juan de Garay"))
+            # db.session.add(Eventhall(alias="asd.aventura", name="Kopate", reservation_price=1232, owner_id=1, instant_booking=False, street_number="1200", street_address="Alfredo Goiran"))
             db.session.commit()
             print("Successfully created default user for Users and eventhall for Eventhalls")
         app.run(debug=True ,port=5000)

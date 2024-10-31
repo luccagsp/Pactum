@@ -5,7 +5,7 @@
         border: none;
     }
 
-    button:hover {
+    .sidebar-button:hover {
         background-color: #a6a6a6;
     }
 
@@ -53,85 +53,121 @@
                     <i class="bi-pencil-square me-2"></i>
                     <span class="sidebar-text collapse d-lg-block">Editar</span>
                 </button>   
-                <button
-                    class="d-flex ps-4 pe-3 py-3 justify-content-lg-start justify-content-center rounded-2">
+                <a class="sidebar-button d-flex ps-4 pe-3 py-3 justify-content-lg-start justify-content-center rounded-2" href="/reserves/{{eventhall.id}}">
                     <i class="bi-envelope-open me-2"></i>
                     <span class="sidebar-text collapse d-lg-block">Solicitudes</span>
-                </button>
-                <button
-                    class="d-flex ps-4 pe-3 py-3 justify-content-lg-start justify-content-center rounded-2">
+                </a>
+                <a class="sidebar-button d-flex ps-4 pe-3 py-3 justify-content-lg-start justify-content-center rounded-2" href="#">
                     <i class="bi-calendar-check me-2"></i>
                     <span class="sidebar-text collapse d-lg-block">Reservas</span>
-                </button>
-                <button
-                    class="d-flex align-items-center ps-4 pe-3 py-3 justify-content-lg-start justify-content-center rounded-2">
+                </a>
+                <a class="sidebar-button d-flex align-items-center ps-4 pe-3 py-3 justify-content-lg-start justify-content-center rounded-2" href="#">
                     <i class="bi-trash3 me-2"></i>
                     <span class="sidebar-text collapse d-lg-block">Papelera</span>
-                </button>
+                </a>
             </div>
         </ul>
     </div>
     <!-- CONTENIDO -->
-    <div class="container-fluid row flex-md-row px-md-5 px-3 pt-3 custom-container" style="flex-grow: 1; height: 100vh;">
-        <div class="row">
-            
+    <div class="container-fluid row flex-md-row px-md-5 px-3 pt-3 custom-container" style="flex-grow: 1;">
         <form method="POST" enctype="multipart/form-data" action="/update/eventhall/{{eventhall.id}}"
         class="">
-            <div class="image col-6">
-                <input
-                type="file"
-                name='files[]'
-                id="file-input"
-                class="form-control"
-                autocomplete="off"
-                accept="image/png, image/gif, image/jpeg, image/webp, image/jpg" 
-                multiple
-                onchange="handleFiles(this.files)"
-                />
+            <div class="row">
+                <div class="image col-6">
+                    <h3>Subir imágenes</h3>
+                    <input
+                    type="file"
+                    name='files[]'
+                    id="file-input"
+                    class="form-control"
+                    autocomplete="off"
+                    accept="image/png, image/gif, image/jpeg, image/webp, image/jpg" 
+                    multiple
+                    onchange="handleFiles(this.files)"/>
+                    <div class="images-container">
+                        <div class="grid-item">
+                            <a href="{{eventhall.logo.file_url}}"><img src="{{eventhall.logo.file_url}}" class="eventhall-logo" alt="Logotype"></a>
+                            <!-- <a href="/upload/delete/{{eventhall.logo.id}}" class="delete-button">eliminar</a> -->
+                        </div>
+                        {%for image in eventhall.images%}
+                            {%if image.type_image == 'image'%}
+                            <div class="grid-item">
+                                <a href="{{image.file_url}}"><img class="thumbail-img" src="{{image.file_url}}" alt="Image {{image.id}}"></a>
+                                <a href="/upload/delete/{{image.id}}" class="delete-button">eliminar</a>
+                            </div>
+                            {%endif%}
+                        {%endfor%}
+                    </div>
+                </div>
+                <div class="data col-6">
+                    <div class="mt-3  mb-2">
+                        <label for="SalonesName" class="form-label mt-2" style="font-weight: bold;">Nombre</label>
+                        <input type="text" class="form-control" id="SalonesName" placeholder="Ingrese Nombre" name="name"
+                            style="border-radius: 5px;" value="{{eventhall.name}}">
+                    </div>
+                    <div class="cointainer col-10 mb-2">
+                        <label class="form-label mt-2" style="font-weight: bold;">Ubicación</label>
+                        <input type="text" name="street_address" class="form-control mb-3" id="SalonesName" placeholder="Ingrese Calle del Salon"
+                            style="border-radius: 5px;" value="{{eventhall.street_address}}">
+                        <input type="text" name="street_number" class="form-control" id="SalonesName" placeholder="Ingrese Numero de Calle"
+                            style="border-radius: 5px;" value="{{eventhall.street_number}}">
+                    </div>
+                    <label for="SalonesName" class="form-label mt-2" style="font-weight: bold;">Descripción</label>
+                    <textarea class="form-control" id="description" name="description" rows="3"
+                        placeholder="Ingrese Descripcion del Salon"
+                        style="border-radius: 5px;">{{eventhall.description}}</textarea>
+                    <label for="reservation_price" class="form-label mt-2" style="font-weight: bold;">Precio de seña</label>
+                    <input type="text" name="reservation_price" class="form-control" id="SalonesName" placeholder="Ingrese Numero de Calle"
+                    style="border-radius: 5px;" value="{{eventhall.reservation_price}}">
+                </div>
             </div>
-        </div>
-        <div class="data col-6">
-            <div class="mt-3  mb-2">
-                <label for="SalonesName" class="form-label mt-2" style="font-weight: bold;">Nombre</label>
-                <input type="text" class="form-control" id="SalonesName" placeholder="Ingrese Nombre" name="name"
-                    style="border-radius: 5px;" value="{{eventhall.name}}">
+            <div class="d-flex justify-content-center mt-5 px-5">
+            <p><button
+                type="submit" style="background-color: #5349e2;"
+                class=" w-20 col-12 btn btn-primary btn-lg rounded-5 px-5">
+                Guardar
+            </button></p>
             </div>
-            <div class="cointainer col-10 mb-2">
-                <label class="form-label mt-2" style="font-weight: bold;">Cambia
-                    Ubicacion</label>
-                <input type="text" name="street_address" class="form-control mb-3" id="SalonesName" placeholder="Ingrese Calle del Salon"
-                    style="border-radius: 5px;" value="{{eventhall.street_address}}">
-                <input type="text" name="street_number" class="form-control" id="SalonesName" placeholder="Ingrese Numero de Calle"
-                    style="border-radius: 5px;" value="{{eventhall.street_number}}">
-            </div>
-            <label for="SalonesName" class="form-label mt-2" style="font-weight: bold;">Descripción</label>
-            <textarea class="form-control" id="description" name="description" rows="3"
-                placeholder="Ingrese Descripcion del Salon"
-                style="border-radius: 5px;">{{eventhall.description}}</textarea>
-            <label for="reservation_price" class="form-label mt-2" style="font-weight: bold;">Precio seña</label>
-            <input type="text" name="reservation_price" class="form-control" id="SalonesName" placeholder="Ingrese Numero de Calle"
-            style="border-radius: 5px;" value="{{eventhall.reservation_price}}">
-        </div>
-        <div class="d-flex justify-content-center mt-5 px-5"><p><button
-            type="submit" style="background-color: #5349e2;"
-            class=" w-20 col-12 btn btn-primary btn-lg rounded-5 px-5">
-            Guardar
-        </button></p>
-    </div>
-    </form>
-    <div class="grid-container">
-        {%for image in eventhall.images%}
-        <div class="grid-item">
-            <a href="{{image.file_url}}">
-                <img src="{{image.file_url}}" alt="Image {{image.id}}">
-            </a>
-            <p class="delete-button">eliminar</p>
-        </div>
-        {%endfor%}
-    </div>
-    </div>
+        </form>
         </div>
     </div>
-    
 </div>
+
+<style>
+    .thumbail-img {
+        border-radius: 5%;
+    }
+
+    .images-container{
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        grid-template-rows: repeat(2, 1fr);
+        gap: 10px;
+        margin-top: 10px;
+    }
+
+    .images-container img {
+        width: 100%;
+        aspect-ratio: 1/1;
+        object-fit: cover;
+    }
+
+    .eventhall-logo{
+        border-radius: 50%;
+    }
+    .sidebar-button{
+        text-decoration: none;
+        color: #111;
+    }
+    
+    @media (max-width: 992px) { /* Para pantallas md y más grandes */
+        .images-container{
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            grid-template-rows: repeat(4, 1fr);
+            gap: 10px;
+            margin-top: 10px;
+        }
+    }
+</style>
 {%endblock%}
