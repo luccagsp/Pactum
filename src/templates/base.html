@@ -20,16 +20,61 @@
       href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"
     />
   </head>
+  <style>
+    body {
+      margin: 0;
+    }
+  
+    header {
+      position: sticky;
+      width: 100%;
+      z-index: 1000;
+      overflow: hidden;
+      top: 0;
+      background-color: #fff;
+    }
+    nav {
+      background-color: #fff;
+    }
+    .navbar-brand img {
+      width: 44px;
+      height: 59px;
+    }
+    .card:hover img {
+        filter: brightness(60%);
+        transition: 500ms;
+    }
+  
+    .card {
+        border-radius: 15px;
+        color: black;
+        /* box-shadow: 0 26px 30px rgba(0, 0, 0, 0.1); */
+        /* background-color: #c1c9a3; */
+    }
+  
+    .alert {
+      position: fixed;
+      top: 20px; /* Ajusta según tu preferencia */
+      right: 20px; /* Ajusta según tu preferencia */
+      z-index: 9999; /* Asegura que esté sobre otros elementos */
+      width: auto; /* O establece un ancho específico si lo prefieres */
+    }
 
-  <body style="margin: 0; padding: 0; overflow: hidden; height: 100vh">
+    .user-logo {
+      width: 50px;
+      height: 50px  ;
+    }
+  </style>
+  <body>
     <!-- HEADER -->
     <nav
-      class="navbar navbar-expand-lg navbar-light bg-light fixed-top position-sticky"
+      class="navbar navbar-expand-lg navbar-light bg-light position-sticky"
       id="HEADER"
       style="
         width: 100%;
         background-color: #fff;
         border-bottom: 1px solid rgb(172, 172, 172);
+        top: 0;
       "
     >
       <div class="container-fluid" style="padding-left: 9%; padding-right: 9%">
@@ -45,15 +90,15 @@
           >
             <span class="navbar-toggler-icon"></span>
           </button>
-          <li class="nav-item collapse d-lg-none">
-            <a href="#"
-              ><img class="px-4 img-fluid" src="/static/img/user.png" alt=""
-            /></a>
+          <li class="nav-item  collapse d-lg-none">
+            <a href="#" class="user-logo px-4">
+              <img class="user-logo rounded-circle img-fluid" src="/static/img/user.png" alt=""/>
+            </a>
           </li>
         </div>
         <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
           <a class="navbar-brand" href="/">
-            <img src="/static/img/Pactum2.png" alt="" style="height: 10vh" />
+            <img src="/static/img/logo.png" alt="" style="height: 10vh" />
           </a>
           <form class="d-flex mx-auto" style="width: 50%">
             <input
@@ -72,7 +117,7 @@
             <li class="nav-item"><a class="nav-link" href="/login">Iniciar Sesion</a></li>
             {% else %}
             <li class="nav-item"><a class="nav-link" href="/logout">Cerrar Sesion</a></li>
-            <li class="nav-item collapse d-lg-block"><a href="#"><img class="px-4" src="/static/img/user.png" alt="" style="height: 7vh"/></a></li>
+            <li class="nav-item collapse d-lg-block"><a href="#" class="user-logo px-4"><img class="user-logo" src="/static/img/user.png" alt="" style="height: 7vh"/></a></li>
             {% endif %}
           </ul>
         </div>
@@ -203,25 +248,20 @@
       });
     </script>
 
-    {% with messages = get_flashed_messages(with_categories=true) %} {% if
-    messages %} {% for category, message in messages %} {% if category ==
-    'error' %}
-    <div class="alert alert-danger alter-dismissable fade show" role="alert">
-      {{ message }}
-      <button type="button" class="close" data-dismiss="alert">
-        <span aria-hidden="true">&times;</span>
-      </button>
+    <div class="notifications" style="position: fixed; top: 50px; right: 20px; z-index: 9999; display: flex; flex-direction: column; gap: 5px;">
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          {% for category, message in messages %}
+            <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert" style="margin: 0px;">
+              {{ message }}
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
     </div>
-    {% else %}
-    <div class="alert alert-success alter-dismissable fade show" role="alert">
-      {{ message }}
-      <button type="button" class="close" data-dismiss="alert">
-        <span aria-hidden="true">&times;</span>
-      </button>
-    </div>
-    {% endif %} {% endfor %} {% endif %} {% endwith %}
 
-    <div class="container">{% block content %} {% endblock %}</div>
+    <div role="main" class="container">{% block content %} {% endblock %}</div>
     <script
       src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
       integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"

@@ -47,44 +47,78 @@
       /* background-color: #c1c9a3; */
   }
 
+  .alert {
+    position: fixed;
+    top: 20px; /* Ajusta según tu preferencia */
+    right: 20px; /* Ajusta según tu preferencia */
+    z-index: 9999; /* Asegura que esté sobre otros elementos */
+    width: auto; /* O establece un ancho específico si lo prefieres */
+  }
+
+  .user-logo {
+    width: 50px;
+    height: 50px  ;
+  }
 </style>
 
 <body style="margin: 0; padding: 0; overflow-x: hidden; height: 100vh;">
   <header>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top position-sticky" id="HEADER"
-    style="width: 100%; background-color: #fff; border-bottom: 1px solid rgb(172, 172, 172); top: 0;">
-    <div class="container-fluid" style="padding-left: 9%; padding-right: 9%;">
-        <div class="d-lg-none">
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                data-bs-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false"
-                aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-        </div>
-
-        <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
-            <a class="navbar-brand" href="/">
-                <img src="/static/img/logo.png" alt="" style="height: 10vh;">
-            </a>
-            <form class="d-flex mx-auto" style="width: 50%;">
-                <input class="form-control rounded-5 py-2 mt-3 w-100" type="search" placeholder="Buscar"
-                    aria-label="Search" style="background-color: rgba(255, 255, 255, 0.53);">
-            </form>
-            <ul class="navbar-nav ms-auto">
-                <li class="nav-item"><a class="nav-link" href="#">Contacto</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Reservas</a></li>
-                <li class="nav-item"><a class="nav-link" href="/eventhall_list">Salones</a></li>
-                {% if user.is_authenticated %}
-                  <li class="nav-item"><a class="nav-link" href="/register/eventhall">Registrar Salón</a></li>
-                  <li class="nav-item"><a class="nav-link" href="/logout">Cerrar Sesión</a></li>
-                {% else %}
-                    <li class="nav-item"><a class="nav-link" href="/login">Iniciar Sesion</a></li>
-                {% endif %}
-            </ul>
-        </div>
+    <nav
+    class="navbar navbar-expand-lg navbar-light bg-light position-sticky"
+    id="HEADER"
+    style="
+      width: 100%;
+      background-color: #fff;
+      border-bottom: 1px solid rgb(172, 172, 172);
+      top: 0;
+    "
+  >
+    <div class="container-fluid" style="padding-left: 9%; padding-right: 9%">
+      <div class="d-lg-none">
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarTogglerDemo01"
+          aria-controls="navbarTogglerDemo01"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <li class="nav-item  collapse d-lg-none">
+          <a href="#" class="user-logo px-4">
+            <img class="user-logo rounded-circle img-fluid" src="/static/img/user.png" alt=""/>
+          </a>
+        </li>
+      </div>
+      <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
+        <a class="navbar-brand" href="/">
+          <img src="/static/img/logo.png" alt="" style="height: 10vh" />
+        </a>
+        <form class="d-flex mx-auto" style="width: 50%">
+          <input
+            class="form-control rounded-5 py-2 mt-3 w-100"
+            type="search"
+            placeholder="Buscar"
+            aria-label="Search"
+            style="background-color: rgba(255, 255, 255, 0.53)"
+          />
+        </form>
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="/register_eventhall">Registrar Salon</a></li>
+          <li class="nav-item"><a class="nav-link" href="/eventhall_list">Salones</a></li>
+          <li class="nav-item"><button class="nav-link btn btn-link" id="reservasBtn">Reservas</button></li>
+          {% if not user.is_authenticated %}
+          <li class="nav-item"><a class="nav-link" href="/login">Iniciar Sesion</a></li>
+          {% else %}
+          <li class="nav-item"><a class="nav-link" href="/logout">Cerrar Sesion</a></li>
+          <li class="nav-item collapse d-lg-block"><a href="#" class="user-logo px-4"><img class="user-logo" src="/static/img/user.png" alt="" style="height: 7vh"/></a></li>
+          {% endif %}
+        </ul>
+      </div>
     </div>
-</nav>
-
+  </nav>
   </header>
   <div class="notifications" style="position: fixed; top: 50px; right: 20px; z-index: 9999; display: flex; flex-direction: column; gap: 5px;">
     {% with messages = get_flashed_messages(with_categories=true) %}
@@ -97,14 +131,7 @@
         {% endfor %}
       {% endif %}
     {% endwith %}
-</div>
-
-
-
-
-
-
-
+  </div>
    {% block content %}{% endblock %}
     <script
       src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
