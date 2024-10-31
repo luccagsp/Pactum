@@ -1,0 +1,54 @@
+{% extends "base.html" %}{% block title %}Registrarse{% endblock %} {% block content %}
+    <form method="POST" enctype="multipart/form-data" action="/register">
+        <body>
+            <div class="container">
+                <div class="row ">
+                    <div class="container-fluid col-12 col-md-12 col-lg-6" style="background-color: white;">
+                        <div class="conteiner justify-content-center d-flex pb-4 mt-5 pt-lg-5 pt-md-3 pt-0" ><img style="width: 35%;" src="/static/img/Register.png" alt=""></div>
+                        <div class=" d-flex justify-content-center">
+                            <div class="form-floating col-4">
+                                <input type="text" name="name" class="form-control rounded-0" placeholder="Nombre" class="form-control rounded-0 pt-5 " style=" border: none;border-bottom: 3px solid rgb(148, 148, 148);" />
+                                <label for="floatingInput">Nombre</label>
+                            </div>
+                            <div class=" offset-1 form-floating col-4">
+                                <input type="text" name="surname" class="form-control rounded-0" placeholder="Apellido" class="form-control rounded-0 pt-5" style=" border: none;border-bottom: 3px solid rgb(148, 148, 148);" />
+                                <label for="floatingInput">Apellido</label>
+                            </div>
+                        </div>
+                        <div class=" d-flex justify-content-center">
+                            <div class="form-floating mt-5 col-9">
+                                <input type="email number" name="email" class="form-control rounded-0" placeholder="Correo" class="form-control rounded-0 pt-5 mt-4 " style=" border: none;border-bottom: 3px solid rgb(148, 148, 148); outline: none;" />
+                                <label for="floatingInput">Email</label>
+                            </div>
+                        </div>
+                        <div class=" d-flex justify-content-center">
+                            <div class="form-floating mt-5 col-9">
+                                <input type="number" name="phone" class="form-control rounded-0" placeholder="Numero" class="form-control rounded-0 pt-5 mt-4 " style=" border: none;border-bottom: 3px solid rgb(148, 148, 148); outline: none;" />
+                                <label for="floatingInput">Numero de Telefono</label>
+                            </div>
+                        </div>
+                        <div class=" d-flex justify-content-center">
+                            <div class="form-floating mt-5 col-4">
+                                <input type="password" name="password" class="form-control rounded-0" placeholder="Contraseña" class="form-control rounded-0 pt-5 mt-4 " style=" border: none;border-bottom: 3px solid rgb(148, 148, 148);"/>
+                                <label for="floatingInput">Contraseña</label>
+                            </div>
+                            <div class=" offset-1 form-floating mt-5 col-4">
+                                <input type="password" class="form-control rounded-0" placeholder="Repetir Contraseña" class=" material-icon form-control rounded-0 pt-5 mt-4 " style=" border: none;border-bottom: 3px solid rgb(148, 148, 148);"/>
+                                <label for="floatingInput">Repetir Contraseña</label>
+                            </div>
+                        </div>
+                        <div class=" d-flex justify-content-center">
+                            <div class="form-group col-9 py-4 ">
+                                <a href="/login">Ya tengo cuenta</a>
+                            </div>
+                        </div>
+                        <div class=" d-flex justify-content-center ">
+                            <div class="form-group pb-5 pt-5 pt-md-3">
+                                <button type="submit" style="background-color: #5349e2;" class=" w-20 col-12 btn btn-primary btn-lg rounded-5"><h5 class="px-4">Registrar</h5></button> 
+                            </div>
+                        </div>
+                </div>
+            </div>
+        </body>
+    </form>
+{% endblock %}
