@@ -1,49 +1,56 @@
-{% extends "base.html" %} {% block title %}Registrar salón{% endblock %} {% block content%}
+{% extends "base.html" %}
+{% block title %}Registrar salón{% endblock %}
+{% block content %}
 
 <div class="container mt-5" style="max-width: 600px; background-color: white; padding: 30px; border-radius: 10px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);">
-    <h2 class="text-center mb-4" style="font-weight: bold; color: #333;">Datos del Salon</h2>
+    <h2 class="text-center mb-4" style="font-weight: bold; color: #333;">Datos del Salón</h2>
     <form method="POST" enctype="multipart/form-data" action="/register/eventhall">
         <div class="row mb-3">
             <div class="col-md-6">
-                <label for="SalonesName" class="form-label" style="font-weight: bold;">Nombre del Salon</label>
+                <label for="SalonesName" class="form-label" style="font-weight: bold;">Nombre del Salón</label>
                 <input type="text" name="name" class="form-control" id="SalonesName" placeholder="Ingrese Nombre" style="border-radius: 5px;" maxlength="50" required>
             </div>
             <div class="col-md-6">
-                <label for="depositPrice" class="form-label" style="font-weight: bold;">Precio</label>
-                <input type="number" name="reservation_price" class="form-control" id="depositPrice" placeholder="Ingrese precio del salon" style="border-radius: 5px;" maxlength="10" required>
+                <label for="depositPrice" class="form-label" style="font-weight: bold;">Precio de seña</label>
+                <input type="number" name="reservation_price" class="form-control" id="depositPrice" placeholder="Ingrese precio de seña" style="border-radius: 5px;" maxlength="10" required>
             </div>
         </div>
         <div class="mb-3">
             <label for="location" class="form-label" style="font-weight: bold;">Calle</label>
-            <input type="text" name="street_address" class="form-control" id="location" placeholder="Ingrese calle del salon" style="border-radius: 5px;" maxlength="80" required>
+            <input type="text" name="street_address" class="form-control" id="location" placeholder="Ingrese calle del salón" style="border-radius: 5px;" maxlength="80" required>
         </div>
         <div class="mb-3">
-            <label for="location" class="form-label" style="font-weight: bold;">Número de calle</label>
-            <input type="text" name="street_number" class="form-control" id="location" placeholder="Ingrese Numero" style="border-radius: 5px;" maxlength="10" required>
+            <label for="street_number" class="form-label" style="font-weight: bold;">Número de calle</label>
+            <input type="text" name="street_number" class="form-control" id="street_number" placeholder="Ingrese Número" style="border-radius: 5px;" maxlength="10" required>
         </div>
-        <!-- <div class="mb-3">
-            <label for="description" class="form-label" style="font-weight: bold;">Descripcion del Salon</label>
-            <textarea class="form-control" name="description" id="description" rows="3" placeholder="Ingrese Descripcion del Salon" style="border-radius: 5px;" maxlength="2200"></textarea required>
-        </div> -->
+        <div class="mb-3">
+            <label for="salonType" class="form-label" style="font-weight: bold;">Tipo de Salón</label>
+            <select name="salon_type" class="form-select" id="salonType" style="border-radius: 5px;" required>
+                <option value="" disabled selected>Seleccione un tipo de salón</option>
+                <option value="Salón de eventos infantiles">Salón de eventos infantiles</option>
+                <option value="Salón de comidas">Salón de comidas</option>
+                <option value="Salón de fiestas">Salón de fiestas</option>
+                <option value="Salón de bodas">Salón de bodas</option>
+                <option value="Salón de reuniones">Salón de reuniones</option>
+                <option value="Salón de conferencias">Salón de conferencias</option>
+            </select>
+        </div>
         <div class="mb-3">
             <label for="alias" class="form-label" style="font-weight: bold;">Alias de Mercado Pago</label>
             <input type="text" name="alias" class="form-control" id="alias" placeholder="Ingrese Alias" style="border-radius: 5px;" maxlength="200" required>
         </div>
-        <div class="mb-3 d-flex " style="flex-direction: column;">
-            <label for="alias" class="form-label" style="font-weight: bold;">Logotipo</label>
-            <input 
-            type="file" 
-            name='file'
-            class="form-control"
-            id="fileInput" 
-            accept="image/*">
+        <div class="mb-3 d-flex" style="flex-direction: column;">
+            <label for="fileInput" class="form-label" style="font-weight: bold;">Logotipo</label>
+            <input type="file" name='file' class="form-control" id="fileInput" accept="image/*">
         </div>
         <div>
-            <label for="SalonesName" class="form-label mt-2" style="font-weight: bold;">Descripcion</label>
-            <textarea class="form-control" id="description" name="description" rows="3" placeholder="Ingrese Descripcion del Salon" style="border-radius: 5px;"></textarea>
+            <label for="description" class="form-label mt-2" style="font-weight: bold;">Descripción</label>
+            <textarea class="form-control" id="description" name="description" rows="3" placeholder="Ingrese Descripción del salón" style="border-radius: 5px;"></textarea>
         </div>
-        <label for="vehicle3">Reserva instantanea</label>
-        <input type="checkbox" id="vehicle3" name="instant_booking" value=on/>       
+        <div class="mb-3">
+            <label for="instantBooking" class="form-label" style="font-weight: bold;">Reserva instantánea</label>
+            <input type="checkbox" id="instantBooking" name="instant_booking" value="on"/>       
+        </div>
         <div class="text-center">
             <button type="submit" class="btn btn-primary" style="width: 100%; border-radius: 5px; font-weight: bold;">Registrar</button>
         </div>

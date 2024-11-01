@@ -8,6 +8,7 @@ class Eventhall(db.Model):
     owner_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     name = db.Column(db.String(50), nullable=False, unique=True)
     description = db.Column(db.String(2200))
+    salon_type = db.Column(db.String(255), nullable=False)
     street_address = db.Column(db.String(80))
     street_number = db.Column(db.String(10))
     alias = db.Column(db.String(200), nullable=False)
@@ -25,10 +26,12 @@ class Eventhall(db.Model):
     @property
     def thumbail(self):
         return next((image for image in self.images if image.type_image == "image"), None)
-    
+    @property
+    def first_two_images(self):
+        return self.images[:2]
     # user = db.relationship('User', back_populates='images')
 
-    def validate_eventhall( owner_id,name,reservation_price,alias = None,instant_booking = False, description = None, street_address=None, street_number=None):
+    def validate_eventhall( owner_id,name,salon_type, reservation_price,alias = None,instant_booking = False, description = "No hay descripción aún", street_address=None, street_number=None):
         if not name: return [False, 'Falta nombre del salón']
         if not reservation_price:
             return [False, 'Falta precio de deposito']
@@ -59,4 +62,5 @@ class Eventhall(db.Model):
                         description=description, 
                         street_address=street_address, 
                         street_number=street_number,
-                        alias=alias)]
+                        alias=alias,
+                        salon_type=salon_type)]

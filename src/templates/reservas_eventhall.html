@@ -52,13 +52,12 @@
                     <i class="bi-pencil-square me-2"></i>
                     <span class="sidebar-text collapse d-lg-block">Editar</span>
                 </a>   
-                <a class="sidebar-button d-flex ps-4 pe-3 py-3 justify-content-lg-start justify-content-center rounded-2" href="/reserves/{{eventhall.id}}"
-                   style="background-color: #a6a6a6;"
-                >
+                <a class="sidebar-button d-flex ps-4 pe-3 py-3 justify-content-lg-start justify-content-center rounded-2" href="/solicitudes/{{eventhall.id}}">
                     <i class="bi-envelope-open me-2"></i>
                     <span class="sidebar-text collapse d-lg-block">Solicitudes</span>
                 </a>
-                <a class="sidebar-button d-flex ps-4 pe-3 py-3 justify-content-lg-start justify-content-center rounded-2" href="#">
+                <a class="sidebar-button d-flex ps-4 pe-3 py-3 justify-content-lg-start justify-content-center rounded-2" href="/reserves/{{eventhall.id}}"
+                style="background-color: #a6a6a6;">
                     <i class="bi-calendar-check me-2"></i>
                     <span class="sidebar-text collapse d-lg-block">Reservas</span>
                 </a>
@@ -75,7 +74,6 @@
     </div> -->
     <div class="d-flex justify-content-center row px-md-5 px-3 pt-3 custom-container" style="flex-grow: 1;">
         {%for reserve in eventhall.reservations%}
-        {%if reserve.state == "pending"%}
         <div class="card shadow-sm col-12 col-sm-6 col-md-5 col-lg-4 pb-3 ">
             <div class="card-body">
                 <h5 class="card-title fs-4">{{reserve.user.name}} {{reserve.user.surname}}</h5>
@@ -98,14 +96,17 @@
                     <i class="bi-calendar me-2"></i>
                     <a target="_blank" href="{{reserve.url_payment}}">Comprobante de pago</a>
                 </p>
-                
-            </div>
-            <div class="d-flex">
-                <a href="/reserve/validate/{{reserve.id}}" type="button" class="col-6 btn btn-success rounded-end-0">✓</a>
-                <a href="/reserve/cancel/{{reserve.id}}" type="button" class="rounded-start-0 col-6 btn btn-danger">X</a>
+                {%if reserve.state == "pending"%}
+                <span class="badge bg-warning">Pendiente</span>
+                {%endif%}
+                {%if reserve.state == "reserved"%}
+                <span class="badge bg-success">Aceptado</span>
+                {%endif%}
+                {%if reserve.state == "cancelled"%}
+                <span class="badge bg-danger">Cancelado</span>
+                {%endif%}
             </div>
         </div>
-        {%endif%}
         {%endfor%}
     </div>
 </div>

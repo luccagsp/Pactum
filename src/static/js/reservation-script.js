@@ -27,7 +27,7 @@ document.addEventListener("DOMContentLoaded", function () {
       const selectedTime = horariosSelect.value;
 
       if (disableDates(selectedDate)) {
-          alert("La fecha seleccionada no está disponible. Por favor, elige otra.");
+          alert("La fecha no tiene que ser un fin de semana. Por favor, elige otra.");
           dateInput.value = ''; // Limpiar la fecha seleccionada
           calendar.innerHTML = `<h3>${today.toLocaleDateString('es-ES', options)}</h3>`; // Mostrar la fecha actual si la selección es inválida
       } else {
